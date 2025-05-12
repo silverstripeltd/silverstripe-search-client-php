@@ -1,0 +1,26 @@
+{
+  "name": "silverstripe/search-sdk",
+  "require": {
+    "php": "^8.4",
+    "jane-php/open-api-runtime": "^7.9"
+  },
+  "require-dev": {
+    "jane-php/open-api-3": "^7.9",
+    "friendsofphp/php-cs-fixer": "^3.75"
+  },
+  "extra": {
+    "symfony": {
+      "allow-contrib": "true"
+    }
+  },
+  "config": {
+    "allow-plugins": {
+      "php-http/discovery": true
+    }
+  },
+  "autoload": {
+    "psr-4": {
+      "Silverstripe\\Search\\Client\\": "src/"
+    }
+  }
+}
