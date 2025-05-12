@@ -1,0 +1,51 @@
+{
+    "name": "silverstripe/silverstripe-search-client-php",
+    "description": "A PHP client to support HTTP requests to the Silverstripe Search API",
+    "license": "BSD-3-Clause",
+    "homepage": "https://github.com/silverstripeltd/silverstripe-search-client-php",
+    "authors": [
+        {
+            "name": "Bernie Hamlin",
+            "email": "bernie@silverstripe.com"
+        },
+        {
+            "name": "Christopher David Penny",
+            "email": "chris.penny@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^8.1",
+        "jane-php/open-api-runtime": "^7.9"
+    },
+    "require-dev": {
+        "jane-php/open-api-3": "dev-bugfix/array-body-content as 7.9.0",
+        "jane-php/json-schema": "dev-bugfix/array-objects as 7.9.0",
+        "friendsofphp/php-cs-fixer": "^3.75"
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "git@github.com:silverstripeltd/jane-php-json-schema.git"
+        },
+        {
+            "type": "vcs",
+            "url": "git@github.com:silverstripeltd/jane-php-open-api-3.git"
+        }
+    ],
+    "extra": {
+        "symfony": {
+            "allow-contrib": "true"
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "composer/installers": true,
+            "php-http/discovery": true
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Silverstripe\\Search\\Client\\": "src/"
+        }
+    }
+}
