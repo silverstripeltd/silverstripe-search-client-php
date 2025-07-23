@@ -80,6 +80,8 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
         
         \Silverstripe\Search\Client\Model\ResponseSuccess::class => \Silverstripe\Search\Client\Normalizer\ResponseSuccessNormalizer::class,
         
+        \Silverstripe\Search\Client\Model\Schema::class => \Silverstripe\Search\Client\Normalizer\SchemaNormalizer::class,
+        
         \Silverstripe\Search\Client\Model\SchemaPostResponse::class => \Silverstripe\Search\Client\Normalizer\SchemaPostResponseNormalizer::class,
         
         \Silverstripe\Search\Client\Model\SearchRequest::class => \Silverstripe\Search\Client\Normalizer\SearchRequestNormalizer::class,
@@ -97,6 +99,10 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
         \Silverstripe\Search\Client\Model\SearchResponseEngine::class => \Silverstripe\Search\Client\Normalizer\SearchResponseEngineNormalizer::class,
         
         \Silverstripe\Search\Client\Model\SearchResponseMeta::class => \Silverstripe\Search\Client\Normalizer\SearchResponseMetaNormalizer::class,
+        
+        \Silverstripe\Search\Client\Model\SettingsRequest::class => \Silverstripe\Search\Client\Normalizer\SettingsRequestNormalizer::class,
+        
+        \Silverstripe\Search\Client\Model\SettingsResponse::class => \Silverstripe\Search\Client\Normalizer\SettingsResponseNormalizer::class,
         
         \Silverstripe\Search\Client\Model\SpellingSuggestionRequest::class => \Silverstripe\Search\Client\Normalizer\SpellingSuggestionRequestNormalizer::class,
         
@@ -179,6 +185,7 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
             \Silverstripe\Search\Client\Model\ResponseFacetRange::class => false,
             \Silverstripe\Search\Client\Model\ResponseFacetValue::class => false,
             \Silverstripe\Search\Client\Model\ResponseSuccess::class => false,
+            \Silverstripe\Search\Client\Model\Schema::class => false,
             \Silverstripe\Search\Client\Model\SchemaPostResponse::class => false,
             \Silverstripe\Search\Client\Model\SearchRequest::class => false,
             \Silverstripe\Search\Client\Model\SearchRequestResultField::class => false,
@@ -188,6 +195,8 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
             \Silverstripe\Search\Client\Model\SearchResponse::class => false,
             \Silverstripe\Search\Client\Model\SearchResponseEngine::class => false,
             \Silverstripe\Search\Client\Model\SearchResponseMeta::class => false,
+            \Silverstripe\Search\Client\Model\SettingsRequest::class => false,
+            \Silverstripe\Search\Client\Model\SettingsResponse::class => false,
             \Silverstripe\Search\Client\Model\SpellingSuggestionRequest::class => false,
             \Silverstripe\Search\Client\Model\SpellingSuggestionResponse::class => false,
             \Silverstripe\Search\Client\Model\SynonymRule::class => false,

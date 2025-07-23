@@ -54,8 +54,9 @@ class QuerySuggestionPost extends \Silverstripe\Search\Client\Runtime\Client\Bas
      *
      * @throws \Silverstripe\Search\Client\Exception\QuerySuggestionPostNotFoundException
      * @throws \Silverstripe\Search\Client\Exception\QuerySuggestionPostUnprocessableEntityException
+     * @throws \Silverstripe\Search\Client\Exception\UnexpectedStatusCodeException
      *
-     * @return null|\Silverstripe\Search\Client\Model\QuerySuggestionResponse
+     * @return \Silverstripe\Search\Client\Model\QuerySuggestionResponse
      */
     protected function transformResponseBody(\Psr\Http\Message\ResponseInterface $response, \Symfony\Component\Serializer\SerializerInterface $serializer, ?string $contentType = null)
     {
@@ -70,6 +71,7 @@ class QuerySuggestionPost extends \Silverstripe\Search\Client\Runtime\Client\Bas
         if (is_null($contentType) === false && (422 === $status && mb_strpos($contentType, 'application/json') !== false)) {
             throw new \Silverstripe\Search\Client\Exception\QuerySuggestionPostUnprocessableEntityException($serializer->deserialize($body, 'Silverstripe\Search\Client\Model\HTTPValidationError', 'json'), $response);
         }
+        throw new \Silverstripe\Search\Client\Exception\UnexpectedStatusCodeException($status, $body);
     }
     public function getAuthenticationScopes(): array
     {

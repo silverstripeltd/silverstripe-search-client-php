@@ -39,12 +39,20 @@ class FilterObjectLevel4Normalizer implements DenormalizerInterface, NormalizerI
         }
         if (\array_key_exists('all', $data)) {
             $object->setAll($data['all']);
+            unset($data['all']);
         }
         if (\array_key_exists('any', $data)) {
             $object->setAny($data['any']);
+            unset($data['any']);
         }
         if (\array_key_exists('none', $data)) {
             $object->setNone($data['none']);
+            unset($data['none']);
+        }
+        foreach ($data as $key => $value) {
+            if (preg_match('/.*/', (string) $key)) {
+                $object[$key] = $value;
+            }
         }
         return $object;
     }
@@ -59,6 +67,11 @@ class FilterObjectLevel4Normalizer implements DenormalizerInterface, NormalizerI
         }
         if ($data->isInitialized('none') && null !== $data->getNone()) {
             $dataArray['none'] = $data->getNone();
+        }
+        foreach ($data as $key => $value) {
+            if (preg_match('/.*/', (string) $key)) {
+                $dataArray[$key] = $value;
+            }
         }
         return $dataArray;
     }

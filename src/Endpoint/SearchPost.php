@@ -51,31 +51,39 @@ class SearchPost extends \Silverstripe\Search\Client\Runtime\Client\BaseEndpoint
        * `geolocation`: Currently unsupported
     
     `facets.{field_key}` **(required)**
-    * The field from your schema that you which to apply your facet to.
+    * The field from your schema upon which to apply your facet
+    * Must contain an array of {facet_object}.
     
-    `facets.{field_key}.type` **(required)**
-    * The type of facet to use. Must be one of "value" or "range".
+    `{facet_object}.type` **(required)**
+    * Type of facet, one of either "value" or "range".
     
-    `facets.{field_key}.name` (optional)
-    * Custom name given to the facet that is used for your results.
+    `{facet_object}.name` (optional)
+    * Name given to facet.
     
-    `facets.{field_key}.size` (optional)
-    * Only valid for "value" type facets
+    Value facet:
+    
+    `{facet_object}.size` (optional)
     * How many facets would you like to return?
     * Can be between 1 and 100
     * Defaults to 10.
     
-    `facets.{field_key}.sort` (optional)
-    * Only valid for "value" type facets
-    * JSON object where the key is either `count` or `value` and the value is `asc` or `desc`
+    `{facet_object}.sort` (optional)
+    * JSON object where the key is either `count` or `value` and the value is `asc` or `desc`.
     * Defaults to descending `count`.
     
-    `facets.{field_key}.ranges` (required for "range" type facets)
-    * Only valid for "range" type facets
-    * An array of range objects (JSON objects). Each range object can include:
-       * `from`: A value to select from (inclusive of the value defined). Required if no "to" value is provided
-       * `to`: A value to select to (exclusive of the value defined). Required if no "from" value is provided
-       * `name`: A name given to the range (optional)
+    Range facet:
+    
+    `{facet_object}.ranges` **(required)**
+    * An array of {facet_range_object}.
+    
+    `{facet_range_object}.name` (optional)
+    * A name given to the range.
+    
+    `{facet_range_object}.from` (optional)
+    * Inclusive lower bound of the range. Is required if to is not given.
+    
+    `{facet_range_object}.to` (optional)
+    * Exclusive upper bound of the range. Is required if from is not given.
     
     `filters` (optional)
     * Apply conditions to field values to filter results
@@ -173,6 +181,7 @@ class SearchPost extends \Silverstripe\Search\Client\Runtime\Client\BaseEndpoint
      *
      * @throws \Silverstripe\Search\Client\Exception\SearchPostNotFoundException
      * @throws \Silverstripe\Search\Client\Exception\SearchPostUnprocessableEntityException
+     * @throws \Silverstripe\Search\Client\Exception\UnexpectedStatusCodeException
      *
      * @return null
      */
@@ -189,6 +198,7 @@ class SearchPost extends \Silverstripe\Search\Client\Runtime\Client\BaseEndpoint
         if (is_null($contentType) === false && (422 === $status && mb_strpos($contentType, 'application/json') !== false)) {
             throw new \Silverstripe\Search\Client\Exception\SearchPostUnprocessableEntityException($serializer->deserialize($body, 'Silverstripe\Search\Client\Model\HTTPValidationError', 'json'), $response);
         }
+        throw new \Silverstripe\Search\Client\Exception\UnexpectedStatusCodeException($status, $body);
     }
     public function getAuthenticationScopes(): array
     {

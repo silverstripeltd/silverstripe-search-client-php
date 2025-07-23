@@ -2,7 +2,7 @@
 
 namespace Silverstripe\Search\Client\Model;
 
-class Filters
+class Filters extends \ArrayObject
 {
     /**
      * @var array

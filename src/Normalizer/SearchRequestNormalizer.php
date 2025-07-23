@@ -39,6 +39,7 @@ class SearchRequestNormalizer implements DenormalizerInterface, NormalizerInterf
         }
         if (\array_key_exists('query', $data)) {
             $object->setQuery($data['query']);
+            unset($data['query']);
         }
         if (\array_key_exists('sort', $data)) {
             $value = $data['sort'];
@@ -46,6 +47,7 @@ class SearchRequestNormalizer implements DenormalizerInterface, NormalizerInterf
                 $value = $data['sort'];
             }
             $object->setSort($value);
+            unset($data['sort']);
         }
         if (\array_key_exists('page', $data)) {
             $value_1 = $data['page'];
@@ -55,6 +57,7 @@ class SearchRequestNormalizer implements DenormalizerInterface, NormalizerInterf
                 $value_1 = $data['page'];
             }
             $object->setPage($value_1);
+            unset($data['page']);
         }
         if (\array_key_exists('search_fields', $data)) {
             $value_2 = $data['search_fields'];
@@ -62,6 +65,7 @@ class SearchRequestNormalizer implements DenormalizerInterface, NormalizerInterf
                 $value_2 = $data['search_fields'];
             }
             $object->setSearchFields($value_2);
+            unset($data['search_fields']);
         }
         if (\array_key_exists('result_fields', $data)) {
             $value_3 = $data['result_fields'];
@@ -75,6 +79,7 @@ class SearchRequestNormalizer implements DenormalizerInterface, NormalizerInterf
                 $value_3 = $data['result_fields'];
             }
             $object->setResultFields($value_3);
+            unset($data['result_fields']);
         }
         if (\array_key_exists('facets', $data)) {
             $value_5 = $data['facets'];
@@ -92,6 +97,7 @@ class SearchRequestNormalizer implements DenormalizerInterface, NormalizerInterf
                 $value_5 = $data['facets'];
             }
             $object->setFacets($value_5);
+            unset($data['facets']);
         }
         if (\array_key_exists('filters', $data)) {
             $value_8 = $data['filters'];
@@ -101,6 +107,7 @@ class SearchRequestNormalizer implements DenormalizerInterface, NormalizerInterf
                 $value_8 = $data['filters'];
             }
             $object->setFilters($value_8);
+            unset($data['filters']);
         }
         if (\array_key_exists('analytics', $data)) {
             $value_9 = $data['analytics'];
@@ -110,6 +117,12 @@ class SearchRequestNormalizer implements DenormalizerInterface, NormalizerInterf
                 $value_9 = $data['analytics'];
             }
             $object->setAnalytics($value_9);
+            unset($data['analytics']);
+        }
+        foreach ($data as $key_2 => $value_10) {
+            if (preg_match('/.*/', (string) $key_2)) {
+                $object[$key_2] = $value_10;
+            }
         }
         return $object;
     }
@@ -187,6 +200,11 @@ class SearchRequestNormalizer implements DenormalizerInterface, NormalizerInterf
                 $value_9 = $data->getAnalytics();
             }
             $dataArray['analytics'] = $value_9;
+        }
+        foreach ($data as $key_2 => $value_10) {
+            if (preg_match('/.*/', (string) $key_2)) {
+                $dataArray[$key_2] = $value_10;
+            }
         }
         return $dataArray;
     }

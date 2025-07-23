@@ -12,8 +12,9 @@ class Client extends \Silverstripe\Search\Client\Runtime\Client\Client
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      * @throws \Silverstripe\Search\Client\Exception\DocumentsDeleteNotFoundException
      * @throws \Silverstripe\Search\Client\Exception\DocumentsDeleteUnprocessableEntityException
+     * @throws \Silverstripe\Search\Client\Exception\UnexpectedStatusCodeException
      *
-     * @return null|\Silverstripe\Search\Client\Model\DocumentsDeleteResponse[]|\Psr\Http\Message\ResponseInterface
+     * @return \Silverstripe\Search\Client\Model\DocumentsDeleteResponse[]|\Psr\Http\Message\ResponseInterface
      */
     public function documentsDelete(string $engineName, array $requestBody, string $fetch = self::FETCH_OBJECT)
     {
@@ -32,6 +33,7 @@ class Client extends \Silverstripe\Search\Client\Runtime\Client\Client
     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
     * @throws \Silverstripe\Search\Client\Exception\DocumentsGetNotFoundException
     * @throws \Silverstripe\Search\Client\Exception\DocumentsGetUnprocessableEntityException
+    * @throws \Silverstripe\Search\Client\Exception\UnexpectedStatusCodeException
     *
     * @return null|\Psr\Http\Message\ResponseInterface
     */
@@ -51,8 +53,9 @@ class Client extends \Silverstripe\Search\Client\Runtime\Client\Client
     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
     * @throws \Silverstripe\Search\Client\Exception\DocumentsPatchNotFoundException
     * @throws \Silverstripe\Search\Client\Exception\DocumentsPatchUnprocessableEntityException
+    * @throws \Silverstripe\Search\Client\Exception\UnexpectedStatusCodeException
     *
-    * @return null|\Silverstripe\Search\Client\Model\DocumentPostPatchResponse[]|\Psr\Http\Message\ResponseInterface
+    * @return \Silverstripe\Search\Client\Model\DocumentPostPatchResponse[]|\Psr\Http\Message\ResponseInterface
     */
     public function documentsPatch(string $engineName, array $requestBody, string $fetch = self::FETCH_OBJECT)
     {
@@ -80,8 +83,9 @@ class Client extends \Silverstripe\Search\Client\Runtime\Client\Client
     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
     * @throws \Silverstripe\Search\Client\Exception\DocumentsPostNotFoundException
     * @throws \Silverstripe\Search\Client\Exception\DocumentsPostUnprocessableEntityException
+    * @throws \Silverstripe\Search\Client\Exception\UnexpectedStatusCodeException
     *
-    * @return null|\Silverstripe\Search\Client\Model\DocumentPostPatchResponse[]|\Psr\Http\Message\ResponseInterface
+    * @return \Silverstripe\Search\Client\Model\DocumentPostPatchResponse[]|\Psr\Http\Message\ResponseInterface
     */
     public function documentsPost(string $engineName, array $requestBody, string $fetch = self::FETCH_OBJECT)
     {
@@ -104,22 +108,24 @@ class Client extends \Silverstripe\Search\Client\Runtime\Client\Client
     * Defaults to 1.
     *
     * @param string $engineName 
-    * @param \Silverstripe\Search\Client\Model\DocumentListRequest $requestBody 
+    * @param null|mixed $requestBody 
     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
     * @throws \Silverstripe\Search\Client\Exception\DocumentsListPostNotFoundException
     * @throws \Silverstripe\Search\Client\Exception\DocumentsListPostUnprocessableEntityException
+    * @throws \Silverstripe\Search\Client\Exception\UnexpectedStatusCodeException
     *
-    * @return null|\Silverstripe\Search\Client\Model\DocumentListResponse|\Psr\Http\Message\ResponseInterface
+    * @return \Silverstripe\Search\Client\Model\DocumentListResponse|\Psr\Http\Message\ResponseInterface
     */
-    public function documentsListPost(string $engineName, \Silverstripe\Search\Client\Model\DocumentListRequest $requestBody, string $fetch = self::FETCH_OBJECT)
+    public function documentsListPost(string $engineName, $requestBody = null, string $fetch = self::FETCH_OBJECT)
     {
         return $this->executeEndpoint(new \Silverstripe\Search\Client\Endpoint\DocumentsListPost($engineName, $requestBody), $fetch);
     }
     /**
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      * @throws \Silverstripe\Search\Client\Exception\EnginesPostNotFoundException
+     * @throws \Silverstripe\Search\Client\Exception\UnexpectedStatusCodeException
      *
-     * @return null|\Silverstripe\Search\Client\Model\EnginesResponse|\Psr\Http\Message\ResponseInterface
+     * @return \Silverstripe\Search\Client\Model\EnginesResponse|\Psr\Http\Message\ResponseInterface
      */
     public function enginesPost(string $fetch = self::FETCH_OBJECT)
     {
@@ -146,8 +152,9 @@ class Client extends \Silverstripe\Search\Client\Runtime\Client\Client
     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
     * @throws \Silverstripe\Search\Client\Exception\QuerySuggestionPostNotFoundException
     * @throws \Silverstripe\Search\Client\Exception\QuerySuggestionPostUnprocessableEntityException
+    * @throws \Silverstripe\Search\Client\Exception\UnexpectedStatusCodeException
     *
-    * @return null|\Silverstripe\Search\Client\Model\QuerySuggestionResponse|\Psr\Http\Message\ResponseInterface
+    * @return \Silverstripe\Search\Client\Model\QuerySuggestionResponse|\Psr\Http\Message\ResponseInterface
     */
     public function querySuggestionPost(string $engineName, \Silverstripe\Search\Client\Model\QuerySuggestionRequest $requestBody, string $fetch = self::FETCH_OBJECT)
     {
@@ -160,8 +167,9 @@ class Client extends \Silverstripe\Search\Client\Runtime\Client\Client
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      * @throws \Silverstripe\Search\Client\Exception\SchemaGetNotFoundException
      * @throws \Silverstripe\Search\Client\Exception\SchemaGetUnprocessableEntityException
+     * @throws \Silverstripe\Search\Client\Exception\UnexpectedStatusCodeException
      *
-     * @return null|\Psr\Http\Message\ResponseInterface
+     * @return \Silverstripe\Search\Client\Model\Schema|\Psr\Http\Message\ResponseInterface
      */
     public function schemaGet(string $engineName, string $fetch = self::FETCH_OBJECT)
     {
@@ -199,14 +207,15 @@ class Client extends \Silverstripe\Search\Client\Runtime\Client\Client
        * `_attachment`
     *
     * @param string $engineName 
-    * @param \stdClass $requestBody 
+    * @param \Silverstripe\Search\Client\Model\Schema $requestBody 
     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
     * @throws \Silverstripe\Search\Client\Exception\SchemaPostNotFoundException
     * @throws \Silverstripe\Search\Client\Exception\SchemaPostUnprocessableEntityException
+    * @throws \Silverstripe\Search\Client\Exception\UnexpectedStatusCodeException
     *
-    * @return null|\Silverstripe\Search\Client\Model\SchemaPostResponse|\Psr\Http\Message\ResponseInterface
+    * @return \Silverstripe\Search\Client\Model\SchemaPostResponse|\Psr\Http\Message\ResponseInterface
     */
-    public function schemaPost(string $engineName, \stdClass $requestBody, string $fetch = self::FETCH_OBJECT)
+    public function schemaPost(string $engineName, \Silverstripe\Search\Client\Model\Schema $requestBody, string $fetch = self::FETCH_OBJECT)
     {
         return $this->executeEndpoint(new \Silverstripe\Search\Client\Endpoint\SchemaPost($engineName, $requestBody), $fetch);
     }
@@ -256,31 +265,39 @@ class Client extends \Silverstripe\Search\Client\Runtime\Client\Client
        * `geolocation`: Currently unsupported
     
     `facets.{field_key}` **(required)**
-    * The field from your schema that you which to apply your facet to.
+    * The field from your schema upon which to apply your facet
+    * Must contain an array of {facet_object}.
     
-    `facets.{field_key}.type` **(required)**
-    * The type of facet to use. Must be one of "value" or "range".
+    `{facet_object}.type` **(required)**
+    * Type of facet, one of either "value" or "range".
     
-    `facets.{field_key}.name` (optional)
-    * Custom name given to the facet that is used for your results.
+    `{facet_object}.name` (optional)
+    * Name given to facet.
     
-    `facets.{field_key}.size` (optional)
-    * Only valid for "value" type facets
+    Value facet:
+    
+    `{facet_object}.size` (optional)
     * How many facets would you like to return?
     * Can be between 1 and 100
     * Defaults to 10.
     
-    `facets.{field_key}.sort` (optional)
-    * Only valid for "value" type facets
-    * JSON object where the key is either `count` or `value` and the value is `asc` or `desc`
+    `{facet_object}.sort` (optional)
+    * JSON object where the key is either `count` or `value` and the value is `asc` or `desc`.
     * Defaults to descending `count`.
     
-    `facets.{field_key}.ranges` (required for "range" type facets)
-    * Only valid for "range" type facets
-    * An array of range objects (JSON objects). Each range object can include:
-       * `from`: A value to select from (inclusive of the value defined). Required if no "to" value is provided
-       * `to`: A value to select to (exclusive of the value defined). Required if no "from" value is provided
-       * `name`: A name given to the range (optional)
+    Range facet:
+    
+    `{facet_object}.ranges` **(required)**
+    * An array of {facet_range_object}.
+    
+    `{facet_range_object}.name` (optional)
+    * A name given to the range.
+    
+    `{facet_range_object}.from` (optional)
+    * Inclusive lower bound of the range. Is required if to is not given.
+    
+    `{facet_range_object}.to` (optional)
+    * Exclusive upper bound of the range. Is required if from is not given.
     
     `filters` (optional)
     * Apply conditions to field values to filter results
@@ -350,12 +367,59 @@ class Client extends \Silverstripe\Search\Client\Runtime\Client\Client
     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
     * @throws \Silverstripe\Search\Client\Exception\SearchPostNotFoundException
     * @throws \Silverstripe\Search\Client\Exception\SearchPostUnprocessableEntityException
+    * @throws \Silverstripe\Search\Client\Exception\UnexpectedStatusCodeException
     *
     * @return null|\Psr\Http\Message\ResponseInterface
     */
     public function searchPost(string $engineName, \Silverstripe\Search\Client\Model\SearchRequest $requestBody, string $fetch = self::FETCH_OBJECT)
     {
         return $this->executeEndpoint(new \Silverstripe\Search\Client\Endpoint\SearchPost($engineName, $requestBody), $fetch);
+    }
+    /**
+     * 
+     *
+     * @param string $engineName 
+     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @throws \Silverstripe\Search\Client\Exception\SettingsGetNotFoundException
+     * @throws \Silverstripe\Search\Client\Exception\SettingsGetUnprocessableEntityException
+     * @throws \Silverstripe\Search\Client\Exception\UnexpectedStatusCodeException
+     *
+     * @return \Silverstripe\Search\Client\Model\SettingsResponse|\Psr\Http\Message\ResponseInterface
+     */
+    public function settingsGet(string $engineName, string $fetch = self::FETCH_OBJECT)
+    {
+        return $this->executeEndpoint(new \Silverstripe\Search\Client\Endpoint\SettingsGet($engineName), $fetch);
+    }
+    /**
+    * **Body:**
+    
+    `precision` (optional)
+    * Precision tuning setting for your engine
+    * Valid options are 1 - 11 (inclusive)
+    * 1: Highest recall (least precise)
+    * 2: Default: Less than half of the terms have to match. Full typo tolerance is applied
+    * 3: Increased term requirements: To match, documents must contain all terms for queries with up to 2 terms, then half if there are more. Full typo tolerance is applied
+    * 4: Increased term requirements: To match, documents must contain all terms for queries with up to 3 terms, then three-quarters if there are more. Full typo tolerance is applied
+    * 5: Increased term requirements: To match, documents must contain all terms for queries with up to 4 terms, then all but one if there are more. Full typo tolerance is applied
+    * 6: Increased term requirements: To match, documents must contain all terms for any query. Full typo tolerance is applied
+    * 7: Strictest term requirements: To match, documents must contain all terms in the same field. Full typo tolerance is applied
+    * 8: Strictest term requirements: To match, documents must contain all terms in the same field. Partial typo tolerance is applied: fuzzy matching is disabled
+    * 9: Strictest term requirements: To match, documents must contain all terms in the same field. Partial typo tolerance is applied: fuzzy matching and prefixing are disabled
+    * 10: Strictest term requirements: To match, documents must contain all terms in the same field. Partial typo tolerance is applied: in addition to the above, contractions and hyphenations are not corrected
+    * 11: Only exact matches will apply, with tolerance only for differences in capitalization (most precise)
+    *
+    * @param string $engineName 
+    * @param \Silverstripe\Search\Client\Model\SettingsRequest $requestBody 
+    * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+    * @throws \Silverstripe\Search\Client\Exception\SettingsPostNotFoundException
+    * @throws \Silverstripe\Search\Client\Exception\SettingsPostUnprocessableEntityException
+    * @throws \Silverstripe\Search\Client\Exception\UnexpectedStatusCodeException
+    *
+    * @return \Silverstripe\Search\Client\Model\SettingsResponse|\Psr\Http\Message\ResponseInterface
+    */
+    public function settingsPost(string $engineName, \Silverstripe\Search\Client\Model\SettingsRequest $requestBody, string $fetch = self::FETCH_OBJECT)
+    {
+        return $this->executeEndpoint(new \Silverstripe\Search\Client\Endpoint\SettingsPost($engineName, $requestBody), $fetch);
     }
     /**
     * Provide relevant spelling suggestions for queries. Not to be confused with autocomplete.
@@ -379,8 +443,9 @@ class Client extends \Silverstripe\Search\Client\Runtime\Client\Client
     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
     * @throws \Silverstripe\Search\Client\Exception\SpellingSuggestionPostNotFoundException
     * @throws \Silverstripe\Search\Client\Exception\SpellingSuggestionPostUnprocessableEntityException
+    * @throws \Silverstripe\Search\Client\Exception\UnexpectedStatusCodeException
     *
-    * @return null|\Silverstripe\Search\Client\Model\SpellingSuggestionResponse|\Psr\Http\Message\ResponseInterface
+    * @return \Silverstripe\Search\Client\Model\SpellingSuggestionResponse|\Psr\Http\Message\ResponseInterface
     */
     public function spellingSuggestionPost(string $engineName, \Silverstripe\Search\Client\Model\SpellingSuggestionRequest $requestBody, string $fetch = self::FETCH_OBJECT)
     {
@@ -393,8 +458,9 @@ class Client extends \Silverstripe\Search\Client\Runtime\Client\Client
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      * @throws \Silverstripe\Search\Client\Exception\SynonymRulesGetNotFoundException
      * @throws \Silverstripe\Search\Client\Exception\SynonymRulesGetUnprocessableEntityException
+     * @throws \Silverstripe\Search\Client\Exception\UnexpectedStatusCodeException
      *
-     * @return null|\Silverstripe\Search\Client\Model\SynonymRule[]|\Psr\Http\Message\ResponseInterface
+     * @return \Silverstripe\Search\Client\Model\SynonymRule[]|\Psr\Http\Message\ResponseInterface
      */
     public function synonymRulesGet(string $engineName, string $fetch = self::FETCH_OBJECT)
     {
@@ -420,8 +486,9 @@ class Client extends \Silverstripe\Search\Client\Runtime\Client\Client
     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
     * @throws \Silverstripe\Search\Client\Exception\SynonymRulePostNotFoundException
     * @throws \Silverstripe\Search\Client\Exception\SynonymRulePostUnprocessableEntityException
+    * @throws \Silverstripe\Search\Client\Exception\UnexpectedStatusCodeException
     *
-    * @return null|\Silverstripe\Search\Client\Model\SynonymRule|\Psr\Http\Message\ResponseInterface
+    * @return \Silverstripe\Search\Client\Model\SynonymRule|\Psr\Http\Message\ResponseInterface
     */
     public function synonymRulePost(string $engineName, \Silverstripe\Search\Client\Model\SynonymRuleRequest $requestBody, string $fetch = self::FETCH_OBJECT)
     {
@@ -435,8 +502,9 @@ class Client extends \Silverstripe\Search\Client\Runtime\Client\Client
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      * @throws \Silverstripe\Search\Client\Exception\SynonymRuleDeleteNotFoundException
      * @throws \Silverstripe\Search\Client\Exception\SynonymRuleDeleteUnprocessableEntityException
+     * @throws \Silverstripe\Search\Client\Exception\UnexpectedStatusCodeException
      *
-     * @return null|\Silverstripe\Search\Client\Model\ResponseSuccess|\Psr\Http\Message\ResponseInterface
+     * @return \Silverstripe\Search\Client\Model\ResponseSuccess|\Psr\Http\Message\ResponseInterface
      */
     public function synonymRuleDelete(string $ruleId, string $engineName, string $fetch = self::FETCH_OBJECT)
     {
@@ -450,8 +518,9 @@ class Client extends \Silverstripe\Search\Client\Runtime\Client\Client
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      * @throws \Silverstripe\Search\Client\Exception\SynonymRuleGetNotFoundException
      * @throws \Silverstripe\Search\Client\Exception\SynonymRuleGetUnprocessableEntityException
+     * @throws \Silverstripe\Search\Client\Exception\UnexpectedStatusCodeException
      *
-     * @return null|\Silverstripe\Search\Client\Model\SynonymRule|\Psr\Http\Message\ResponseInterface
+     * @return \Silverstripe\Search\Client\Model\SynonymRule|\Psr\Http\Message\ResponseInterface
      */
     public function synonymRuleGet(string $ruleId, string $engineName, string $fetch = self::FETCH_OBJECT)
     {
@@ -478,8 +547,9 @@ class Client extends \Silverstripe\Search\Client\Runtime\Client\Client
     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
     * @throws \Silverstripe\Search\Client\Exception\SynonymRulePutNotFoundException
     * @throws \Silverstripe\Search\Client\Exception\SynonymRulePutUnprocessableEntityException
+    * @throws \Silverstripe\Search\Client\Exception\UnexpectedStatusCodeException
     *
-    * @return null|\Silverstripe\Search\Client\Model\SynonymRule|\Psr\Http\Message\ResponseInterface
+    * @return \Silverstripe\Search\Client\Model\SynonymRule|\Psr\Http\Message\ResponseInterface
     */
     public function synonymRulePut(string $ruleId, string $engineName, \Silverstripe\Search\Client\Model\SynonymRuleRequest $requestBody, string $fetch = self::FETCH_OBJECT)
     {

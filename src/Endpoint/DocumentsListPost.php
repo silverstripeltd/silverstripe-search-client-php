@@ -22,9 +22,9 @@ class DocumentsListPost extends \Silverstripe\Search\Client\Runtime\Client\BaseE
     * Defaults to 1.
     *
     * @param string $engineName 
-    * @param \Silverstripe\Search\Client\Model\DocumentListRequest $requestBody 
+    * @param null|mixed $requestBody 
     */
-    public function __construct(string $engineName, \Silverstripe\Search\Client\Model\DocumentListRequest $requestBody)
+    public function __construct(string $engineName, $requestBody = null)
     {
         $this->engine_name = $engineName;
         $this->body = $requestBody;
@@ -40,8 +40,8 @@ class DocumentsListPost extends \Silverstripe\Search\Client\Runtime\Client\BaseE
     }
     public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
     {
-        if ($this->body instanceof \Silverstripe\Search\Client\Model\DocumentListRequest) {
-            return [['Content-Type' => ['application/json']], $serializer->serialize($this->body, 'json')];
+        if (isset($this->body)) {
+            return [['Content-Type' => ['application/json']], json_encode($this->body)];
         }
         return [[], null];
     }
@@ -54,8 +54,9 @@ class DocumentsListPost extends \Silverstripe\Search\Client\Runtime\Client\BaseE
      *
      * @throws \Silverstripe\Search\Client\Exception\DocumentsListPostNotFoundException
      * @throws \Silverstripe\Search\Client\Exception\DocumentsListPostUnprocessableEntityException
+     * @throws \Silverstripe\Search\Client\Exception\UnexpectedStatusCodeException
      *
-     * @return null|\Silverstripe\Search\Client\Model\DocumentListResponse
+     * @return \Silverstripe\Search\Client\Model\DocumentListResponse
      */
     protected function transformResponseBody(\Psr\Http\Message\ResponseInterface $response, \Symfony\Component\Serializer\SerializerInterface $serializer, ?string $contentType = null)
     {
@@ -70,6 +71,7 @@ class DocumentsListPost extends \Silverstripe\Search\Client\Runtime\Client\BaseE
         if (is_null($contentType) === false && (422 === $status && mb_strpos($contentType, 'application/json') !== false)) {
             throw new \Silverstripe\Search\Client\Exception\DocumentsListPostUnprocessableEntityException($serializer->deserialize($body, 'Silverstripe\Search\Client\Model\HTTPValidationError', 'json'), $response);
         }
+        throw new \Silverstripe\Search\Client\Exception\UnexpectedStatusCodeException($status, $body);
     }
     public function getAuthenticationScopes(): array
     {

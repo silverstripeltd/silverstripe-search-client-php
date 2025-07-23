@@ -34,12 +34,6 @@ class CoordinateNormalizer implements DenormalizerInterface, NormalizerInterface
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
         $object = new \Silverstripe\Search\Client\Model\Coordinate();
-        if (\array_key_exists('latitude', $data) && \is_int($data['latitude'])) {
-            $data['latitude'] = (double) $data['latitude'];
-        }
-        if (\array_key_exists('longitude', $data) && \is_int($data['longitude'])) {
-            $data['longitude'] = (double) $data['longitude'];
-        }
         if (null === $data || false === \is_array($data)) {
             return $object;
         }

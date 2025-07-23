@@ -55,8 +55,9 @@ class SpellingSuggestionPost extends \Silverstripe\Search\Client\Runtime\Client\
      *
      * @throws \Silverstripe\Search\Client\Exception\SpellingSuggestionPostNotFoundException
      * @throws \Silverstripe\Search\Client\Exception\SpellingSuggestionPostUnprocessableEntityException
+     * @throws \Silverstripe\Search\Client\Exception\UnexpectedStatusCodeException
      *
-     * @return null|\Silverstripe\Search\Client\Model\SpellingSuggestionResponse
+     * @return \Silverstripe\Search\Client\Model\SpellingSuggestionResponse
      */
     protected function transformResponseBody(\Psr\Http\Message\ResponseInterface $response, \Symfony\Component\Serializer\SerializerInterface $serializer, ?string $contentType = null)
     {
@@ -71,6 +72,7 @@ class SpellingSuggestionPost extends \Silverstripe\Search\Client\Runtime\Client\
         if (is_null($contentType) === false && (422 === $status && mb_strpos($contentType, 'application/json') !== false)) {
             throw new \Silverstripe\Search\Client\Exception\SpellingSuggestionPostUnprocessableEntityException($serializer->deserialize($body, 'Silverstripe\Search\Client\Model\HTTPValidationError', 'json'), $response);
         }
+        throw new \Silverstripe\Search\Client\Exception\UnexpectedStatusCodeException($status, $body);
     }
     public function getAuthenticationScopes(): array
     {

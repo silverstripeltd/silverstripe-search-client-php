@@ -11,7 +11,7 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-class FilterObjectLevel1Normalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
+class SettingsResponseNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
 {
     use DenormalizerAwareTrait;
     use NormalizerAwareTrait;
@@ -19,11 +19,11 @@ class FilterObjectLevel1Normalizer implements DenormalizerInterface, NormalizerI
     use ValidatorTrait;
     public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return $type === \Silverstripe\Search\Client\Model\FilterObjectLevel1::class;
+        return $type === \Silverstripe\Search\Client\Model\SettingsResponse::class;
     }
     public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return is_object($data) && get_class($data) === \Silverstripe\Search\Client\Model\FilterObjectLevel1::class;
+        return is_object($data) && get_class($data) === \Silverstripe\Search\Client\Model\SettingsResponse::class;
     }
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
@@ -33,21 +33,13 @@ class FilterObjectLevel1Normalizer implements DenormalizerInterface, NormalizerI
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Silverstripe\Search\Client\Model\FilterObjectLevel1();
+        $object = new \Silverstripe\Search\Client\Model\SettingsResponse();
         if (null === $data || false === \is_array($data)) {
             return $object;
         }
-        if (\array_key_exists('all', $data)) {
-            $object->setAll($data['all']);
-            unset($data['all']);
-        }
-        if (\array_key_exists('any', $data)) {
-            $object->setAny($data['any']);
-            unset($data['any']);
-        }
-        if (\array_key_exists('none', $data)) {
-            $object->setNone($data['none']);
-            unset($data['none']);
+        if (\array_key_exists('precision', $data)) {
+            $object->setPrecision($data['precision']);
+            unset($data['precision']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -59,15 +51,7 @@ class FilterObjectLevel1Normalizer implements DenormalizerInterface, NormalizerI
     public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         $dataArray = [];
-        if ($data->isInitialized('all') && null !== $data->getAll()) {
-            $dataArray['all'] = $data->getAll();
-        }
-        if ($data->isInitialized('any') && null !== $data->getAny()) {
-            $dataArray['any'] = $data->getAny();
-        }
-        if ($data->isInitialized('none') && null !== $data->getNone()) {
-            $dataArray['none'] = $data->getNone();
-        }
+        $dataArray['precision'] = $data->getPrecision();
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
@@ -77,6 +61,6 @@ class FilterObjectLevel1Normalizer implements DenormalizerInterface, NormalizerI
     }
     public function getSupportedTypes(?string $format = null): array
     {
-        return [\Silverstripe\Search\Client\Model\FilterObjectLevel1::class => false];
+        return [\Silverstripe\Search\Client\Model\SettingsResponse::class => false];
     }
 }

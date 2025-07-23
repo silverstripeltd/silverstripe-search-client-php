@@ -2,7 +2,7 @@
 
 namespace Silverstripe\Search\Client\Model;
 
-class Coordinate extends \ArrayObject
+class Schema extends \ArrayObject
 {
     /**
      * @var array
@@ -17,33 +17,33 @@ class Coordinate extends \ArrayObject
      *
      * @var mixed
      */
-    protected $latitude;
+    protected $attachment;
     /**
      * 
      *
      * @var mixed
      */
-    protected $longitude;
+    protected $body;
     /**
      * 
      *
      * @return mixed
      */
-    public function getLatitude()
+    public function getAttachment()
     {
-        return $this->latitude;
+        return $this->attachment;
     }
     /**
      * 
      *
-     * @param mixed $latitude
+     * @param mixed $attachment
      *
      * @return self
      */
-    public function setLatitude($latitude): self
+    public function setAttachment($attachment): self
     {
-        $this->initialized['latitude'] = true;
-        $this->latitude = $latitude;
+        $this->initialized['attachment'] = true;
+        $this->attachment = $attachment;
         return $this;
     }
     /**
@@ -51,21 +51,21 @@ class Coordinate extends \ArrayObject
      *
      * @return mixed
      */
-    public function getLongitude()
+    public function getBody()
     {
-        return $this->longitude;
+        return $this->body;
     }
     /**
      * 
      *
-     * @param mixed $longitude
+     * @param mixed $body
      *
      * @return self
      */
-    public function setLongitude($longitude): self
+    public function setBody($body): self
     {
-        $this->initialized['longitude'] = true;
-        $this->longitude = $longitude;
+        $this->initialized['body'] = true;
+        $this->body = $body;
         return $this;
     }
 }

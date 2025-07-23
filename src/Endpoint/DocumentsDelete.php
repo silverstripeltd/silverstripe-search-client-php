@@ -27,7 +27,7 @@ class DocumentsDelete extends \Silverstripe\Search\Client\Runtime\Client\BaseEnd
     }
     public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
     {
-        if (is_array($this->body)) {
+        if (is_array($this->body) and isset($this->body[0]) and is_array($this->body[0])) {
             return [['Content-Type' => ['application/json']], json_encode($this->body)];
         }
         return [[], null];
@@ -41,8 +41,9 @@ class DocumentsDelete extends \Silverstripe\Search\Client\Runtime\Client\BaseEnd
      *
      * @throws \Silverstripe\Search\Client\Exception\DocumentsDeleteNotFoundException
      * @throws \Silverstripe\Search\Client\Exception\DocumentsDeleteUnprocessableEntityException
+     * @throws \Silverstripe\Search\Client\Exception\UnexpectedStatusCodeException
      *
-     * @return null|\Silverstripe\Search\Client\Model\DocumentsDeleteResponse[]
+     * @return \Silverstripe\Search\Client\Model\DocumentsDeleteResponse[]
      */
     protected function transformResponseBody(\Psr\Http\Message\ResponseInterface $response, \Symfony\Component\Serializer\SerializerInterface $serializer, ?string $contentType = null)
     {
@@ -57,6 +58,7 @@ class DocumentsDelete extends \Silverstripe\Search\Client\Runtime\Client\BaseEnd
         if (is_null($contentType) === false && (422 === $status && mb_strpos($contentType, 'application/json') !== false)) {
             throw new \Silverstripe\Search\Client\Exception\DocumentsDeleteUnprocessableEntityException($serializer->deserialize($body, 'Silverstripe\Search\Client\Model\HTTPValidationError', 'json'), $response);
         }
+        throw new \Silverstripe\Search\Client\Exception\UnexpectedStatusCodeException($status, $body);
     }
     public function getAuthenticationScopes(): array
     {

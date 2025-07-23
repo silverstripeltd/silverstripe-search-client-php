@@ -56,8 +56,9 @@ class SynonymRulePut extends \Silverstripe\Search\Client\Runtime\Client\BaseEndp
      *
      * @throws \Silverstripe\Search\Client\Exception\SynonymRulePutNotFoundException
      * @throws \Silverstripe\Search\Client\Exception\SynonymRulePutUnprocessableEntityException
+     * @throws \Silverstripe\Search\Client\Exception\UnexpectedStatusCodeException
      *
-     * @return null|\Silverstripe\Search\Client\Model\SynonymRule
+     * @return \Silverstripe\Search\Client\Model\SynonymRule
      */
     protected function transformResponseBody(\Psr\Http\Message\ResponseInterface $response, \Symfony\Component\Serializer\SerializerInterface $serializer, ?string $contentType = null)
     {
@@ -72,6 +73,7 @@ class SynonymRulePut extends \Silverstripe\Search\Client\Runtime\Client\BaseEndp
         if (is_null($contentType) === false && (422 === $status && mb_strpos($contentType, 'application/json') !== false)) {
             throw new \Silverstripe\Search\Client\Exception\SynonymRulePutUnprocessableEntityException($serializer->deserialize($body, 'Silverstripe\Search\Client\Model\HTTPValidationError', 'json'), $response);
         }
+        throw new \Silverstripe\Search\Client\Exception\UnexpectedStatusCodeException($status, $body);
     }
     public function getAuthenticationScopes(): array
     {

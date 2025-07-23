@@ -32,7 +32,7 @@ class DocumentsGet extends \Silverstripe\Search\Client\Runtime\Client\BaseEndpoi
     }
     public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
     {
-        if (is_array($this->body)) {
+        if (is_array($this->body) and isset($this->body[0]) and is_array($this->body[0])) {
             return [['Content-Type' => ['application/json']], json_encode($this->body)];
         }
         return [[], null];
@@ -46,6 +46,7 @@ class DocumentsGet extends \Silverstripe\Search\Client\Runtime\Client\BaseEndpoi
      *
      * @throws \Silverstripe\Search\Client\Exception\DocumentsGetNotFoundException
      * @throws \Silverstripe\Search\Client\Exception\DocumentsGetUnprocessableEntityException
+     * @throws \Silverstripe\Search\Client\Exception\UnexpectedStatusCodeException
      *
      * @return null
      */
@@ -62,6 +63,7 @@ class DocumentsGet extends \Silverstripe\Search\Client\Runtime\Client\BaseEndpoi
         if (is_null($contentType) === false && (422 === $status && mb_strpos($contentType, 'application/json') !== false)) {
             throw new \Silverstripe\Search\Client\Exception\DocumentsGetUnprocessableEntityException($serializer->deserialize($body, 'Silverstripe\Search\Client\Model\HTTPValidationError', 'json'), $response);
         }
+        throw new \Silverstripe\Search\Client\Exception\UnexpectedStatusCodeException($status, $body);
     }
     public function getAuthenticationScopes(): array
     {

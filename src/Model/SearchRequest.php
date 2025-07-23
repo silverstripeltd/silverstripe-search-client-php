@@ -2,7 +2,7 @@
 
 namespace Silverstripe\Search\Client\Model;
 
-class SearchRequest
+class SearchRequest extends \ArrayObject
 {
     /**
      * @var array

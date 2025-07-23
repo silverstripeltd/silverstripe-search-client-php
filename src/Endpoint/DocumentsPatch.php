@@ -31,7 +31,7 @@ class DocumentsPatch extends \Silverstripe\Search\Client\Runtime\Client\BaseEndp
     }
     public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
     {
-        if (is_array($this->body)) {
+        if (is_array($this->body) and isset($this->body[0]) and is_array($this->body[0])) {
             return [['Content-Type' => ['application/json']], json_encode($this->body)];
         }
         return [[], null];
@@ -45,8 +45,9 @@ class DocumentsPatch extends \Silverstripe\Search\Client\Runtime\Client\BaseEndp
      *
      * @throws \Silverstripe\Search\Client\Exception\DocumentsPatchNotFoundException
      * @throws \Silverstripe\Search\Client\Exception\DocumentsPatchUnprocessableEntityException
+     * @throws \Silverstripe\Search\Client\Exception\UnexpectedStatusCodeException
      *
-     * @return null|\Silverstripe\Search\Client\Model\DocumentPostPatchResponse[]
+     * @return \Silverstripe\Search\Client\Model\DocumentPostPatchResponse[]
      */
     protected function transformResponseBody(\Psr\Http\Message\ResponseInterface $response, \Symfony\Component\Serializer\SerializerInterface $serializer, ?string $contentType = null)
     {
@@ -61,6 +62,7 @@ class DocumentsPatch extends \Silverstripe\Search\Client\Runtime\Client\BaseEndp
         if (is_null($contentType) === false && (422 === $status && mb_strpos($contentType, 'application/json') !== false)) {
             throw new \Silverstripe\Search\Client\Exception\DocumentsPatchUnprocessableEntityException($serializer->deserialize($body, 'Silverstripe\Search\Client\Model\HTTPValidationError', 'json'), $response);
         }
+        throw new \Silverstripe\Search\Client\Exception\UnexpectedStatusCodeException($status, $body);
     }
     public function getAuthenticationScopes(): array
     {

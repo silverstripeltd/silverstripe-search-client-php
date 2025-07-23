@@ -37,9 +37,9 @@ class SchemaPost extends \Silverstripe\Search\Client\Runtime\Client\BaseEndpoint
        * `_attachment`
     *
     * @param string $engineName 
-    * @param \stdClass $requestBody 
+    * @param \Silverstripe\Search\Client\Model\Schema $requestBody 
     */
-    public function __construct(string $engineName, \stdClass $requestBody)
+    public function __construct(string $engineName, \Silverstripe\Search\Client\Model\Schema $requestBody)
     {
         $this->engine_name = $engineName;
         $this->body = $requestBody;
@@ -55,8 +55,8 @@ class SchemaPost extends \Silverstripe\Search\Client\Runtime\Client\BaseEndpoint
     }
     public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
     {
-        if ($this->body instanceof \stdClass) {
-            return [['Content-Type' => ['application/json']], json_encode($this->body)];
+        if ($this->body instanceof \Silverstripe\Search\Client\Model\Schema) {
+            return [['Content-Type' => ['application/json']], $serializer->serialize($this->body, 'json')];
         }
         return [[], null];
     }
@@ -69,8 +69,9 @@ class SchemaPost extends \Silverstripe\Search\Client\Runtime\Client\BaseEndpoint
      *
      * @throws \Silverstripe\Search\Client\Exception\SchemaPostNotFoundException
      * @throws \Silverstripe\Search\Client\Exception\SchemaPostUnprocessableEntityException
+     * @throws \Silverstripe\Search\Client\Exception\UnexpectedStatusCodeException
      *
-     * @return null|\Silverstripe\Search\Client\Model\SchemaPostResponse
+     * @return \Silverstripe\Search\Client\Model\SchemaPostResponse
      */
     protected function transformResponseBody(\Psr\Http\Message\ResponseInterface $response, \Symfony\Component\Serializer\SerializerInterface $serializer, ?string $contentType = null)
     {
@@ -85,6 +86,7 @@ class SchemaPost extends \Silverstripe\Search\Client\Runtime\Client\BaseEndpoint
         if (is_null($contentType) === false && (422 === $status && mb_strpos($contentType, 'application/json') !== false)) {
             throw new \Silverstripe\Search\Client\Exception\SchemaPostUnprocessableEntityException($serializer->deserialize($body, 'Silverstripe\Search\Client\Model\HTTPValidationError', 'json'), $response);
         }
+        throw new \Silverstripe\Search\Client\Exception\UnexpectedStatusCodeException($status, $body);
     }
     public function getAuthenticationScopes(): array
     {

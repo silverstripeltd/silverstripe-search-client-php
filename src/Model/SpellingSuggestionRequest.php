@@ -25,7 +25,7 @@ class SpellingSuggestionRequest extends \ArrayObject
      */
     protected $size = 1;
     /**
-     * Specify the document fields to look for suggestions within. At least 1 field is required.
+     * 
      *
      * @var list<string>
      */
@@ -81,7 +81,7 @@ class SpellingSuggestionRequest extends \ArrayObject
         return $this;
     }
     /**
-     * Specify the document fields to look for suggestions within. At least 1 field is required.
+     * 
      *
      * @return list<string>
      */
@@ -90,7 +90,7 @@ class SpellingSuggestionRequest extends \ArrayObject
         return $this->fields;
     }
     /**
-     * Specify the document fields to look for suggestions within. At least 1 field is required.
+     * 
      *
      * @param list<string> $fields
      *

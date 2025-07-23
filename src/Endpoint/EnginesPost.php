@@ -25,8 +25,9 @@ class EnginesPost extends \Silverstripe\Search\Client\Runtime\Client\BaseEndpoin
      * {@inheritdoc}
      *
      * @throws \Silverstripe\Search\Client\Exception\EnginesPostNotFoundException
+     * @throws \Silverstripe\Search\Client\Exception\UnexpectedStatusCodeException
      *
-     * @return null|\Silverstripe\Search\Client\Model\EnginesResponse
+     * @return \Silverstripe\Search\Client\Model\EnginesResponse
      */
     protected function transformResponseBody(\Psr\Http\Message\ResponseInterface $response, \Symfony\Component\Serializer\SerializerInterface $serializer, ?string $contentType = null)
     {
@@ -38,6 +39,7 @@ class EnginesPost extends \Silverstripe\Search\Client\Runtime\Client\BaseEndpoin
         if (404 === $status) {
             throw new \Silverstripe\Search\Client\Exception\EnginesPostNotFoundException($response);
         }
+        throw new \Silverstripe\Search\Client\Exception\UnexpectedStatusCodeException($status, $body);
     }
     public function getAuthenticationScopes(): array
     {

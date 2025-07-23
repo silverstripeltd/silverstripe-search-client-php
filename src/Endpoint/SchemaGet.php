@@ -36,15 +36,16 @@ class SchemaGet extends \Silverstripe\Search\Client\Runtime\Client\BaseEndpoint 
      *
      * @throws \Silverstripe\Search\Client\Exception\SchemaGetNotFoundException
      * @throws \Silverstripe\Search\Client\Exception\SchemaGetUnprocessableEntityException
+     * @throws \Silverstripe\Search\Client\Exception\UnexpectedStatusCodeException
      *
-     * @return null
+     * @return \Silverstripe\Search\Client\Model\Schema
      */
     protected function transformResponseBody(\Psr\Http\Message\ResponseInterface $response, \Symfony\Component\Serializer\SerializerInterface $serializer, ?string $contentType = null)
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
         if (is_null($contentType) === false && (200 === $status && mb_strpos($contentType, 'application/json') !== false)) {
-            return json_decode($body);
+            return $serializer->deserialize($body, 'Silverstripe\Search\Client\Model\Schema', 'json');
         }
         if (404 === $status) {
             throw new \Silverstripe\Search\Client\Exception\SchemaGetNotFoundException($response);
@@ -52,6 +53,7 @@ class SchemaGet extends \Silverstripe\Search\Client\Runtime\Client\BaseEndpoint 
         if (is_null($contentType) === false && (422 === $status && mb_strpos($contentType, 'application/json') !== false)) {
             throw new \Silverstripe\Search\Client\Exception\SchemaGetUnprocessableEntityException($serializer->deserialize($body, 'Silverstripe\Search\Client\Model\HTTPValidationError', 'json'), $response);
         }
+        throw new \Silverstripe\Search\Client\Exception\UnexpectedStatusCodeException($status, $body);
     }
     public function getAuthenticationScopes(): array
     {
