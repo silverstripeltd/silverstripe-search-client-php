@@ -31,7 +31,7 @@ class DocumentsPatch extends \Silverstripe\Search\Client\Runtime\Client\BaseEndp
     }
     public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
     {
-        if (is_array($this->body) and isset($this->body[0]) and is_array($this->body[0])) {
+        if (is_array($this->body)) {
             return [['Content-Type' => ['application/json']], json_encode($this->body)];
         }
         return [[], null];
