@@ -18,7 +18,7 @@
         "jane-php/open-api-runtime": "^7.9"
     },
     "require-dev": {
-        "jane-php/open-api-3": "dev-bugfix/array-body-content as 7.9.0",
+        "jane-php/open-api-3": "dev-fixes as 7.9.0",
         "jane-php/json-schema": "dev-bugfix/array-objects as 7.9.0",
         "friendsofphp/php-cs-fixer": "^3.75"
     },
