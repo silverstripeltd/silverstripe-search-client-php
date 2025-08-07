@@ -13,14 +13,10 @@ class ResponseSuccess extends \ArrayObject
         return array_key_exists($property, $this->initialized);
     }
     /**
-     * 
-     *
      * @var bool
      */
     protected $success;
     /**
-     * 
-     *
      * @return bool
      */
     public function getSuccess(): bool
@@ -28,8 +24,6 @@ class ResponseSuccess extends \ArrayObject
         return $this->success;
     }
     /**
-     * 
-     *
      * @param bool $success
      *
      * @return self

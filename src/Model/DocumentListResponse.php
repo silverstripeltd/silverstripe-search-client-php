@@ -13,20 +13,14 @@ class DocumentListResponse extends \ArrayObject
         return array_key_exists($property, $this->initialized);
     }
     /**
-     * 
-     *
      * @var DocumentListResponseMeta
      */
     protected $meta;
     /**
-     * 
-     *
      * @var list<array<string, mixed>>
      */
     protected $results;
     /**
-     * 
-     *
      * @return DocumentListResponseMeta
      */
     public function getMeta(): DocumentListResponseMeta
@@ -34,8 +28,6 @@ class DocumentListResponse extends \ArrayObject
         return $this->meta;
     }
     /**
-     * 
-     *
      * @param DocumentListResponseMeta $meta
      *
      * @return self
@@ -47,8 +39,6 @@ class DocumentListResponse extends \ArrayObject
         return $this;
     }
     /**
-     * 
-     *
      * @return list<array<string, mixed>>
      */
     public function getResults(): array
@@ -56,8 +46,6 @@ class DocumentListResponse extends \ArrayObject
         return $this->results;
     }
     /**
-     * 
-     *
      * @param list<array<string, mixed>> $results
      *
      * @return self

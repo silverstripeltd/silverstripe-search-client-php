@@ -25,8 +25,6 @@ class SpellingSuggestionRequest extends \ArrayObject
      */
     protected $size = 1;
     /**
-     * 
-     *
      * @var list<string>
      */
     protected $fields;
@@ -81,8 +79,6 @@ class SpellingSuggestionRequest extends \ArrayObject
         return $this;
     }
     /**
-     * 
-     *
      * @return list<string>
      */
     public function getFields(): array
@@ -90,8 +86,6 @@ class SpellingSuggestionRequest extends \ArrayObject
         return $this->fields;
     }
     /**
-     * 
-     *
      * @param list<string> $fields
      *
      * @return self

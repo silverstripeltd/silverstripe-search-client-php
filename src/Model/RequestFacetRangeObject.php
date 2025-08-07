@@ -13,26 +13,18 @@ class RequestFacetRangeObject extends \ArrayObject
         return array_key_exists($property, $this->initialized);
     }
     /**
-     * 
-     *
      * @var mixed
      */
     protected $from;
     /**
-     * 
-     *
      * @var mixed
      */
     protected $to;
     /**
-     * 
-     *
      * @var mixed
      */
     protected $name;
     /**
-     * 
-     *
      * @return mixed
      */
     public function getFrom()
@@ -40,8 +32,6 @@ class RequestFacetRangeObject extends \ArrayObject
         return $this->from;
     }
     /**
-     * 
-     *
      * @param mixed $from
      *
      * @return self
@@ -53,8 +43,6 @@ class RequestFacetRangeObject extends \ArrayObject
         return $this;
     }
     /**
-     * 
-     *
      * @return mixed
      */
     public function getTo()
@@ -62,8 +50,6 @@ class RequestFacetRangeObject extends \ArrayObject
         return $this->to;
     }
     /**
-     * 
-     *
      * @param mixed $to
      *
      * @return self
@@ -75,8 +61,6 @@ class RequestFacetRangeObject extends \ArrayObject
         return $this;
     }
     /**
-     * 
-     *
      * @return mixed
      */
     public function getName()
@@ -84,8 +68,6 @@ class RequestFacetRangeObject extends \ArrayObject
         return $this->name;
     }
     /**
-     * 
-     *
      * @param mixed $name
      *
      * @return self

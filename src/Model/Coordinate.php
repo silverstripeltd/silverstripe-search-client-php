@@ -13,20 +13,14 @@ class Coordinate extends \ArrayObject
         return array_key_exists($property, $this->initialized);
     }
     /**
-     * 
-     *
      * @var mixed
      */
     protected $latitude;
     /**
-     * 
-     *
      * @var mixed
      */
     protected $longitude;
     /**
-     * 
-     *
      * @return mixed
      */
     public function getLatitude()
@@ -34,8 +28,6 @@ class Coordinate extends \ArrayObject
         return $this->latitude;
     }
     /**
-     * 
-     *
      * @param mixed $latitude
      *
      * @return self
@@ -47,8 +39,6 @@ class Coordinate extends \ArrayObject
         return $this;
     }
     /**
-     * 
-     *
      * @return mixed
      */
     public function getLongitude()
@@ -56,8 +46,6 @@ class Coordinate extends \ArrayObject
         return $this->longitude;
     }
     /**
-     * 
-     *
      * @param mixed $longitude
      *
      * @return self

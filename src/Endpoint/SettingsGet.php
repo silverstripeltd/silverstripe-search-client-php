@@ -6,9 +6,7 @@ class SettingsGet extends \Silverstripe\Search\Client\Runtime\Client\BaseEndpoin
 {
     protected $engine_name;
     /**
-     * 
-     *
-     * @param string $engineName 
+     * @param string $engineName
      */
     public function __construct(string $engineName)
     {
@@ -44,13 +42,13 @@ class SettingsGet extends \Silverstripe\Search\Client\Runtime\Client\BaseEndpoin
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
-        if (is_null($contentType) === false && (200 === $status && mb_strpos($contentType, 'application/json') !== false)) {
+        if (is_null($contentType) === false && (200 === $status && mb_strpos(strtolower($contentType), 'application/json') !== false)) {
             return $serializer->deserialize($body, 'Silverstripe\Search\Client\Model\SettingsResponse', 'json');
         }
         if (404 === $status) {
             throw new \Silverstripe\Search\Client\Exception\SettingsGetNotFoundException($response);
         }
-        if (is_null($contentType) === false && (422 === $status && mb_strpos($contentType, 'application/json') !== false)) {
+        if (is_null($contentType) === false && (422 === $status && mb_strpos(strtolower($contentType), 'application/json') !== false)) {
             throw new \Silverstripe\Search\Client\Exception\SettingsGetUnprocessableEntityException($serializer->deserialize($body, 'Silverstripe\Search\Client\Model\HTTPValidationError', 'json'), $response);
         }
         throw new \Silverstripe\Search\Client\Exception\UnexpectedStatusCodeException($status, $body);

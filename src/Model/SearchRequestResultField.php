@@ -13,8 +13,6 @@ class SearchRequestResultField extends \ArrayObject
         return array_key_exists($property, $this->initialized);
     }
     /**
-     * 
-     *
      * @var SearchRequestResultFieldRaw|null
      */
     protected $raw;
@@ -25,8 +23,6 @@ class SearchRequestResultField extends \ArrayObject
      */
     protected $snippet;
     /**
-     * 
-     *
      * @return SearchRequestResultFieldRaw|null
      */
     public function getRaw(): SearchRequestResultFieldRaw
@@ -34,8 +30,6 @@ class SearchRequestResultField extends \ArrayObject
         return $this->raw;
     }
     /**
-     * 
-     *
      * @param SearchRequestResultFieldRaw|null $raw
      *
      * @return self

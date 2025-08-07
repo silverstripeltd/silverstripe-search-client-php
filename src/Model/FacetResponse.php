@@ -13,26 +13,18 @@ class FacetResponse extends \ArrayObject
         return array_key_exists($property, $this->initialized);
     }
     /**
-     * 
-     *
      * @var string
      */
     protected $type;
     /**
-     * 
-     *
      * @var mixed
      */
     protected $name;
     /**
-     * 
-     *
      * @var list<mixed>
      */
     protected $data;
     /**
-     * 
-     *
      * @return string
      */
     public function getType(): string
@@ -40,8 +32,6 @@ class FacetResponse extends \ArrayObject
         return $this->type;
     }
     /**
-     * 
-     *
      * @param string $type
      *
      * @return self
@@ -53,8 +43,6 @@ class FacetResponse extends \ArrayObject
         return $this;
     }
     /**
-     * 
-     *
      * @return mixed
      */
     public function getName()
@@ -62,8 +50,6 @@ class FacetResponse extends \ArrayObject
         return $this->name;
     }
     /**
-     * 
-     *
      * @param mixed $name
      *
      * @return self
@@ -75,8 +61,6 @@ class FacetResponse extends \ArrayObject
         return $this;
     }
     /**
-     * 
-     *
      * @return list<mixed>
      */
     public function getData(): array
@@ -84,8 +68,6 @@ class FacetResponse extends \ArrayObject
         return $this->data;
     }
     /**
-     * 
-     *
      * @param list<mixed> $data
      *
      * @return self

@@ -13,11 +13,11 @@ class SearchRequestResultFieldSnippet extends \ArrayObject
         return array_key_exists($property, $this->initialized);
     }
     /**
-    * Character length of the snippet returned (to the nearest word). Must be at least 20; defaults to 
-           100.
-    *
-    * @var mixed
-    */
+     * Character length of the snippet returned (to the nearest word). Must be at least 20; defaults to
+     *         100.
+     *
+     * @var mixed
+     */
     protected $size = 100;
     /**
      * If true, return the raw text field as the snippet (if no snippet is found). Defaults to true.
@@ -26,11 +26,11 @@ class SearchRequestResultFieldSnippet extends \ArrayObject
      */
     protected $fallback = true;
     /**
-    * Character length of the snippet returned (to the nearest word). Must be at least 20; defaults to 
-           100.
-    *
-    * @return mixed
-    */
+     * Character length of the snippet returned (to the nearest word). Must be at least 20; defaults to
+     *         100.
+     *
+     * @return mixed
+     */
     public function getSize()
     {
         return $this->size;

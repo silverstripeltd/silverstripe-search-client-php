@@ -13,14 +13,10 @@ class HTTPValidationError extends \ArrayObject
         return array_key_exists($property, $this->initialized);
     }
     /**
-     * 
-     *
      * @var list<ValidationError>
      */
     protected $detail;
     /**
-     * 
-     *
      * @return list<ValidationError>
      */
     public function getDetail(): array
@@ -28,8 +24,6 @@ class HTTPValidationError extends \ArrayObject
         return $this->detail;
     }
     /**
-     * 
-     *
      * @param list<ValidationError> $detail
      *
      * @return self

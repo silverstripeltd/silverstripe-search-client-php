@@ -13,14 +13,10 @@ class QuerySuggestionResponse extends \ArrayObject
         return array_key_exists($property, $this->initialized);
     }
     /**
-     * 
-     *
      * @var list<QuerySuggestionResponseValue>
      */
     protected $results;
     /**
-     * 
-     *
      * @return list<QuerySuggestionResponseValue>
      */
     public function getResults(): array
@@ -28,8 +24,6 @@ class QuerySuggestionResponse extends \ArrayObject
         return $this->results;
     }
     /**
-     * 
-     *
      * @param list<QuerySuggestionResponseValue> $results
      *
      * @return self

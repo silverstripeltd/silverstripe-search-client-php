@@ -6,23 +6,22 @@ class SynonymRulePost extends \Silverstripe\Search\Client\Runtime\Client\BaseEnd
 {
     protected $engine_name;
     /**
-    * The POST method will automatically generate an ID for your synonym.
-    
-    Our synonym format supports two styles of definition:
-    
-    * Equivalent synonyms: Groups of words, where any word in the group is a valid replacement. Example:
-       * "ipod, i-pod, i pod"
-       * "computer, pc, laptop"
-    * Explicit synonyms: Groups of words that are replaced by a second group of words. IE words on the left are replaced
-     (and expanded) into the words on the right. Example:
-       * "pc => personal computer"
-       * "js => javascript, es6"
-       * "sea biscuit, sea biscit => seabiscuit"
-    * A maximum of 32 words can be added to a synonym
-    *
-    * @param string $engineName 
-    * @param \Silverstripe\Search\Client\Model\SynonymRuleRequest $requestBody 
-    */
+     * The POST method will automatically generate an ID for your synonym.
+     *
+     * Our synonym format supports two styles of definition:
+     *
+     * * Equivalent synonyms: Groups of words, where any word in the group is a valid replacement. Example:
+     *     * "ipod, i-pod, i pod"
+     *     * "computer, pc, laptop"
+     * * Explicit synonyms: Groups of words that are replaced by a second group of words. IE words on the left are replaced
+     *   (and expanded) into the words on the right. Example:
+     *     * "pc => personal computer"
+     *     * "js => javascript, es6"
+     *     * "sea biscuit, sea biscit => seabiscuit"
+     * * A maximum of 32 words can be added to a synonym
+     * @param string $engineName
+     * @param \Silverstripe\Search\Client\Model\SynonymRuleRequest $requestBody
+     */
     public function __construct(string $engineName, \Silverstripe\Search\Client\Model\SynonymRuleRequest $requestBody)
     {
         $this->engine_name = $engineName;
@@ -61,13 +60,13 @@ class SynonymRulePost extends \Silverstripe\Search\Client\Runtime\Client\BaseEnd
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
-        if (is_null($contentType) === false && (200 === $status && mb_strpos($contentType, 'application/json') !== false)) {
+        if (is_null($contentType) === false && (200 === $status && mb_strpos(strtolower($contentType), 'application/json') !== false)) {
             return $serializer->deserialize($body, 'Silverstripe\Search\Client\Model\SynonymRule', 'json');
         }
         if (404 === $status) {
             throw new \Silverstripe\Search\Client\Exception\SynonymRulePostNotFoundException($response);
         }
-        if (is_null($contentType) === false && (422 === $status && mb_strpos($contentType, 'application/json') !== false)) {
+        if (is_null($contentType) === false && (422 === $status && mb_strpos(strtolower($contentType), 'application/json') !== false)) {
             throw new \Silverstripe\Search\Client\Exception\SynonymRulePostUnprocessableEntityException($serializer->deserialize($body, 'Silverstripe\Search\Client\Model\HTTPValidationError', 'json'), $response);
         }
         throw new \Silverstripe\Search\Client\Exception\UnexpectedStatusCodeException($status, $body);

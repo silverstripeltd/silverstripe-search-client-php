@@ -7,8 +7,7 @@ class SynonymRulesGet extends \Silverstripe\Search\Client\Runtime\Client\BaseEnd
     protected $engine_name;
     /**
      * Retrieve all synonyms for a particular engine.
-     *
-     * @param string $engineName 
+     * @param string $engineName
      */
     public function __construct(string $engineName)
     {
@@ -44,13 +43,13 @@ class SynonymRulesGet extends \Silverstripe\Search\Client\Runtime\Client\BaseEnd
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
-        if (is_null($contentType) === false && (200 === $status && mb_strpos($contentType, 'application/json') !== false)) {
+        if (is_null($contentType) === false && (200 === $status && mb_strpos(strtolower($contentType), 'application/json') !== false)) {
             return $serializer->deserialize($body, 'Silverstripe\Search\Client\Model\SynonymRule[]', 'json');
         }
         if (404 === $status) {
             throw new \Silverstripe\Search\Client\Exception\SynonymRulesGetNotFoundException($response);
         }
-        if (is_null($contentType) === false && (422 === $status && mb_strpos($contentType, 'application/json') !== false)) {
+        if (is_null($contentType) === false && (422 === $status && mb_strpos(strtolower($contentType), 'application/json') !== false)) {
             throw new \Silverstripe\Search\Client\Exception\SynonymRulesGetUnprocessableEntityException($serializer->deserialize($body, 'Silverstripe\Search\Client\Model\HTTPValidationError', 'json'), $response);
         }
         throw new \Silverstripe\Search\Client\Exception\UnexpectedStatusCodeException($status, $body);

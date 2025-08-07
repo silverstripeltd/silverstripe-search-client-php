@@ -13,26 +13,18 @@ class ValidationError extends \ArrayObject
         return array_key_exists($property, $this->initialized);
     }
     /**
-     * 
-     *
      * @var list<mixed>
      */
     protected $loc;
     /**
-     * 
-     *
      * @var string
      */
     protected $msg;
     /**
-     * 
-     *
      * @var string
      */
     protected $type;
     /**
-     * 
-     *
      * @return list<mixed>
      */
     public function getLoc(): array
@@ -40,8 +32,6 @@ class ValidationError extends \ArrayObject
         return $this->loc;
     }
     /**
-     * 
-     *
      * @param list<mixed> $loc
      *
      * @return self
@@ -53,8 +43,6 @@ class ValidationError extends \ArrayObject
         return $this;
     }
     /**
-     * 
-     *
      * @return string
      */
     public function getMsg(): string
@@ -62,8 +50,6 @@ class ValidationError extends \ArrayObject
         return $this->msg;
     }
     /**
-     * 
-     *
      * @param string $msg
      *
      * @return self
@@ -75,8 +61,6 @@ class ValidationError extends \ArrayObject
         return $this;
     }
     /**
-     * 
-     *
      * @return string
      */
     public function getType(): string
@@ -84,8 +68,6 @@ class ValidationError extends \ArrayObject
         return $this->type;
     }
     /**
-     * 
-     *
      * @param string $type
      *
      * @return self

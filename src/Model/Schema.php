@@ -13,20 +13,14 @@ class Schema extends \ArrayObject
         return array_key_exists($property, $this->initialized);
     }
     /**
-     * 
-     *
      * @var mixed
      */
     protected $attachment;
     /**
-     * 
-     *
      * @var mixed
      */
     protected $body;
     /**
-     * 
-     *
      * @return mixed
      */
     public function getAttachment()
@@ -34,8 +28,6 @@ class Schema extends \ArrayObject
         return $this->attachment;
     }
     /**
-     * 
-     *
      * @param mixed $attachment
      *
      * @return self
@@ -47,8 +39,6 @@ class Schema extends \ArrayObject
         return $this;
     }
     /**
-     * 
-     *
      * @return mixed
      */
     public function getBody()
@@ -56,8 +46,6 @@ class Schema extends \ArrayObject
         return $this->body;
     }
     /**
-     * 
-     *
      * @param mixed $body
      *
      * @return self

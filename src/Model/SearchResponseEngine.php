@@ -13,20 +13,14 @@ class SearchResponseEngine extends \ArrayObject
         return array_key_exists($property, $this->initialized);
     }
     /**
-     * 
-     *
      * @var mixed
      */
     protected $name;
     /**
-     * 
-     *
      * @var mixed
      */
     protected $type;
     /**
-     * 
-     *
      * @return mixed
      */
     public function getName()
@@ -34,8 +28,6 @@ class SearchResponseEngine extends \ArrayObject
         return $this->name;
     }
     /**
-     * 
-     *
      * @param mixed $name
      *
      * @return self
@@ -47,8 +39,6 @@ class SearchResponseEngine extends \ArrayObject
         return $this;
     }
     /**
-     * 
-     *
      * @return mixed
      */
     public function getType()
@@ -56,8 +46,6 @@ class SearchResponseEngine extends \ArrayObject
         return $this->type;
     }
     /**
-     * 
-     *
      * @param mixed $type
      *
      * @return self

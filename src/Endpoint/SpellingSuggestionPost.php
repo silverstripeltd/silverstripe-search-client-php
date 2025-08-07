@@ -6,25 +6,24 @@ class SpellingSuggestionPost extends \Silverstripe\Search\Client\Runtime\Client\
 {
     protected $engine_name;
     /**
-    * Provide relevant spelling suggestions for queries. Not to be confused with autocomplete.
-    
-    Only available on text fields.
-    
-    **Body:**
-    
-    `query` **(required)**
-    * A query for which to receive spelling suggestions.
-    
-    `fields` **(required)**
-    * Specify the fields within your documents that you would like spelling suggestions from. At least one field is
-     required.
-    
-    `size` (optional)
-    * Number of spelling suggestions to return. Must be between 1 and 10. Defaults to 1.
-    *
-    * @param string $engineName 
-    * @param \Silverstripe\Search\Client\Model\SpellingSuggestionRequest $requestBody 
-    */
+     * Provide relevant spelling suggestions for queries. Not to be confused with autocomplete.
+     *
+     * Only available on text fields.
+     *
+     * **Body:**
+     *
+     * `query` **(required)**
+     * * A query for which to receive spelling suggestions.
+     *
+     * `fields` **(required)**
+     * * Specify the fields within your documents that you would like spelling suggestions from. At least one field is
+     *   required.
+     *
+     * `size` (optional)
+     * * Number of spelling suggestions to return. Must be between 1 and 10. Defaults to 1.
+     * @param string $engineName
+     * @param \Silverstripe\Search\Client\Model\SpellingSuggestionRequest $requestBody
+     */
     public function __construct(string $engineName, \Silverstripe\Search\Client\Model\SpellingSuggestionRequest $requestBody)
     {
         $this->engine_name = $engineName;
@@ -63,13 +62,13 @@ class SpellingSuggestionPost extends \Silverstripe\Search\Client\Runtime\Client\
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
-        if (is_null($contentType) === false && (200 === $status && mb_strpos($contentType, 'application/json') !== false)) {
+        if (is_null($contentType) === false && (200 === $status && mb_strpos(strtolower($contentType), 'application/json') !== false)) {
             return $serializer->deserialize($body, 'Silverstripe\Search\Client\Model\SpellingSuggestionResponse', 'json');
         }
         if (404 === $status) {
             throw new \Silverstripe\Search\Client\Exception\SpellingSuggestionPostNotFoundException($response);
         }
-        if (is_null($contentType) === false && (422 === $status && mb_strpos($contentType, 'application/json') !== false)) {
+        if (is_null($contentType) === false && (422 === $status && mb_strpos(strtolower($contentType), 'application/json') !== false)) {
             throw new \Silverstripe\Search\Client\Exception\SpellingSuggestionPostUnprocessableEntityException($serializer->deserialize($body, 'Silverstripe\Search\Client\Model\HTTPValidationError', 'json'), $response);
         }
         throw new \Silverstripe\Search\Client\Exception\UnexpectedStatusCodeException($status, $body);

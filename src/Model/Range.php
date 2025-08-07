@@ -13,20 +13,14 @@ class Range extends \ArrayObject
         return array_key_exists($property, $this->initialized);
     }
     /**
-     * 
-     *
      * @var mixed
      */
     protected $from;
     /**
-     * 
-     *
      * @var mixed
      */
     protected $to;
     /**
-     * 
-     *
      * @return mixed
      */
     public function getFrom()
@@ -34,8 +28,6 @@ class Range extends \ArrayObject
         return $this->from;
     }
     /**
-     * 
-     *
      * @param mixed $from
      *
      * @return self
@@ -47,8 +39,6 @@ class Range extends \ArrayObject
         return $this;
     }
     /**
-     * 
-     *
      * @return mixed
      */
     public function getTo()
@@ -56,8 +46,6 @@ class Range extends \ArrayObject
         return $this->to;
     }
     /**
-     * 
-     *
      * @param mixed $to
      *
      * @return self

@@ -13,14 +13,10 @@ class EnginesResponse extends \ArrayObject
         return array_key_exists($property, $this->initialized);
     }
     /**
-     * 
-     *
      * @var list<Engine>
      */
     protected $results;
     /**
-     * 
-     *
      * @return list<Engine>
      */
     public function getResults(): array
@@ -28,8 +24,6 @@ class EnginesResponse extends \ArrayObject
         return $this->results;
     }
     /**
-     * 
-     *
      * @param list<Engine> $results
      *
      * @return self

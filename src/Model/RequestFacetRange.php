@@ -13,26 +13,18 @@ class RequestFacetRange extends \ArrayObject
         return array_key_exists($property, $this->initialized);
     }
     /**
-     * 
-     *
      * @var string
      */
     protected $type;
     /**
-     * 
-     *
      * @var mixed
      */
     protected $name;
     /**
-     * 
-     *
      * @var list<RequestFacetRangeObject>
      */
     protected $ranges;
     /**
-     * 
-     *
      * @return string
      */
     public function getType(): string
@@ -40,8 +32,6 @@ class RequestFacetRange extends \ArrayObject
         return $this->type;
     }
     /**
-     * 
-     *
      * @param string $type
      *
      * @return self
@@ -53,8 +43,6 @@ class RequestFacetRange extends \ArrayObject
         return $this;
     }
     /**
-     * 
-     *
      * @return mixed
      */
     public function getName()
@@ -62,8 +50,6 @@ class RequestFacetRange extends \ArrayObject
         return $this->name;
     }
     /**
-     * 
-     *
      * @param mixed $name
      *
      * @return self
@@ -75,8 +61,6 @@ class RequestFacetRange extends \ArrayObject
         return $this;
     }
     /**
-     * 
-     *
      * @return list<RequestFacetRangeObject>
      */
     public function getRanges(): array
@@ -84,8 +68,6 @@ class RequestFacetRange extends \ArrayObject
         return $this->ranges;
     }
     /**
-     * 
-     *
      * @param list<RequestFacetRangeObject> $ranges
      *
      * @return self

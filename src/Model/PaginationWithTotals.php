@@ -25,19 +25,19 @@ class PaginationWithTotals extends \ArrayObject
      */
     protected $size;
     /**
-    * Number representing the total pages of results.
-           Value is 0 when you paginate beyond 10,000 results.
-    *
-    * @var int
-    */
+     * Number representing the total pages of results.
+     *         Value is 0 when you paginate beyond 10,000 results.
+     *
+     * @var int
+     */
     protected $totalPages;
     /**
-    * Number representing the total results across all pages.
-           The values 0 through 9999 are exact counts.
-           The value 10000 is a pseudo keyword representing greater than or equal to 10,000 results.
-    *
-    * @var int
-    */
+     * Number representing the total results across all pages.
+     *         The values 0 through 9999 are exact counts.
+     *         The value 10000 is a pseudo keyword representing greater than or equal to 10,000 results.
+     *
+     * @var int
+     */
     protected $totalResults;
     /**
      * Number representing the current page of results.
@@ -84,11 +84,11 @@ class PaginationWithTotals extends \ArrayObject
         return $this;
     }
     /**
-    * Number representing the total pages of results.
-           Value is 0 when you paginate beyond 10,000 results.
-    *
-    * @return int
-    */
+     * Number representing the total pages of results.
+     *         Value is 0 when you paginate beyond 10,000 results.
+     *
+     * @return int
+     */
     public function getTotalPages(): int
     {
         return $this->totalPages;
@@ -108,12 +108,12 @@ class PaginationWithTotals extends \ArrayObject
         return $this;
     }
     /**
-    * Number representing the total results across all pages.
-           The values 0 through 9999 are exact counts.
-           The value 10000 is a pseudo keyword representing greater than or equal to 10,000 results.
-    *
-    * @return int
-    */
+     * Number representing the total results across all pages.
+     *         The values 0 through 9999 are exact counts.
+     *         The value 10000 is a pseudo keyword representing greater than or equal to 10,000 results.
+     *
+     * @return int
+     */
     public function getTotalResults(): int
     {
         return $this->totalResults;

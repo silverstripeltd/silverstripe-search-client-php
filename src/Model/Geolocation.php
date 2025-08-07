@@ -13,20 +13,14 @@ class Geolocation extends \ArrayObject
         return array_key_exists($property, $this->initialized);
     }
     /**
-     * 
-     *
      * @var Coordinate|list<mixed>|string
      */
     protected $center;
     /**
-     * 
-     *
      * @var string
      */
     protected $order;
     /**
-     * 
-     *
      * @return Coordinate|list<mixed>|string
      */
     public function getCenter()
@@ -34,8 +28,6 @@ class Geolocation extends \ArrayObject
         return $this->center;
     }
     /**
-     * 
-     *
      * @param Coordinate|list<mixed>|string $center
      *
      * @return self
@@ -47,8 +39,6 @@ class Geolocation extends \ArrayObject
         return $this;
     }
     /**
-     * 
-     *
      * @return string
      */
     public function getOrder(): string
@@ -56,8 +46,6 @@ class Geolocation extends \ArrayObject
         return $this->order;
     }
     /**
-     * 
-     *
      * @param string $order
      *
      * @return self

@@ -6,24 +6,23 @@ class QuerySuggestionPost extends \Silverstripe\Search\Client\Runtime\Client\Bas
 {
     protected $engine_name;
     /**
-    * Provide relevant query suggestions for incomplete queries. Also known as Autocomplete.
-    
-    Only available on text fields.
-    
-    **Body:**
-    
-    `query` **(required)**
-    * A partial query for which to receive suggestions.
-    
-    `types` (optional)
-    * Specify the documents key within the types parameter to look for suggestions within certain text fields. Defaults to all text fields.
-    
-    `size` (optional)
-    * Number of query suggestions to return. Must be between 1 and 20. Defaults to 10.
-    *
-    * @param string $engineName 
-    * @param \Silverstripe\Search\Client\Model\QuerySuggestionRequest $requestBody 
-    */
+     * Provide relevant query suggestions for incomplete queries. Also known as Autocomplete.
+     *
+     * Only available on text fields.
+     *
+     * **Body:**
+     *
+     * `query` **(required)**
+     * * A partial query for which to receive suggestions.
+     *
+     * `types` (optional)
+     * * Specify the documents key within the types parameter to look for suggestions within certain text fields. Defaults to all text fields.
+     *
+     * `size` (optional)
+     * * Number of query suggestions to return. Must be between 1 and 20. Defaults to 10.
+     * @param string $engineName
+     * @param \Silverstripe\Search\Client\Model\QuerySuggestionRequest $requestBody
+     */
     public function __construct(string $engineName, \Silverstripe\Search\Client\Model\QuerySuggestionRequest $requestBody)
     {
         $this->engine_name = $engineName;
@@ -62,13 +61,13 @@ class QuerySuggestionPost extends \Silverstripe\Search\Client\Runtime\Client\Bas
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
-        if (is_null($contentType) === false && (200 === $status && mb_strpos($contentType, 'application/json') !== false)) {
+        if (is_null($contentType) === false && (200 === $status && mb_strpos(strtolower($contentType), 'application/json') !== false)) {
             return $serializer->deserialize($body, 'Silverstripe\Search\Client\Model\QuerySuggestionResponse', 'json');
         }
         if (404 === $status) {
             throw new \Silverstripe\Search\Client\Exception\QuerySuggestionPostNotFoundException($response);
         }
-        if (is_null($contentType) === false && (422 === $status && mb_strpos($contentType, 'application/json') !== false)) {
+        if (is_null($contentType) === false && (422 === $status && mb_strpos(strtolower($contentType), 'application/json') !== false)) {
             throw new \Silverstripe\Search\Client\Exception\QuerySuggestionPostUnprocessableEntityException($serializer->deserialize($body, 'Silverstripe\Search\Client\Model\HTTPValidationError', 'json'), $response);
         }
         throw new \Silverstripe\Search\Client\Exception\UnexpectedStatusCodeException($status, $body);

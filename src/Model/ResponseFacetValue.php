@@ -13,20 +13,14 @@ class ResponseFacetValue extends \ArrayObject
         return array_key_exists($property, $this->initialized);
     }
     /**
-     * 
-     *
      * @var mixed
      */
     protected $value;
     /**
-     * 
-     *
      * @var int
      */
     protected $count;
     /**
-     * 
-     *
      * @return mixed
      */
     public function getValue()
@@ -34,8 +28,6 @@ class ResponseFacetValue extends \ArrayObject
         return $this->value;
     }
     /**
-     * 
-     *
      * @param mixed $value
      *
      * @return self
@@ -47,8 +39,6 @@ class ResponseFacetValue extends \ArrayObject
         return $this;
     }
     /**
-     * 
-     *
      * @return int
      */
     public function getCount(): int
@@ -56,8 +46,6 @@ class ResponseFacetValue extends \ArrayObject
         return $this->count;
     }
     /**
-     * 
-     *
      * @param int $count
      *
      * @return self

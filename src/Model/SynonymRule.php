@@ -13,20 +13,14 @@ class SynonymRule extends \ArrayObject
         return array_key_exists($property, $this->initialized);
     }
     /**
-     * 
-     *
      * @var string
      */
     protected $id;
     /**
-     * 
-     *
      * @var string
      */
     protected $synonyms;
     /**
-     * 
-     *
      * @return string
      */
     public function getId(): string
@@ -34,8 +28,6 @@ class SynonymRule extends \ArrayObject
         return $this->id;
     }
     /**
-     * 
-     *
      * @param string $id
      *
      * @return self
@@ -47,8 +39,6 @@ class SynonymRule extends \ArrayObject
         return $this;
     }
     /**
-     * 
-     *
      * @return string
      */
     public function getSynonyms(): string
@@ -56,8 +46,6 @@ class SynonymRule extends \ArrayObject
         return $this->synonyms;
     }
     /**
-     * 
-     *
      * @param string $synonyms
      *
      * @return self

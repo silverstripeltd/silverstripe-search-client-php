@@ -13,14 +13,10 @@ class SchemaPostResponse extends \ArrayObject
         return array_key_exists($property, $this->initialized);
     }
     /**
-     * 
-     *
      * @var bool
      */
     protected $acknowledged;
     /**
-     * 
-     *
      * @return bool
      */
     public function getAcknowledged(): bool
@@ -28,8 +24,6 @@ class SchemaPostResponse extends \ArrayObject
         return $this->acknowledged;
     }
     /**
-     * 
-     *
      * @param bool $acknowledged
      *
      * @return self
