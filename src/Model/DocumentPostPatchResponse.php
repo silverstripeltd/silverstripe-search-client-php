@@ -13,20 +13,14 @@ class DocumentPostPatchResponse extends \ArrayObject
         return array_key_exists($property, $this->initialized);
     }
     /**
-     * 
-     *
      * @var string
      */
     protected $id;
     /**
-     * 
-     *
      * @var mixed
      */
     protected $errors;
     /**
-     * 
-     *
      * @return string
      */
     public function getId(): string
@@ -34,8 +28,6 @@ class DocumentPostPatchResponse extends \ArrayObject
         return $this->id;
     }
     /**
-     * 
-     *
      * @param string $id
      *
      * @return self
@@ -47,8 +39,6 @@ class DocumentPostPatchResponse extends \ArrayObject
         return $this;
     }
     /**
-     * 
-     *
      * @return mixed
      */
     public function getErrors()
@@ -56,8 +46,6 @@ class DocumentPostPatchResponse extends \ArrayObject
         return $this->errors;
     }
     /**
-     * 
-     *
      * @param mixed $errors
      *
      * @return self

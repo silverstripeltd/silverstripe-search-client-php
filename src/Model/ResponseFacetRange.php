@@ -13,32 +13,22 @@ class ResponseFacetRange extends \ArrayObject
         return array_key_exists($property, $this->initialized);
     }
     /**
-     * 
-     *
      * @var mixed
      */
     protected $from;
     /**
-     * 
-     *
      * @var mixed
      */
     protected $to;
     /**
-     * 
-     *
      * @var mixed
      */
     protected $name;
     /**
-     * 
-     *
      * @var int
      */
     protected $count;
     /**
-     * 
-     *
      * @return mixed
      */
     public function getFrom()
@@ -46,8 +36,6 @@ class ResponseFacetRange extends \ArrayObject
         return $this->from;
     }
     /**
-     * 
-     *
      * @param mixed $from
      *
      * @return self
@@ -59,8 +47,6 @@ class ResponseFacetRange extends \ArrayObject
         return $this;
     }
     /**
-     * 
-     *
      * @return mixed
      */
     public function getTo()
@@ -68,8 +54,6 @@ class ResponseFacetRange extends \ArrayObject
         return $this->to;
     }
     /**
-     * 
-     *
      * @param mixed $to
      *
      * @return self
@@ -81,8 +65,6 @@ class ResponseFacetRange extends \ArrayObject
         return $this;
     }
     /**
-     * 
-     *
      * @return mixed
      */
     public function getName()
@@ -90,8 +72,6 @@ class ResponseFacetRange extends \ArrayObject
         return $this->name;
     }
     /**
-     * 
-     *
      * @param mixed $name
      *
      * @return self
@@ -103,8 +83,6 @@ class ResponseFacetRange extends \ArrayObject
         return $this;
     }
     /**
-     * 
-     *
      * @return int
      */
     public function getCount(): int
@@ -112,8 +90,6 @@ class ResponseFacetRange extends \ArrayObject
         return $this->count;
     }
     /**
-     * 
-     *
      * @param int $count
      *
      * @return self

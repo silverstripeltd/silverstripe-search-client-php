@@ -13,26 +13,18 @@ class Filters extends \ArrayObject
         return array_key_exists($property, $this->initialized);
     }
     /**
-     * 
-     *
      * @var mixed
      */
     protected $all;
     /**
-     * 
-     *
      * @var mixed
      */
     protected $any;
     /**
-     * 
-     *
      * @var mixed
      */
     protected $none;
     /**
-     * 
-     *
      * @return mixed
      */
     public function getAll()
@@ -40,8 +32,6 @@ class Filters extends \ArrayObject
         return $this->all;
     }
     /**
-     * 
-     *
      * @param mixed $all
      *
      * @return self
@@ -53,8 +43,6 @@ class Filters extends \ArrayObject
         return $this;
     }
     /**
-     * 
-     *
      * @return mixed
      */
     public function getAny()
@@ -62,8 +50,6 @@ class Filters extends \ArrayObject
         return $this->any;
     }
     /**
-     * 
-     *
      * @param mixed $any
      *
      * @return self
@@ -75,8 +61,6 @@ class Filters extends \ArrayObject
         return $this;
     }
     /**
-     * 
-     *
      * @return mixed
      */
     public function getNone()
@@ -84,8 +68,6 @@ class Filters extends \ArrayObject
         return $this->none;
     }
     /**
-     * 
-     *
      * @param mixed $none
      *
      * @return self

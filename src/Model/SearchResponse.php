@@ -13,26 +13,18 @@ class SearchResponse extends \ArrayObject
         return array_key_exists($property, $this->initialized);
     }
     /**
-     * 
-     *
      * @var SearchResponseMeta
      */
     protected $meta;
     /**
-     * 
-     *
      * @var list<array<string, mixed>>
      */
     protected $results;
     /**
-     * 
-     *
      * @var mixed
      */
     protected $facets;
     /**
-     * 
-     *
      * @return SearchResponseMeta
      */
     public function getMeta(): SearchResponseMeta
@@ -40,8 +32,6 @@ class SearchResponse extends \ArrayObject
         return $this->meta;
     }
     /**
-     * 
-     *
      * @param SearchResponseMeta $meta
      *
      * @return self
@@ -53,8 +43,6 @@ class SearchResponse extends \ArrayObject
         return $this;
     }
     /**
-     * 
-     *
      * @return list<array<string, mixed>>
      */
     public function getResults(): array
@@ -62,8 +50,6 @@ class SearchResponse extends \ArrayObject
         return $this->results;
     }
     /**
-     * 
-     *
      * @param list<array<string, mixed>> $results
      *
      * @return self
@@ -75,8 +61,6 @@ class SearchResponse extends \ArrayObject
         return $this;
     }
     /**
-     * 
-     *
      * @return mixed
      */
     public function getFacets()
@@ -84,8 +68,6 @@ class SearchResponse extends \ArrayObject
         return $this->facets;
     }
     /**
-     * 
-     *
      * @param mixed $facets
      *
      * @return self

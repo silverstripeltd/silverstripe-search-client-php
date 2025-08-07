@@ -13,20 +13,14 @@ class DocumentField extends \ArrayObject
         return array_key_exists($property, $this->initialized);
     }
     /**
-     * 
-     *
      * @var mixed
      */
     protected $raw;
     /**
-     * 
-     *
      * @var mixed
      */
     protected $snippet;
     /**
-     * 
-     *
      * @return mixed
      */
     public function getRaw()
@@ -34,8 +28,6 @@ class DocumentField extends \ArrayObject
         return $this->raw;
     }
     /**
-     * 
-     *
      * @param mixed $raw
      *
      * @return self
@@ -47,8 +39,6 @@ class DocumentField extends \ArrayObject
         return $this;
     }
     /**
-     * 
-     *
      * @return mixed
      */
     public function getSnippet()
@@ -56,8 +46,6 @@ class DocumentField extends \ArrayObject
         return $this->snippet;
     }
     /**
-     * 
-     *
      * @param mixed $snippet
      *
      * @return self

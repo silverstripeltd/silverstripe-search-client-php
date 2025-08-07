@@ -13,14 +13,10 @@ class SettingsResponse extends \ArrayObject
         return array_key_exists($property, $this->initialized);
     }
     /**
-     * 
-     *
      * @var int
      */
     protected $precision;
     /**
-     * 
-     *
      * @return int
      */
     public function getPrecision(): int
@@ -28,8 +24,6 @@ class SettingsResponse extends \ArrayObject
         return $this->precision;
     }
     /**
-     * 
-     *
      * @param int $precision
      *
      * @return self

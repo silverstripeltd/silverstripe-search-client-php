@@ -6,25 +6,24 @@ class DocumentsPost extends \Silverstripe\Search\Client\Runtime\Client\BaseEndpo
 {
     protected $engine_name;
     /**
-    * Create or update documents.
-    
-    Documents are indexed asynchronously. There will be a processing delay before they are available to your Engine.
-    
-    **Key points to remember when creating documents:**
-    
-    * It is recommended that you provide your own `id` field, but If no `id` is provided, a unique `id` will be
-     generated.
-    * A new document is created each time content is received without an `id` - beware duplicates!
-    * A document will be updated - not created - if its `id` already exists within a document.
-    
-    **Processing file contents**
-    
-    * An `_attachment` field can be used to attach PDF and Docx files to your document.
-    * The _attachment` field should contain a base 64 encoded string of binary.
-    *
-    * @param string $engineName 
-    * @param array[] $requestBody 
-    */
+     * Create or update documents.
+     *
+     * Documents are indexed asynchronously. There will be a processing delay before they are available to your Engine.
+     *
+     * **Key points to remember when creating documents:**
+     *
+     * * It is recommended that you provide your own `id` field, but If no `id` is provided, a unique `id` will be
+     *   generated.
+     * * A new document is created each time content is received without an `id` - beware duplicates!
+     * * A document will be updated - not created - if its `id` already exists within a document.
+     *
+     * **Processing file contents**
+     *
+     * * An `_attachment` field can be used to attach PDF and Docx files to your document.
+     * * The _attachment` field should contain a base 64 encoded string of binary.
+     * @param string $engineName
+     * @param array[] $requestBody
+     */
     public function __construct(string $engineName, array $requestBody)
     {
         $this->engine_name = $engineName;
@@ -42,7 +41,7 @@ class DocumentsPost extends \Silverstripe\Search\Client\Runtime\Client\BaseEndpo
     public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
     {
         if (is_array($this->body)) {
-            return [['Content-Type' => ['application/json']], json_encode($this->body)];
+            return [['Content-Type' => ['application/json']], $serializer->serialize($this->body, 'json')];
         }
         return [[], null];
     }
@@ -63,13 +62,13 @@ class DocumentsPost extends \Silverstripe\Search\Client\Runtime\Client\BaseEndpo
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
-        if (is_null($contentType) === false && (200 === $status && mb_strpos($contentType, 'application/json') !== false)) {
+        if (is_null($contentType) === false && (200 === $status && mb_strpos(strtolower($contentType), 'application/json') !== false)) {
             return $serializer->deserialize($body, 'Silverstripe\Search\Client\Model\DocumentPostPatchResponse[]', 'json');
         }
         if (404 === $status) {
             throw new \Silverstripe\Search\Client\Exception\DocumentsPostNotFoundException($response);
         }
-        if (is_null($contentType) === false && (422 === $status && mb_strpos($contentType, 'application/json') !== false)) {
+        if (is_null($contentType) === false && (422 === $status && mb_strpos(strtolower($contentType), 'application/json') !== false)) {
             throw new \Silverstripe\Search\Client\Exception\DocumentsPostUnprocessableEntityException($serializer->deserialize($body, 'Silverstripe\Search\Client\Model\HTTPValidationError', 'json'), $response);
         }
         throw new \Silverstripe\Search\Client\Exception\UnexpectedStatusCodeException($status, $body);

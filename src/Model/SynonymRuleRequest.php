@@ -13,14 +13,10 @@ class SynonymRuleRequest extends \ArrayObject
         return array_key_exists($property, $this->initialized);
     }
     /**
-     * 
-     *
      * @var string
      */
     protected $synonyms;
     /**
-     * 
-     *
      * @return string
      */
     public function getSynonyms(): string
@@ -28,8 +24,6 @@ class SynonymRuleRequest extends \ArrayObject
         return $this->synonyms;
     }
     /**
-     * 
-     *
      * @param string $synonyms
      *
      * @return self

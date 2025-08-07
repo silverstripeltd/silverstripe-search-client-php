@@ -13,26 +13,18 @@ class DocumentResponseMeta extends \ArrayObject
         return array_key_exists($property, $this->initialized);
     }
     /**
-     * 
-     *
      * @var mixed
      */
     protected $score;
     /**
-     * 
-     *
      * @var mixed
      */
     protected $engine;
     /**
-     * 
-     *
      * @var mixed
      */
     protected $id;
     /**
-     * 
-     *
      * @return mixed
      */
     public function getScore()
@@ -40,8 +32,6 @@ class DocumentResponseMeta extends \ArrayObject
         return $this->score;
     }
     /**
-     * 
-     *
      * @param mixed $score
      *
      * @return self
@@ -53,8 +43,6 @@ class DocumentResponseMeta extends \ArrayObject
         return $this;
     }
     /**
-     * 
-     *
      * @return mixed
      */
     public function getEngine()
@@ -62,8 +50,6 @@ class DocumentResponseMeta extends \ArrayObject
         return $this->engine;
     }
     /**
-     * 
-     *
      * @param mixed $engine
      *
      * @return self
@@ -75,8 +61,6 @@ class DocumentResponseMeta extends \ArrayObject
         return $this;
     }
     /**
-     * 
-     *
      * @return mixed
      */
     public function getId()
@@ -84,8 +68,6 @@ class DocumentResponseMeta extends \ArrayObject
         return $this->id;
     }
     /**
-     * 
-     *
      * @param mixed $id
      *
      * @return self

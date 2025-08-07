@@ -6,15 +6,14 @@ class DocumentsPatch extends \Silverstripe\Search\Client\Runtime\Client\BaseEndp
 {
     protected $engine_name;
     /**
-    * Update specific document fields by `id` and `field`.
-    
-    There are a couple of limitations of the PATCH action:
-    - The `id` is required and new fields cannot be created using `PATCH`!
-    - processing file content is **not supported** via PATCH
-    *
-    * @param string $engineName 
-    * @param array[] $requestBody 
-    */
+     * Update specific document fields by `id` and `field`.
+     *
+     * There are a couple of limitations of the PATCH action:
+     * - The `id` is required and new fields cannot be created using `PATCH`!
+     * - processing file content is **not supported** via PATCH
+     * @param string $engineName
+     * @param array[] $requestBody
+     */
     public function __construct(string $engineName, array $requestBody)
     {
         $this->engine_name = $engineName;
@@ -32,7 +31,7 @@ class DocumentsPatch extends \Silverstripe\Search\Client\Runtime\Client\BaseEndp
     public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
     {
         if (is_array($this->body)) {
-            return [['Content-Type' => ['application/json']], json_encode($this->body)];
+            return [['Content-Type' => ['application/json']], $serializer->serialize($this->body, 'json')];
         }
         return [[], null];
     }
@@ -53,13 +52,13 @@ class DocumentsPatch extends \Silverstripe\Search\Client\Runtime\Client\BaseEndp
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
-        if (is_null($contentType) === false && (200 === $status && mb_strpos($contentType, 'application/json') !== false)) {
+        if (is_null($contentType) === false && (200 === $status && mb_strpos(strtolower($contentType), 'application/json') !== false)) {
             return $serializer->deserialize($body, 'Silverstripe\Search\Client\Model\DocumentPostPatchResponse[]', 'json');
         }
         if (404 === $status) {
             throw new \Silverstripe\Search\Client\Exception\DocumentsPatchNotFoundException($response);
         }
-        if (is_null($contentType) === false && (422 === $status && mb_strpos($contentType, 'application/json') !== false)) {
+        if (is_null($contentType) === false && (422 === $status && mb_strpos(strtolower($contentType), 'application/json') !== false)) {
             throw new \Silverstripe\Search\Client\Exception\DocumentsPatchUnprocessableEntityException($serializer->deserialize($body, 'Silverstripe\Search\Client\Model\HTTPValidationError', 'json'), $response);
         }
         throw new \Silverstripe\Search\Client\Exception\UnexpectedStatusCodeException($status, $body);

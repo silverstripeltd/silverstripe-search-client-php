@@ -13,20 +13,14 @@ class DocumentsDeleteResponse extends \ArrayObject
         return array_key_exists($property, $this->initialized);
     }
     /**
-     * 
-     *
      * @var string
      */
     protected $id;
     /**
-     * 
-     *
      * @var bool
      */
     protected $deleted;
     /**
-     * 
-     *
      * @return string
      */
     public function getId(): string
@@ -34,8 +28,6 @@ class DocumentsDeleteResponse extends \ArrayObject
         return $this->id;
     }
     /**
-     * 
-     *
      * @param string $id
      *
      * @return self
@@ -47,8 +39,6 @@ class DocumentsDeleteResponse extends \ArrayObject
         return $this;
     }
     /**
-     * 
-     *
      * @return bool
      */
     public function getDeleted(): bool
@@ -56,8 +46,6 @@ class DocumentsDeleteResponse extends \ArrayObject
         return $this->deleted;
     }
     /**
-     * 
-     *
      * @param bool $deleted
      *
      * @return self

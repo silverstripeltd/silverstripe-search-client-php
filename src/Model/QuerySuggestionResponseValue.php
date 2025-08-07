@@ -13,14 +13,10 @@ class QuerySuggestionResponseValue extends \ArrayObject
         return array_key_exists($property, $this->initialized);
     }
     /**
-     * 
-     *
      * @var string
      */
     protected $raw;
     /**
-     * 
-     *
      * @return string
      */
     public function getRaw(): string
@@ -28,8 +24,6 @@ class QuerySuggestionResponseValue extends \ArrayObject
         return $this->raw;
     }
     /**
-     * 
-     *
      * @param string $raw
      *
      * @return self

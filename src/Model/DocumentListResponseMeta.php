@@ -13,32 +13,22 @@ class DocumentListResponseMeta extends \ArrayObject
         return array_key_exists($property, $this->initialized);
     }
     /**
-     * 
-     *
      * @var mixed
      */
     protected $alerts;
     /**
-     * 
-     *
      * @var PaginationWithTotals
      */
     protected $page;
     /**
-     * 
-     *
      * @var mixed
      */
     protected $requestId;
     /**
-     * 
-     *
      * @var mixed
      */
     protected $warnings;
     /**
-     * 
-     *
      * @return mixed
      */
     public function getAlerts()
@@ -46,8 +36,6 @@ class DocumentListResponseMeta extends \ArrayObject
         return $this->alerts;
     }
     /**
-     * 
-     *
      * @param mixed $alerts
      *
      * @return self
@@ -59,8 +47,6 @@ class DocumentListResponseMeta extends \ArrayObject
         return $this;
     }
     /**
-     * 
-     *
      * @return PaginationWithTotals
      */
     public function getPage(): PaginationWithTotals
@@ -68,8 +54,6 @@ class DocumentListResponseMeta extends \ArrayObject
         return $this->page;
     }
     /**
-     * 
-     *
      * @param PaginationWithTotals $page
      *
      * @return self
@@ -81,8 +65,6 @@ class DocumentListResponseMeta extends \ArrayObject
         return $this;
     }
     /**
-     * 
-     *
      * @return mixed
      */
     public function getRequestId()
@@ -90,8 +72,6 @@ class DocumentListResponseMeta extends \ArrayObject
         return $this->requestId;
     }
     /**
-     * 
-     *
      * @param mixed $requestId
      *
      * @return self
@@ -103,8 +83,6 @@ class DocumentListResponseMeta extends \ArrayObject
         return $this;
     }
     /**
-     * 
-     *
      * @return mixed
      */
     public function getWarnings()
@@ -112,8 +90,6 @@ class DocumentListResponseMeta extends \ArrayObject
         return $this->warnings;
     }
     /**
-     * 
-     *
      * @param mixed $warnings
      *
      * @return self

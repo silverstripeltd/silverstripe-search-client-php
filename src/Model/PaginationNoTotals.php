@@ -13,25 +13,25 @@ class PaginationNoTotals extends \ArrayObject
         return array_key_exists($property, $this->initialized);
     }
     /**
-    * Page number of results to return. Must be greater than or equal to 1 and less than or equal to 
-           100. Defaults to 1.
-    *
-    * @var int
-    */
+     * Page number of results to return. Must be greater than or equal to 1 and less than or equal to
+     *         100. Defaults to 1.
+     *
+     * @var int
+     */
     protected $current = 1;
     /**
-    * Number of results per page. Must be greater than or equal to 1 and less than or equal to 1000. 
-           Defaults to 10.
-    *
-    * @var int
-    */
+     * Number of results per page. Must be greater than or equal to 1 and less than or equal to 1000.
+     *         Defaults to 10.
+     *
+     * @var int
+     */
     protected $size = 10;
     /**
-    * Page number of results to return. Must be greater than or equal to 1 and less than or equal to 
-           100. Defaults to 1.
-    *
-    * @return int
-    */
+     * Page number of results to return. Must be greater than or equal to 1 and less than or equal to
+     *         100. Defaults to 1.
+     *
+     * @return int
+     */
     public function getCurrent(): int
     {
         return $this->current;
@@ -51,11 +51,11 @@ class PaginationNoTotals extends \ArrayObject
         return $this;
     }
     /**
-    * Number of results per page. Must be greater than or equal to 1 and less than or equal to 1000. 
-           Defaults to 10.
-    *
-    * @return int
-    */
+     * Number of results per page. Must be greater than or equal to 1 and less than or equal to 1000.
+     *         Defaults to 10.
+     *
+     * @return int
+     */
     public function getSize(): int
     {
         return $this->size;

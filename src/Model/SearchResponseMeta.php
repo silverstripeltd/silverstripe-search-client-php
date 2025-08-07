@@ -13,38 +13,26 @@ class SearchResponseMeta extends \ArrayObject
         return array_key_exists($property, $this->initialized);
     }
     /**
-     * 
-     *
      * @var mixed
      */
     protected $warnings;
     /**
-     * 
-     *
      * @var mixed
      */
     protected $precision;
     /**
-     * 
-     *
      * @var SearchResponseEngine|null
      */
     protected $engine;
     /**
-     * 
-     *
      * @var mixed
      */
     protected $requestId;
     /**
-     * 
-     *
      * @var PaginationWithTotals
      */
     protected $page;
     /**
-     * 
-     *
      * @return mixed
      */
     public function getWarnings()
@@ -52,8 +40,6 @@ class SearchResponseMeta extends \ArrayObject
         return $this->warnings;
     }
     /**
-     * 
-     *
      * @param mixed $warnings
      *
      * @return self
@@ -65,8 +51,6 @@ class SearchResponseMeta extends \ArrayObject
         return $this;
     }
     /**
-     * 
-     *
      * @return mixed
      */
     public function getPrecision()
@@ -74,8 +58,6 @@ class SearchResponseMeta extends \ArrayObject
         return $this->precision;
     }
     /**
-     * 
-     *
      * @param mixed $precision
      *
      * @return self
@@ -87,8 +69,6 @@ class SearchResponseMeta extends \ArrayObject
         return $this;
     }
     /**
-     * 
-     *
      * @return SearchResponseEngine|null
      */
     public function getEngine(): SearchResponseEngine
@@ -96,8 +76,6 @@ class SearchResponseMeta extends \ArrayObject
         return $this->engine;
     }
     /**
-     * 
-     *
      * @param SearchResponseEngine|null $engine
      *
      * @return self
@@ -109,8 +87,6 @@ class SearchResponseMeta extends \ArrayObject
         return $this;
     }
     /**
-     * 
-     *
      * @return mixed
      */
     public function getRequestId()
@@ -118,8 +94,6 @@ class SearchResponseMeta extends \ArrayObject
         return $this->requestId;
     }
     /**
-     * 
-     *
      * @param mixed $requestId
      *
      * @return self
@@ -131,8 +105,6 @@ class SearchResponseMeta extends \ArrayObject
         return $this;
     }
     /**
-     * 
-     *
      * @return PaginationWithTotals
      */
     public function getPage(): PaginationWithTotals
@@ -140,8 +112,6 @@ class SearchResponseMeta extends \ArrayObject
         return $this->page;
     }
     /**
-     * 
-     *
      * @param PaginationWithTotals $page
      *
      * @return self

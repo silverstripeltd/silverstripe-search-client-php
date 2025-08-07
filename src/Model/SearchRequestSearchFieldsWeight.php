@@ -13,14 +13,10 @@ class SearchRequestSearchFieldsWeight extends \ArrayObject
         return array_key_exists($property, $this->initialized);
     }
     /**
-     * 
-     *
      * @var mixed
      */
     protected $weight;
     /**
-     * 
-     *
      * @return mixed
      */
     public function getWeight()
@@ -28,8 +24,6 @@ class SearchRequestSearchFieldsWeight extends \ArrayObject
         return $this->weight;
     }
     /**
-     * 
-     *
      * @param mixed $weight
      *
      * @return self

@@ -6,16 +6,15 @@ class DocumentsGet extends \Silverstripe\Search\Client\Runtime\Client\BaseEndpoi
 {
     protected $engine_name;
     /**
-    * A paginated array of JSON objects representing documents.
-    
-    **Query parameters:**
-    
-    `ids` **(required)**
-    * A parameterized query of document `id`. EG: ids=zion_park&ids=does_not_exist
-    *
-    * @param string $engineName 
-    * @param array[] $requestBody 
-    */
+     * A paginated array of JSON objects representing documents.
+     *
+     * **Query parameters:**
+     *
+     * `ids` **(required)**
+     * * A parameterized query of document `id`. EG: ids=zion_park&ids=does_not_exist
+     * @param string $engineName
+     * @param array[] $requestBody
+     */
     public function __construct(string $engineName, array $requestBody)
     {
         $this->engine_name = $engineName;
@@ -33,7 +32,7 @@ class DocumentsGet extends \Silverstripe\Search\Client\Runtime\Client\BaseEndpoi
     public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
     {
         if (is_array($this->body)) {
-            return [['Content-Type' => ['application/json']], json_encode($this->body)];
+            return [['Content-Type' => ['application/json']], $serializer->serialize($this->body, 'json')];
         }
         return [[], null];
     }
@@ -54,13 +53,13 @@ class DocumentsGet extends \Silverstripe\Search\Client\Runtime\Client\BaseEndpoi
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
-        if (is_null($contentType) === false && (200 === $status && mb_strpos($contentType, 'application/json') !== false)) {
+        if (is_null($contentType) === false && (200 === $status && mb_strpos(strtolower($contentType), 'application/json') !== false)) {
             return json_decode($body);
         }
         if (404 === $status) {
             throw new \Silverstripe\Search\Client\Exception\DocumentsGetNotFoundException($response);
         }
-        if (is_null($contentType) === false && (422 === $status && mb_strpos($contentType, 'application/json') !== false)) {
+        if (is_null($contentType) === false && (422 === $status && mb_strpos(strtolower($contentType), 'application/json') !== false)) {
             throw new \Silverstripe\Search\Client\Exception\DocumentsGetUnprocessableEntityException($serializer->deserialize($body, 'Silverstripe\Search\Client\Model\HTTPValidationError', 'json'), $response);
         }
         throw new \Silverstripe\Search\Client\Exception\UnexpectedStatusCodeException($status, $body);

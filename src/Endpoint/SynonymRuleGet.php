@@ -8,9 +8,8 @@ class SynonymRuleGet extends \Silverstripe\Search\Client\Runtime\Client\BaseEndp
     protected $engine_name;
     /**
      * Retrieve a specific synonym by its ID.
-     *
-     * @param string $ruleId 
-     * @param string $engineName 
+     * @param string $ruleId
+     * @param string $engineName
      */
     public function __construct(string $ruleId, string $engineName)
     {
@@ -47,13 +46,13 @@ class SynonymRuleGet extends \Silverstripe\Search\Client\Runtime\Client\BaseEndp
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
-        if (is_null($contentType) === false && (200 === $status && mb_strpos($contentType, 'application/json') !== false)) {
+        if (is_null($contentType) === false && (200 === $status && mb_strpos(strtolower($contentType), 'application/json') !== false)) {
             return $serializer->deserialize($body, 'Silverstripe\Search\Client\Model\SynonymRule', 'json');
         }
         if (404 === $status) {
             throw new \Silverstripe\Search\Client\Exception\SynonymRuleGetNotFoundException($response);
         }
-        if (is_null($contentType) === false && (422 === $status && mb_strpos($contentType, 'application/json') !== false)) {
+        if (is_null($contentType) === false && (422 === $status && mb_strpos(strtolower($contentType), 'application/json') !== false)) {
             throw new \Silverstripe\Search\Client\Exception\SynonymRuleGetUnprocessableEntityException($serializer->deserialize($body, 'Silverstripe\Search\Client\Model\HTTPValidationError', 'json'), $response);
         }
         throw new \Silverstripe\Search\Client\Exception\UnexpectedStatusCodeException($status, $body);

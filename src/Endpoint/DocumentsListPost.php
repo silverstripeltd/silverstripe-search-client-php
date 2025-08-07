@@ -6,24 +6,23 @@ class DocumentsListPost extends \Silverstripe\Search\Client\Runtime\Client\BaseE
 {
     protected $engine_name;
     /**
-    * **Body:**
-    
-    `page` (optional)
-    * Object to delimit the pagination parameters.
-    
-    `page.size` (optional)
-    * Number of results per page.
-    * Must be greater than or equal to 1 and less than or equal to 100.
-    * Defaults to 10.
-    
-    `page.current` (optional)
-    * Page number of results to return.
-    * Must be greater than or equal to 1 and less than or equal to 100.
-    * Defaults to 1.
-    *
-    * @param string $engineName 
-    * @param null|mixed $requestBody 
-    */
+     * **Body:**
+     *
+     * `page` (optional)
+     * * Object to delimit the pagination parameters.
+     *
+     * `page.size` (optional)
+     * * Number of results per page.
+     * * Must be greater than or equal to 1 and less than or equal to 100.
+     * * Defaults to 10.
+     *
+     * `page.current` (optional)
+     * * Page number of results to return.
+     * * Must be greater than or equal to 1 and less than or equal to 100.
+     * * Defaults to 1.
+     * @param string $engineName
+     * @param null|mixed $requestBody
+     */
     public function __construct(string $engineName, $requestBody = null)
     {
         $this->engine_name = $engineName;
@@ -41,7 +40,7 @@ class DocumentsListPost extends \Silverstripe\Search\Client\Runtime\Client\BaseE
     public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
     {
         if (isset($this->body)) {
-            return [['Content-Type' => ['application/json']], json_encode($this->body)];
+            return [['Content-Type' => ['application/json']], $serializer->serialize($this->body, 'json')];
         }
         return [[], null];
     }
@@ -62,13 +61,13 @@ class DocumentsListPost extends \Silverstripe\Search\Client\Runtime\Client\BaseE
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
-        if (is_null($contentType) === false && (200 === $status && mb_strpos($contentType, 'application/json') !== false)) {
+        if (is_null($contentType) === false && (200 === $status && mb_strpos(strtolower($contentType), 'application/json') !== false)) {
             return $serializer->deserialize($body, 'Silverstripe\Search\Client\Model\DocumentListResponse', 'json');
         }
         if (404 === $status) {
             throw new \Silverstripe\Search\Client\Exception\DocumentsListPostNotFoundException($response);
         }
-        if (is_null($contentType) === false && (422 === $status && mb_strpos($contentType, 'application/json') !== false)) {
+        if (is_null($contentType) === false && (422 === $status && mb_strpos(strtolower($contentType), 'application/json') !== false)) {
             throw new \Silverstripe\Search\Client\Exception\DocumentsListPostUnprocessableEntityException($serializer->deserialize($body, 'Silverstripe\Search\Client\Model\HTTPValidationError', 'json'), $response);
         }
         throw new \Silverstripe\Search\Client\Exception\UnexpectedStatusCodeException($status, $body);

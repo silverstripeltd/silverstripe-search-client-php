@@ -13,14 +13,10 @@ class SpellingSuggestionResponse extends \ArrayObject
         return array_key_exists($property, $this->initialized);
     }
     /**
-     * 
-     *
      * @var list<DocumentField>
      */
     protected $results;
     /**
-     * 
-     *
      * @return list<DocumentField>
      */
     public function getResults(): array
@@ -28,8 +24,6 @@ class SpellingSuggestionResponse extends \ArrayObject
         return $this->results;
     }
     /**
-     * 
-     *
      * @param list<DocumentField> $results
      *
      * @return self

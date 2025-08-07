@@ -13,56 +13,38 @@ class SearchRequest extends \ArrayObject
         return array_key_exists($property, $this->initialized);
     }
     /**
-     * 
-     *
      * @var string
      */
     protected $query;
     /**
-     * 
-     *
      * @var null
      */
     protected $sort;
     /**
-     * 
-     *
      * @var PaginationNoTotals|null
      */
     protected $page;
     /**
-     * 
-     *
      * @var null
      */
     protected $searchFields;
     /**
-     * 
-     *
      * @var array<string, SearchRequestResultField>|null
      */
     protected $resultFields;
     /**
-     * 
-     *
      * @var array<string, list<mixed>>|null
      */
     protected $facets;
     /**
-     * 
-     *
      * @var Filters|null
      */
     protected $filters;
     /**
-     * 
-     *
      * @var Tags|null
      */
     protected $analytics;
     /**
-     * 
-     *
      * @return string
      */
     public function getQuery(): string
@@ -70,8 +52,6 @@ class SearchRequest extends \ArrayObject
         return $this->query;
     }
     /**
-     * 
-     *
      * @param string $query
      *
      * @return self
@@ -83,8 +63,6 @@ class SearchRequest extends \ArrayObject
         return $this;
     }
     /**
-     * 
-     *
      * @return null
      */
     public function getSort()
@@ -92,8 +70,6 @@ class SearchRequest extends \ArrayObject
         return $this->sort;
     }
     /**
-     * 
-     *
      * @param null $sort
      *
      * @return self
@@ -105,8 +81,6 @@ class SearchRequest extends \ArrayObject
         return $this;
     }
     /**
-     * 
-     *
      * @return PaginationNoTotals|null
      */
     public function getPage(): PaginationNoTotals
@@ -114,8 +88,6 @@ class SearchRequest extends \ArrayObject
         return $this->page;
     }
     /**
-     * 
-     *
      * @param PaginationNoTotals|null $page
      *
      * @return self
@@ -127,8 +99,6 @@ class SearchRequest extends \ArrayObject
         return $this;
     }
     /**
-     * 
-     *
      * @return null
      */
     public function getSearchFields()
@@ -136,8 +106,6 @@ class SearchRequest extends \ArrayObject
         return $this->searchFields;
     }
     /**
-     * 
-     *
      * @param null $searchFields
      *
      * @return self
@@ -149,8 +117,6 @@ class SearchRequest extends \ArrayObject
         return $this;
     }
     /**
-     * 
-     *
      * @return array<string, SearchRequestResultField>|null
      */
     public function getResultFields(): iterable
@@ -158,8 +124,6 @@ class SearchRequest extends \ArrayObject
         return $this->resultFields;
     }
     /**
-     * 
-     *
      * @param array<string, SearchRequestResultField>|null $resultFields
      *
      * @return self
@@ -171,8 +135,6 @@ class SearchRequest extends \ArrayObject
         return $this;
     }
     /**
-     * 
-     *
      * @return array<string, list<mixed>>|null
      */
     public function getFacets(): iterable
@@ -180,8 +142,6 @@ class SearchRequest extends \ArrayObject
         return $this->facets;
     }
     /**
-     * 
-     *
      * @param array<string, list<mixed>>|null $facets
      *
      * @return self
@@ -193,8 +153,6 @@ class SearchRequest extends \ArrayObject
         return $this;
     }
     /**
-     * 
-     *
      * @return Filters|null
      */
     public function getFilters(): Filters
@@ -202,8 +160,6 @@ class SearchRequest extends \ArrayObject
         return $this->filters;
     }
     /**
-     * 
-     *
      * @param Filters|null $filters
      *
      * @return self
@@ -215,8 +171,6 @@ class SearchRequest extends \ArrayObject
         return $this;
     }
     /**
-     * 
-     *
      * @return Tags|null
      */
     public function getAnalytics(): Tags
@@ -224,8 +178,6 @@ class SearchRequest extends \ArrayObject
         return $this->analytics;
     }
     /**
-     * 
-     *
      * @param Tags|null $analytics
      *
      * @return self

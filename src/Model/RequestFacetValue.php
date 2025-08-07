@@ -13,32 +13,22 @@ class RequestFacetValue extends \ArrayObject
         return array_key_exists($property, $this->initialized);
     }
     /**
-     * 
-     *
      * @var string
      */
     protected $type;
     /**
-     * 
-     *
      * @var mixed
      */
     protected $name;
     /**
-     * 
-     *
      * @var int
      */
     protected $size = 10;
     /**
-     * 
-     *
      * @var array<string, string>|null
      */
     protected $sort;
     /**
-     * 
-     *
      * @return string
      */
     public function getType(): string
@@ -46,8 +36,6 @@ class RequestFacetValue extends \ArrayObject
         return $this->type;
     }
     /**
-     * 
-     *
      * @param string $type
      *
      * @return self
@@ -59,8 +47,6 @@ class RequestFacetValue extends \ArrayObject
         return $this;
     }
     /**
-     * 
-     *
      * @return mixed
      */
     public function getName()
@@ -68,8 +54,6 @@ class RequestFacetValue extends \ArrayObject
         return $this->name;
     }
     /**
-     * 
-     *
      * @param mixed $name
      *
      * @return self
@@ -81,8 +65,6 @@ class RequestFacetValue extends \ArrayObject
         return $this;
     }
     /**
-     * 
-     *
      * @return int
      */
     public function getSize(): int
@@ -90,8 +72,6 @@ class RequestFacetValue extends \ArrayObject
         return $this->size;
     }
     /**
-     * 
-     *
      * @param int $size
      *
      * @return self
@@ -103,8 +83,6 @@ class RequestFacetValue extends \ArrayObject
         return $this;
     }
     /**
-     * 
-     *
      * @return array<string, string>|null
      */
     public function getSort(): iterable
@@ -112,8 +90,6 @@ class RequestFacetValue extends \ArrayObject
         return $this->sort;
     }
     /**
-     * 
-     *
      * @param array<string, string>|null $sort
      *
      * @return self

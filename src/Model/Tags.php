@@ -13,18 +13,18 @@ class Tags extends \ArrayObject
         return array_key_exists($property, $this->initialized);
     }
     /**
-    * The Search endpoint can be used to attach tags to your documents. One or more tags can be applied 
-           to filter results via the API or within your analytics dashboard.
-    *
-    * @var list<string>
-    */
+     * The Search endpoint can be used to attach tags to your documents. One or more tags can be applied
+     *         to filter results via the API or within your analytics dashboard.
+     *
+     * @var list<string>
+     */
     protected $tags;
     /**
-    * The Search endpoint can be used to attach tags to your documents. One or more tags can be applied 
-           to filter results via the API or within your analytics dashboard.
-    *
-    * @return list<string>
-    */
+     * The Search endpoint can be used to attach tags to your documents. One or more tags can be applied
+     *         to filter results via the API or within your analytics dashboard.
+     *
+     * @return list<string>
+     */
     public function getTags(): array
     {
         return $this->tags;

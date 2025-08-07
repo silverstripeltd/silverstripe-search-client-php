@@ -13,14 +13,10 @@ class DocumentListRequest extends \ArrayObject
         return array_key_exists($property, $this->initialized);
     }
     /**
-     * 
-     *
      * @var PaginationNoTotals|null
      */
     protected $page;
     /**
-     * 
-     *
      * @return PaginationNoTotals|null
      */
     public function getPage(): PaginationNoTotals
@@ -28,8 +24,6 @@ class DocumentListRequest extends \ArrayObject
         return $this->page;
     }
     /**
-     * 
-     *
      * @param PaginationNoTotals|null $page
      *
      * @return self

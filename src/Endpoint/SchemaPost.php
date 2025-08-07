@@ -6,39 +6,38 @@ class SchemaPost extends \Silverstripe\Search\Client\Runtime\Client\BaseEndpoint
 {
     protected $engine_name;
     /**
-    * **Field types:**
-    
-    * `text`
-    * `number`
-    * `date`
-       * Strings containing formatted dates, e.g. "2015-01-01" or "2015/01/01 12:10:30".
-       * A number representing seconds-since-the-epoch.
-    * `geolocation`
-    
-    **Field names:**
-    
-    * Must contain a lowercase letter and may only contain lowercase letters, numbers, and underscores.
-    * Must not contain whitespace or have a leading underscore.
-    * Must not contain more than 64 characters.
-    * Must not be any of the following reserved words:
-       * `id`
-       * `engine_id`
-       * `search_index_id`
-       * `highlight`
-       * `any`
-       * `all`
-       * `none`
-       * `or`
-       * `and`
-       * `not`
-    * The following fields can be used, but must be of type `text`
-       * `body`
-    * The following fields can be used, but must be of type `binary`
-       * `_attachment`
-    *
-    * @param string $engineName 
-    * @param \Silverstripe\Search\Client\Model\Schema $requestBody 
-    */
+     * **Field types:**
+     *
+     * * `text`
+     * * `number`
+     * * `date`
+     *     * Strings containing formatted dates, e.g. "2015-01-01" or "2015/01/01 12:10:30".
+     *     * A number representing seconds-since-the-epoch.
+     * * `geolocation`
+     *
+     * **Field names:**
+     *
+     * * Must contain a lowercase letter and may only contain lowercase letters, numbers, and underscores.
+     * * Must not contain whitespace or have a leading underscore.
+     * * Must not contain more than 64 characters.
+     * * Must not be any of the following reserved words:
+     *     * `id`
+     *     * `engine_id`
+     *     * `search_index_id`
+     *     * `highlight`
+     *     * `any`
+     *     * `all`
+     *     * `none`
+     *     * `or`
+     *     * `and`
+     *     * `not`
+     * * The following fields can be used, but must be of type `text`
+     *     * `body`
+     * * The following fields can be used, but must be of type `binary`
+     *     * `_attachment`
+     * @param string $engineName
+     * @param \Silverstripe\Search\Client\Model\Schema $requestBody
+     */
     public function __construct(string $engineName, \Silverstripe\Search\Client\Model\Schema $requestBody)
     {
         $this->engine_name = $engineName;
@@ -77,13 +76,13 @@ class SchemaPost extends \Silverstripe\Search\Client\Runtime\Client\BaseEndpoint
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
-        if (is_null($contentType) === false && (200 === $status && mb_strpos($contentType, 'application/json') !== false)) {
+        if (is_null($contentType) === false && (200 === $status && mb_strpos(strtolower($contentType), 'application/json') !== false)) {
             return $serializer->deserialize($body, 'Silverstripe\Search\Client\Model\SchemaPostResponse', 'json');
         }
         if (404 === $status) {
             throw new \Silverstripe\Search\Client\Exception\SchemaPostNotFoundException($response);
         }
-        if (is_null($contentType) === false && (422 === $status && mb_strpos($contentType, 'application/json') !== false)) {
+        if (is_null($contentType) === false && (422 === $status && mb_strpos(strtolower($contentType), 'application/json') !== false)) {
             throw new \Silverstripe\Search\Client\Exception\SchemaPostUnprocessableEntityException($serializer->deserialize($body, 'Silverstripe\Search\Client\Model\HTTPValidationError', 'json'), $response);
         }
         throw new \Silverstripe\Search\Client\Exception\UnexpectedStatusCodeException($status, $body);

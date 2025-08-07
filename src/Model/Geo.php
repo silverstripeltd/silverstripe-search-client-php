@@ -13,38 +13,26 @@ class Geo extends \ArrayObject
         return array_key_exists($property, $this->initialized);
     }
     /**
-     * 
-     *
      * @var mixed
      */
     protected $from;
     /**
-     * 
-     *
      * @var mixed
      */
     protected $to;
     /**
-     * 
-     *
      * @var Coordinate|list<mixed>|string
      */
     protected $center;
     /**
-     * 
-     *
      * @var string
      */
     protected $unit;
     /**
-     * 
-     *
      * @var mixed
      */
     protected $distance;
     /**
-     * 
-     *
      * @return mixed
      */
     public function getFrom()
@@ -52,8 +40,6 @@ class Geo extends \ArrayObject
         return $this->from;
     }
     /**
-     * 
-     *
      * @param mixed $from
      *
      * @return self
@@ -65,8 +51,6 @@ class Geo extends \ArrayObject
         return $this;
     }
     /**
-     * 
-     *
      * @return mixed
      */
     public function getTo()
@@ -74,8 +58,6 @@ class Geo extends \ArrayObject
         return $this->to;
     }
     /**
-     * 
-     *
      * @param mixed $to
      *
      * @return self
@@ -87,8 +69,6 @@ class Geo extends \ArrayObject
         return $this;
     }
     /**
-     * 
-     *
      * @return Coordinate|list<mixed>|string
      */
     public function getCenter()
@@ -96,8 +76,6 @@ class Geo extends \ArrayObject
         return $this->center;
     }
     /**
-     * 
-     *
      * @param Coordinate|list<mixed>|string $center
      *
      * @return self
@@ -109,8 +87,6 @@ class Geo extends \ArrayObject
         return $this;
     }
     /**
-     * 
-     *
      * @return string
      */
     public function getUnit(): string
@@ -118,8 +94,6 @@ class Geo extends \ArrayObject
         return $this->unit;
     }
     /**
-     * 
-     *
      * @param string $unit
      *
      * @return self
@@ -131,8 +105,6 @@ class Geo extends \ArrayObject
         return $this;
     }
     /**
-     * 
-     *
      * @return mixed
      */
     public function getDistance()
@@ -140,8 +112,6 @@ class Geo extends \ArrayObject
         return $this->distance;
     }
     /**
-     * 
-     *
      * @param mixed $distance
      *
      * @return self
