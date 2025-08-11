@@ -161,7 +161,7 @@ class Client extends \Silverstripe\Search\Client\Runtime\Client\Client
      * @throws \Silverstripe\Search\Client\Exception\SchemaGetUnprocessableEntityException
      * @throws \Silverstripe\Search\Client\Exception\UnexpectedStatusCodeException
      *
-     * @return \Silverstripe\Search\Client\Model\Schema|\Psr\Http\Message\ResponseInterface
+     * @return \Silverstripe\Search\Client\Model\SchemaGetResponse|\Psr\Http\Message\ResponseInterface
      */
     public function schemaGet(string $engineName, string $fetch = self::FETCH_OBJECT)
     {

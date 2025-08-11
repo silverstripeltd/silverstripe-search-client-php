@@ -36,14 +36,14 @@ class SchemaGet extends \Silverstripe\Search\Client\Runtime\Client\BaseEndpoint 
      * @throws \Silverstripe\Search\Client\Exception\SchemaGetUnprocessableEntityException
      * @throws \Silverstripe\Search\Client\Exception\UnexpectedStatusCodeException
      *
-     * @return \Silverstripe\Search\Client\Model\Schema
+     * @return \Silverstripe\Search\Client\Model\SchemaGetResponse
      */
     protected function transformResponseBody(\Psr\Http\Message\ResponseInterface $response, \Symfony\Component\Serializer\SerializerInterface $serializer, ?string $contentType = null)
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
         if (is_null($contentType) === false && (200 === $status && mb_strpos(strtolower($contentType), 'application/json') !== false)) {
-            return $serializer->deserialize($body, 'Silverstripe\Search\Client\Model\Schema', 'json');
+            return $serializer->deserialize($body, 'Silverstripe\Search\Client\Model\SchemaGetResponse', 'json');
         }
         if (404 === $status) {
             throw new \Silverstripe\Search\Client\Exception\SchemaGetNotFoundException($response);
