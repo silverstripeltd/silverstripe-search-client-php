@@ -1,0 +1,7 @@
+{
+    "name": "silverstripe-search-client-php",
+    "description": "Silverstripe Search PHP Client",
+    "main": "README.md",
+    "repository": "https://github.com/silverstripeltd/silverstripe-search-client-php.git",
+    "author": "Silverstripe Ltd"
+}
