@@ -27,44 +27,38 @@ class SearchResponseEngineNormalizer implements DenormalizerInterface, Normalize
     }
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Silverstripe\Search\Client\Model\SearchResponseEngine();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Silverstripe\Search\Client\Model\SearchResponseEngine();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
-        }
-        if (\array_key_exists('name', $data)) {
+        if (\array_key_exists('name', $data) && $data['name'] !== null) {
             $object->setName($data['name']);
-            unset($data['name']);
         }
-        if (\array_key_exists('type', $data)) {
+        elseif (\array_key_exists('name', $data) && $data['name'] === null) {
+            $object->setName(null);
+        }
+        if (\array_key_exists('type', $data) && $data['type'] !== null) {
             $object->setType($data['type']);
-            unset($data['type']);
         }
-        foreach ($data as $key => $value) {
-            if (preg_match('/.*/', (string) $key)) {
-                $object[$key] = $value;
-            }
+        elseif (\array_key_exists('type', $data) && $data['type'] === null) {
+            $object->setType(null);
         }
         return $object;
     }
     public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         $dataArray = [];
-        if ($data->isInitialized('name') && null !== $data->getName()) {
+        if ($data->isInitialized('name')) {
             $dataArray['name'] = $data->getName();
         }
-        if ($data->isInitialized('type') && null !== $data->getType()) {
+        if ($data->isInitialized('type')) {
             $dataArray['type'] = $data->getType();
-        }
-        foreach ($data as $key => $value) {
-            if (preg_match('/.*/', (string) $key)) {
-                $dataArray[$key] = $value;
-            }
         }
         return $dataArray;
     }

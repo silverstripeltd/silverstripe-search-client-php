@@ -2,7 +2,7 @@
 
 namespace Silverstripe\Search\Client\Model;
 
-class SearchResponseMeta extends \ArrayObject
+class SearchResponseMeta
 {
     /**
      * @var array
@@ -13,11 +13,11 @@ class SearchResponseMeta extends \ArrayObject
         return array_key_exists($property, $this->initialized);
     }
     /**
-     * @var mixed
+     * @var mixed|null
      */
     protected $warnings;
     /**
-     * @var mixed
+     * @var mixed|null
      */
     protected $precision;
     /**
@@ -25,11 +25,11 @@ class SearchResponseMeta extends \ArrayObject
      */
     protected $engine;
     /**
-     * @var mixed
+     * @var mixed|null
      */
     protected $requestId;
     /**
-     * @var PaginationWithTotals
+     * @var PaginationResponse
      */
     protected $page;
     /**
@@ -71,7 +71,7 @@ class SearchResponseMeta extends \ArrayObject
     /**
      * @return SearchResponseEngine|null
      */
-    public function getEngine(): SearchResponseEngine
+    public function getEngine(): ?SearchResponseEngine
     {
         return $this->engine;
     }
@@ -80,7 +80,7 @@ class SearchResponseMeta extends \ArrayObject
      *
      * @return self
      */
-    public function setEngine(SearchResponseEngine $engine): self
+    public function setEngine(?SearchResponseEngine $engine): self
     {
         $this->initialized['engine'] = true;
         $this->engine = $engine;
@@ -105,18 +105,18 @@ class SearchResponseMeta extends \ArrayObject
         return $this;
     }
     /**
-     * @return PaginationWithTotals
+     * @return PaginationResponse
      */
-    public function getPage(): PaginationWithTotals
+    public function getPage(): PaginationResponse
     {
         return $this->page;
     }
     /**
-     * @param PaginationWithTotals $page
+     * @param PaginationResponse $page
      *
      * @return self
      */
-    public function setPage(PaginationWithTotals $page): self
+    public function setPage(PaginationResponse $page): self
     {
         $this->initialized['page'] = true;
         $this->page = $page;

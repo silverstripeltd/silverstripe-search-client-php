@@ -27,28 +27,21 @@ class SynonymRuleNormalizer implements DenormalizerInterface, NormalizerInterfac
     }
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Silverstripe\Search\Client\Model\SynonymRule();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Silverstripe\Search\Client\Model\SynonymRule();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
-        }
         if (\array_key_exists('id', $data)) {
             $object->setId($data['id']);
-            unset($data['id']);
         }
         if (\array_key_exists('synonyms', $data)) {
             $object->setSynonyms($data['synonyms']);
-            unset($data['synonyms']);
-        }
-        foreach ($data as $key => $value) {
-            if (preg_match('/.*/', (string) $key)) {
-                $object[$key] = $value;
-            }
         }
         return $object;
     }
@@ -57,11 +50,6 @@ class SynonymRuleNormalizer implements DenormalizerInterface, NormalizerInterfac
         $dataArray = [];
         $dataArray['id'] = $data->getId();
         $dataArray['synonyms'] = $data->getSynonyms();
-        foreach ($data as $key => $value) {
-            if (preg_match('/.*/', (string) $key)) {
-                $dataArray[$key] = $value;
-            }
-        }
         return $dataArray;
     }
     public function getSupportedTypes(?string $format = null): array

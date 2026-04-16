@@ -2,7 +2,7 @@
 
 namespace Silverstripe\Search\Client\Model;
 
-class DocumentPostPatchResponse extends \ArrayObject
+class DocumentPostPatchResponse
 {
     /**
      * @var array
@@ -17,7 +17,7 @@ class DocumentPostPatchResponse extends \ArrayObject
      */
     protected $id;
     /**
-     * @var mixed
+     * @var mixed|null
      */
     protected $errors;
     /**

@@ -27,51 +27,47 @@ class RequestFacetRangeObjectNormalizer implements DenormalizerInterface, Normal
     }
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Silverstripe\Search\Client\Model\RequestFacetRangeObject();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Silverstripe\Search\Client\Model\RequestFacetRangeObject();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
-        }
-        if (\array_key_exists('from', $data)) {
+        if (\array_key_exists('from', $data) && $data['from'] !== null) {
             $object->setFrom($data['from']);
-            unset($data['from']);
         }
-        if (\array_key_exists('to', $data)) {
+        elseif (\array_key_exists('from', $data) && $data['from'] === null) {
+            $object->setFrom(null);
+        }
+        if (\array_key_exists('to', $data) && $data['to'] !== null) {
             $object->setTo($data['to']);
-            unset($data['to']);
         }
-        if (\array_key_exists('name', $data)) {
+        elseif (\array_key_exists('to', $data) && $data['to'] === null) {
+            $object->setTo(null);
+        }
+        if (\array_key_exists('name', $data) && $data['name'] !== null) {
             $object->setName($data['name']);
-            unset($data['name']);
         }
-        foreach ($data as $key => $value) {
-            if (preg_match('/.*/', (string) $key)) {
-                $object[$key] = $value;
-            }
+        elseif (\array_key_exists('name', $data) && $data['name'] === null) {
+            $object->setName(null);
         }
         return $object;
     }
     public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         $dataArray = [];
-        if ($data->isInitialized('from') && null !== $data->getFrom()) {
+        if ($data->isInitialized('from')) {
             $dataArray['from'] = $data->getFrom();
         }
-        if ($data->isInitialized('to') && null !== $data->getTo()) {
+        if ($data->isInitialized('to')) {
             $dataArray['to'] = $data->getTo();
         }
-        if ($data->isInitialized('name') && null !== $data->getName()) {
+        if ($data->isInitialized('name')) {
             $dataArray['name'] = $data->getName();
-        }
-        foreach ($data as $key => $value) {
-            if (preg_match('/.*/', (string) $key)) {
-                $dataArray[$key] = $value;
-            }
         }
         return $dataArray;
     }

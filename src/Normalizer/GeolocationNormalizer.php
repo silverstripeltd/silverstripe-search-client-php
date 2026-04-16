@@ -27,15 +27,15 @@ class GeolocationNormalizer implements DenormalizerInterface, NormalizerInterfac
     }
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Silverstripe\Search\Client\Model\Geolocation();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Silverstripe\Search\Client\Model\Geolocation();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('center', $data)) {
             $value = $data['center'];
@@ -51,16 +51,9 @@ class GeolocationNormalizer implements DenormalizerInterface, NormalizerInterfac
                 $value = $data['center'];
             }
             $object->setCenter($value);
-            unset($data['center']);
         }
         if (\array_key_exists('order', $data)) {
             $object->setOrder($data['order']);
-            unset($data['order']);
-        }
-        foreach ($data as $key => $value_2) {
-            if (preg_match('/.*/', (string) $key)) {
-                $object[$key] = $value_2;
-            }
         }
         return $object;
     }
@@ -69,7 +62,7 @@ class GeolocationNormalizer implements DenormalizerInterface, NormalizerInterfac
         $dataArray = [];
         $value = $data->getCenter();
         if (is_object($data->getCenter())) {
-            $value = $data->getCenter() == null ? null : new \ArrayObject($this->normalizer->normalize($data->getCenter(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
+            $value = $this->normalizer->normalize($data->getCenter(), 'json', $context);
         } elseif (is_array($data->getCenter())) {
             $values = [];
             foreach ($data->getCenter() as $value_1) {
@@ -81,11 +74,6 @@ class GeolocationNormalizer implements DenormalizerInterface, NormalizerInterfac
         }
         $dataArray['center'] = $value;
         $dataArray['order'] = $data->getOrder();
-        foreach ($data as $key => $value_2) {
-            if (preg_match('/.*/', (string) $key)) {
-                $dataArray[$key] = $value_2;
-            }
-        }
         return $dataArray;
     }
     public function getSupportedTypes(?string $format = null): array

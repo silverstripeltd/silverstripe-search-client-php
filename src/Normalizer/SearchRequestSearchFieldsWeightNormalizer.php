@@ -27,37 +27,29 @@ class SearchRequestSearchFieldsWeightNormalizer implements DenormalizerInterface
     }
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Silverstripe\Search\Client\Model\SearchRequestSearchFieldsWeight();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Silverstripe\Search\Client\Model\SearchRequestSearchFieldsWeight();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
-        }
-        if (\array_key_exists('weight', $data)) {
+        if (\array_key_exists('weight', $data) && $data['weight'] !== null) {
             $object->setWeight($data['weight']);
-            unset($data['weight']);
         }
-        foreach ($data as $key => $value) {
-            if (preg_match('/.*/', (string) $key)) {
-                $object[$key] = $value;
-            }
+        elseif (\array_key_exists('weight', $data) && $data['weight'] === null) {
+            $object->setWeight(null);
         }
         return $object;
     }
     public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         $dataArray = [];
-        if ($data->isInitialized('weight') && null !== $data->getWeight()) {
+        if ($data->isInitialized('weight')) {
             $dataArray['weight'] = $data->getWeight();
-        }
-        foreach ($data as $key => $value) {
-            if (preg_match('/.*/', (string) $key)) {
-                $dataArray[$key] = $value;
-            }
         }
         return $dataArray;
     }

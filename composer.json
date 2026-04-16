@@ -15,22 +15,17 @@
     ],
     "require": {
         "php": "^8.1",
-        "jane-php/open-api-runtime": "^7.9"
+        "jane-php/open-api-runtime": "^7.9",
+        "nyholm/psr7": "^1.8"
     },
     "require-dev": {
-        "jane-php/open-api-3": "dev-fixes as 7.9.0",
-        "jane-php/json-schema": "dev-bugfix/array-objects as 7.9.0",
-        "jane-php/open-api-common": "dev-next as 7.9.0",
+        "jane-php/jane-php": "dev-next",
         "friendsofphp/php-cs-fixer": "^3.75"
     },
     "repositories": [
         {
             "type": "vcs",
-            "url": "git@github.com:silverstripeltd/jane-php-json-schema.git"
-        },
-        {
-            "type": "vcs",
-            "url": "git@github.com:silverstripeltd/jane-php-open-api-3.git"
+            "url": "https://github.com/janephp/janephp.git"
         }
     ],
     "extra": {

@@ -2,7 +2,7 @@
 
 namespace Silverstripe\Search\Client\Model;
 
-class ValidationError extends \ArrayObject
+class ValidationError
 {
     /**
      * @var array

@@ -13,6 +13,7 @@ class SearchPost extends \Silverstripe\Search\Client\Runtime\Client\BaseEndpoint
      * `query` **(required)**
      * * String or number to match
      * * The value '' (empty string) matches all documents
+     * * maximum length of 128 characters
      * * The following Lucene query syntax is supported:
      *     * double-quoted strings
      *     * `+` and `-`
@@ -23,7 +24,7 @@ class SearchPost extends \Silverstripe\Search\Client\Runtime\Client\BaseEndpoint
      *
      * `page.size` (optional)
      * * Number of results per page
-     * * Must be greater than or equal to 1 and less than or equal to 100
+     * * Must be greater than or equal to 1 and less than or equal to 1000
      * * Defaults to 10.
      *
      * `page.current` (optional)
@@ -93,6 +94,44 @@ class SearchPost extends \Silverstripe\Search\Client\Runtime\Client\BaseEndpoint
      *     * `date`: Value filter, Range filter
      *     * `geolocation`: Geo filter
      *
+     * `boosts` (optional)
+     * * Apply boosts to influence the relevance scoring of results at query time
+     * * JSON object where the key is a field name and the value is an array of boost objects
+     * * Query-time boosts completely replace any stored boosts configured for the engine
+     * * The following boost types are available based on field type:
+     *     * `text`: Value boost
+     *     * `number`: Value boost, Proximity boost
+     *     * `date`: Value boost, Proximity boost (recency)
+     *     * `geolocation`: Proximity boost
+     *
+     * `boosts.{field_key}` **(required)**
+     * * The field from your schema upon which to apply your boost
+     * * Must contain an array of {boost_object}.
+     *
+     * `{boost_object}.type` **(required)**
+     * * Type of boost: "value" or "proximity"
+     *
+     * `{boost_object}.value` **(required for value boosts)**
+     * * An array of string values to match against
+     * * Documents with matching values in the boosted field will have their relevance score increased.
+     *
+     * `{boost_object}.center` **(required for proximity boosts)**
+     * * The center point from which to calculate distance
+     * * For date fields: a date string (e.g. "2024-01-01") or a relative date expression.
+     *   Supported formats: "now", "now-1d", "now-7d", "now-1M", "now-1y", "now/d" (rounded to start of day)
+     * * For number fields: a numeric string (e.g. "100")
+     * * For geolocation fields: a lat,lon string (e.g. "-36.8485,174.7633")
+     *
+     * `{boost_object}.function` **(required for proximity boosts)**
+     * * The decay function to use: "gaussian", "exponential", or "linear"
+     * * Gaussian provides a smooth bell-curve decay
+     * * Exponential provides a sharp initial decay that flattens over distance
+     * * Linear provides a constant rate of decay
+     *
+     * `{boost_object}.factor` (optional)
+     * * The strength of the boost, between 0 and 10
+     * * Defaults to 1.
+     *
      * `search_fields` (optional)
      * * The search_fields parameter restricts a query to search only specific fields
      * * Restricting fields will result in faster queries, especially for schemas with many text fields
@@ -139,14 +178,17 @@ class SearchPost extends \Silverstripe\Search\Client\Runtime\Client\BaseEndpoint
      *
      * `analytics` (optional)
      * * Object to delimit the analytics parameters.
+     * * Only available to Analyst and Architect plans.
      *
      * `analytics.tags` **(required)**
      * * Array of strings representing the tags you’d like to apply to the query
      * * You may submit up to 16 tags, and each may be up to 64 characters in length.
+     * * Only available to Analyst and Architect plans.
      *
      * `record_analytics` (optional)
      * * If `true`, generates an analytics query event for the search request
      * * Defaults to `true`.
+     * * Only available to Analyst and Architect plans.
      * @param string $engineName
      * @param \Silverstripe\Search\Client\Model\SearchRequest $requestBody
      */
@@ -182,14 +224,14 @@ class SearchPost extends \Silverstripe\Search\Client\Runtime\Client\BaseEndpoint
      * @throws \Silverstripe\Search\Client\Exception\SearchPostUnprocessableEntityException
      * @throws \Silverstripe\Search\Client\Exception\UnexpectedStatusCodeException
      *
-     * @return null
+     * @return \Silverstripe\Search\Client\Model\SearchResponse
      */
     protected function transformResponseBody(\Psr\Http\Message\ResponseInterface $response, \Symfony\Component\Serializer\SerializerInterface $serializer, ?string $contentType = null)
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
         if (is_null($contentType) === false && (200 === $status && mb_strpos(strtolower($contentType), 'application/json') !== false)) {
-            return json_decode($body);
+            return $serializer->deserialize($body, 'Silverstripe\Search\Client\Model\SearchResponse', 'json');
         }
         if (404 === $status) {
             throw new \Silverstripe\Search\Client\Exception\SearchPostNotFoundException($response);

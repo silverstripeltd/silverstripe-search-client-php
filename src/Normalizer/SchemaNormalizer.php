@@ -27,23 +27,29 @@ class SchemaNormalizer implements DenormalizerInterface, NormalizerInterface, De
     }
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Silverstripe\Search\Client\Model\Schema();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Silverstripe\Search\Client\Model\Schema();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
-        }
-        if (\array_key_exists('_attachment', $data)) {
+        if (\array_key_exists('_attachment', $data) && $data['_attachment'] !== null) {
             $object->setAttachment($data['_attachment']);
             unset($data['_attachment']);
         }
-        if (\array_key_exists('body', $data)) {
+        elseif (\array_key_exists('_attachment', $data) && $data['_attachment'] === null) {
+            $object->setAttachment(null);
+        }
+        if (\array_key_exists('body', $data) && $data['body'] !== null) {
             $object->setBody($data['body']);
             unset($data['body']);
+        }
+        elseif (\array_key_exists('body', $data) && $data['body'] === null) {
+            $object->setBody(null);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -55,10 +61,10 @@ class SchemaNormalizer implements DenormalizerInterface, NormalizerInterface, De
     public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         $dataArray = [];
-        if ($data->isInitialized('attachment') && null !== $data->getAttachment()) {
+        if ($data->isInitialized('attachment')) {
             $dataArray['_attachment'] = $data->getAttachment();
         }
-        if ($data->isInitialized('body') && null !== $data->getBody()) {
+        if ($data->isInitialized('body')) {
             $dataArray['body'] = $data->getBody();
         }
         foreach ($data as $key => $value) {

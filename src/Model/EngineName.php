@@ -2,7 +2,7 @@
 
 namespace Silverstripe\Search\Client\Model;
 
-class Engine extends \ArrayObject
+class EngineName
 {
     /**
      * @var array

@@ -27,56 +27,51 @@ class DocumentListResponseMetaNormalizer implements DenormalizerInterface, Norma
     }
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Silverstripe\Search\Client\Model\DocumentListResponseMeta();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Silverstripe\Search\Client\Model\DocumentListResponseMeta();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
-        }
-        if (\array_key_exists('alerts', $data)) {
+        if (\array_key_exists('alerts', $data) && $data['alerts'] !== null) {
             $object->setAlerts($data['alerts']);
-            unset($data['alerts']);
+        }
+        elseif (\array_key_exists('alerts', $data) && $data['alerts'] === null) {
+            $object->setAlerts(null);
         }
         if (\array_key_exists('page', $data)) {
-            $object->setPage($this->denormalizer->denormalize($data['page'], \Silverstripe\Search\Client\Model\PaginationWithTotals::class, 'json', $context));
-            unset($data['page']);
+            $object->setPage($this->denormalizer->denormalize($data['page'], \Silverstripe\Search\Client\Model\PaginationResponse::class, 'json', $context));
         }
-        if (\array_key_exists('request_id', $data)) {
+        if (\array_key_exists('request_id', $data) && $data['request_id'] !== null) {
             $object->setRequestId($data['request_id']);
-            unset($data['request_id']);
         }
-        if (\array_key_exists('warnings', $data)) {
+        elseif (\array_key_exists('request_id', $data) && $data['request_id'] === null) {
+            $object->setRequestId(null);
+        }
+        if (\array_key_exists('warnings', $data) && $data['warnings'] !== null) {
             $object->setWarnings($data['warnings']);
-            unset($data['warnings']);
         }
-        foreach ($data as $key => $value) {
-            if (preg_match('/.*/', (string) $key)) {
-                $object[$key] = $value;
-            }
+        elseif (\array_key_exists('warnings', $data) && $data['warnings'] === null) {
+            $object->setWarnings(null);
         }
         return $object;
     }
     public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         $dataArray = [];
-        if ($data->isInitialized('alerts') && null !== $data->getAlerts()) {
+        if ($data->isInitialized('alerts')) {
             $dataArray['alerts'] = $data->getAlerts();
         }
-        $dataArray['page'] = $data->getPage() == null ? null : new \ArrayObject($this->normalizer->normalize($data->getPage(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
-        if ($data->isInitialized('requestId') && null !== $data->getRequestId()) {
+        $dataArray['page'] = $this->normalizer->normalize($data->getPage(), 'json', $context);
+        if ($data->isInitialized('requestId')) {
             $dataArray['request_id'] = $data->getRequestId();
         }
-        if ($data->isInitialized('warnings') && null !== $data->getWarnings()) {
+        if ($data->isInitialized('warnings')) {
             $dataArray['warnings'] = $data->getWarnings();
-        }
-        foreach ($data as $key => $value) {
-            if (preg_match('/.*/', (string) $key)) {
-                $dataArray[$key] = $value;
-            }
         }
         return $dataArray;
     }

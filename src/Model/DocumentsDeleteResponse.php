@@ -2,7 +2,7 @@
 
 namespace Silverstripe\Search\Client\Model;
 
-class DocumentsDeleteResponse extends \ArrayObject
+class DocumentsDeleteResponse
 {
     /**
      * @var array

@@ -2,7 +2,7 @@
 
 namespace Silverstripe\Search\Client\Model;
 
-class SearchRequest extends \ArrayObject
+class SearchRequest
 {
     /**
      * @var array
@@ -21,7 +21,7 @@ class SearchRequest extends \ArrayObject
      */
     protected $sort;
     /**
-     * @var PaginationNoTotals|null
+     * @var SearchRequestPagination|null
      */
     protected $page;
     /**
@@ -33,7 +33,7 @@ class SearchRequest extends \ArrayObject
      */
     protected $resultFields;
     /**
-     * @var array<string, list<mixed>>|null
+     * @var array<string, list<RequestFacetValue>|list<RequestFacetRange>>|null
      */
     protected $facets;
     /**
@@ -41,9 +41,17 @@ class SearchRequest extends \ArrayObject
      */
     protected $filters;
     /**
+     * @var mixed|null
+     */
+    protected $boosts;
+    /**
      * @var Tags|null
      */
     protected $analytics;
+    /**
+     * @var bool
+     */
+    protected $recordAnalytics = true;
     /**
      * @return string
      */
@@ -81,18 +89,18 @@ class SearchRequest extends \ArrayObject
         return $this;
     }
     /**
-     * @return PaginationNoTotals|null
+     * @return SearchRequestPagination|null
      */
-    public function getPage(): PaginationNoTotals
+    public function getPage(): ?SearchRequestPagination
     {
         return $this->page;
     }
     /**
-     * @param PaginationNoTotals|null $page
+     * @param SearchRequestPagination|null $page
      *
      * @return self
      */
-    public function setPage(PaginationNoTotals $page): self
+    public function setPage(?SearchRequestPagination $page): self
     {
         $this->initialized['page'] = true;
         $this->page = $page;
@@ -119,7 +127,7 @@ class SearchRequest extends \ArrayObject
     /**
      * @return array<string, SearchRequestResultField>|null
      */
-    public function getResultFields(): iterable
+    public function getResultFields(): ?iterable
     {
         return $this->resultFields;
     }
@@ -128,25 +136,25 @@ class SearchRequest extends \ArrayObject
      *
      * @return self
      */
-    public function setResultFields(iterable $resultFields): self
+    public function setResultFields(?iterable $resultFields): self
     {
         $this->initialized['resultFields'] = true;
         $this->resultFields = $resultFields;
         return $this;
     }
     /**
-     * @return array<string, list<mixed>>|null
+     * @return array<string, list<RequestFacetValue>|list<RequestFacetRange>>|null
      */
-    public function getFacets(): iterable
+    public function getFacets(): ?iterable
     {
         return $this->facets;
     }
     /**
-     * @param array<string, list<mixed>>|null $facets
+     * @param array<string, list<RequestFacetValue>|list<RequestFacetRange>>|null $facets
      *
      * @return self
      */
-    public function setFacets(iterable $facets): self
+    public function setFacets(?iterable $facets): self
     {
         $this->initialized['facets'] = true;
         $this->facets = $facets;
@@ -155,7 +163,7 @@ class SearchRequest extends \ArrayObject
     /**
      * @return Filters|null
      */
-    public function getFilters(): Filters
+    public function getFilters(): ?Filters
     {
         return $this->filters;
     }
@@ -164,16 +172,34 @@ class SearchRequest extends \ArrayObject
      *
      * @return self
      */
-    public function setFilters(Filters $filters): self
+    public function setFilters(?Filters $filters): self
     {
         $this->initialized['filters'] = true;
         $this->filters = $filters;
         return $this;
     }
     /**
+     * @return mixed
+     */
+    public function getBoosts()
+    {
+        return $this->boosts;
+    }
+    /**
+     * @param mixed $boosts
+     *
+     * @return self
+     */
+    public function setBoosts($boosts): self
+    {
+        $this->initialized['boosts'] = true;
+        $this->boosts = $boosts;
+        return $this;
+    }
+    /**
      * @return Tags|null
      */
-    public function getAnalytics(): Tags
+    public function getAnalytics(): ?Tags
     {
         return $this->analytics;
     }
@@ -182,10 +208,28 @@ class SearchRequest extends \ArrayObject
      *
      * @return self
      */
-    public function setAnalytics(Tags $analytics): self
+    public function setAnalytics(?Tags $analytics): self
     {
         $this->initialized['analytics'] = true;
         $this->analytics = $analytics;
+        return $this;
+    }
+    /**
+     * @return bool
+     */
+    public function getRecordAnalytics(): bool
+    {
+        return $this->recordAnalytics;
+    }
+    /**
+     * @param bool $recordAnalytics
+     *
+     * @return self
+     */
+    public function setRecordAnalytics(bool $recordAnalytics): self
+    {
+        $this->initialized['recordAnalytics'] = true;
+        $this->recordAnalytics = $recordAnalytics;
         return $this;
     }
 }

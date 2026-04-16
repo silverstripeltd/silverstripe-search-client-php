@@ -2,7 +2,7 @@
 
 namespace Silverstripe\Search\Client\Model;
 
-class DocumentField extends \ArrayObject
+class DocumentField
 {
     /**
      * @var array
@@ -13,11 +13,11 @@ class DocumentField extends \ArrayObject
         return array_key_exists($property, $this->initialized);
     }
     /**
-     * @var mixed
+     * @var mixed|null
      */
     protected $raw;
     /**
-     * @var mixed
+     * @var mixed|null
      */
     protected $snippet;
     /**

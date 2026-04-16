@@ -2,7 +2,7 @@
 
 namespace Silverstripe\Search\Client\Model;
 
-class SpellingSuggestionRequest extends \ArrayObject
+class SpellingSuggestionRequest
 {
     /**
      * @var array
@@ -13,7 +13,7 @@ class SpellingSuggestionRequest extends \ArrayObject
         return array_key_exists($property, $this->initialized);
     }
     /**
-     * A query for which to receive spelling suggestions.
+     * A query for which to receive spelling suggestions. Maximum length of 128 characters.
      *
      * @var string
      */
@@ -31,11 +31,11 @@ class SpellingSuggestionRequest extends \ArrayObject
     /**
      * Whether you would like a 'snippet' field to be returned with each of your results.
      *
-     * @var mixed
+     * @var mixed|null
      */
     protected $formatted = false;
     /**
-     * A query for which to receive spelling suggestions.
+     * A query for which to receive spelling suggestions. Maximum length of 128 characters.
      *
      * @return string
      */
@@ -44,7 +44,7 @@ class SpellingSuggestionRequest extends \ArrayObject
         return $this->query;
     }
     /**
-     * A query for which to receive spelling suggestions.
+     * A query for which to receive spelling suggestions. Maximum length of 128 characters.
      *
      * @param string $query
      *

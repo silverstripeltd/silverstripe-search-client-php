@@ -27,28 +27,21 @@ class CoordinateNormalizer implements DenormalizerInterface, NormalizerInterface
     }
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Silverstripe\Search\Client\Model\Coordinate();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Silverstripe\Search\Client\Model\Coordinate();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
-        }
         if (\array_key_exists('latitude', $data)) {
             $object->setLatitude($data['latitude']);
-            unset($data['latitude']);
         }
         if (\array_key_exists('longitude', $data)) {
             $object->setLongitude($data['longitude']);
-            unset($data['longitude']);
-        }
-        foreach ($data as $key => $value) {
-            if (preg_match('/.*/', (string) $key)) {
-                $object[$key] = $value;
-            }
         }
         return $object;
     }
@@ -57,11 +50,6 @@ class CoordinateNormalizer implements DenormalizerInterface, NormalizerInterface
         $dataArray = [];
         $dataArray['latitude'] = $data->getLatitude();
         $dataArray['longitude'] = $data->getLongitude();
-        foreach ($data as $key => $value) {
-            if (preg_match('/.*/', (string) $key)) {
-                $dataArray[$key] = $value;
-            }
-        }
         return $dataArray;
     }
     public function getSupportedTypes(?string $format = null): array

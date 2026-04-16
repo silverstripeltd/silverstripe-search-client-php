@@ -2,7 +2,7 @@
 
 namespace Silverstripe\Search\Client\Model;
 
-class SearchRequestResultField extends \ArrayObject
+class SearchRequestResultField
 {
     /**
      * @var array
@@ -25,7 +25,7 @@ class SearchRequestResultField extends \ArrayObject
     /**
      * @return SearchRequestResultFieldRaw|null
      */
-    public function getRaw(): SearchRequestResultFieldRaw
+    public function getRaw(): ?SearchRequestResultFieldRaw
     {
         return $this->raw;
     }
@@ -34,7 +34,7 @@ class SearchRequestResultField extends \ArrayObject
      *
      * @return self
      */
-    public function setRaw(SearchRequestResultFieldRaw $raw): self
+    public function setRaw(?SearchRequestResultFieldRaw $raw): self
     {
         $this->initialized['raw'] = true;
         $this->raw = $raw;
@@ -45,7 +45,7 @@ class SearchRequestResultField extends \ArrayObject
      *
      * @return SearchRequestResultFieldSnippet|null
      */
-    public function getSnippet(): SearchRequestResultFieldSnippet
+    public function getSnippet(): ?SearchRequestResultFieldSnippet
     {
         return $this->snippet;
     }
@@ -56,7 +56,7 @@ class SearchRequestResultField extends \ArrayObject
      *
      * @return self
      */
-    public function setSnippet(SearchRequestResultFieldSnippet $snippet): self
+    public function setSnippet(?SearchRequestResultFieldSnippet $snippet): self
     {
         $this->initialized['snippet'] = true;
         $this->snippet = $snippet;

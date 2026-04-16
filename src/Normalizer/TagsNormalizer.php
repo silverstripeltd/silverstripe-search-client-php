@@ -27,15 +27,15 @@ class TagsNormalizer implements DenormalizerInterface, NormalizerInterface, Deno
     }
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Silverstripe\Search\Client\Model\Tags();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Silverstripe\Search\Client\Model\Tags();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('tags', $data)) {
             $values = [];
@@ -43,12 +43,6 @@ class TagsNormalizer implements DenormalizerInterface, NormalizerInterface, Deno
                 $values[] = $value;
             }
             $object->setTags($values);
-            unset($data['tags']);
-        }
-        foreach ($data as $key => $value_1) {
-            if (preg_match('/.*/', (string) $key)) {
-                $object[$key] = $value_1;
-            }
         }
         return $object;
     }
@@ -60,11 +54,6 @@ class TagsNormalizer implements DenormalizerInterface, NormalizerInterface, Deno
             $values[] = $value;
         }
         $dataArray['tags'] = $values;
-        foreach ($data as $key => $value_1) {
-            if (preg_match('/.*/', (string) $key)) {
-                $dataArray[$key] = $value_1;
-            }
-        }
         return $dataArray;
     }
     public function getSupportedTypes(?string $format = null): array

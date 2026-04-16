@@ -2,7 +2,7 @@
 
 namespace Silverstripe\Search\Client\Model;
 
-class Range extends \ArrayObject
+class Range
 {
     /**
      * @var array
@@ -13,11 +13,11 @@ class Range extends \ArrayObject
         return array_key_exists($property, $this->initialized);
     }
     /**
-     * @var mixed
+     * @var mixed|null
      */
     protected $from;
     /**
-     * @var mixed
+     * @var mixed|null
      */
     protected $to;
     /**

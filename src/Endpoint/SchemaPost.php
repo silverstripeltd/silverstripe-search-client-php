@@ -70,14 +70,14 @@ class SchemaPost extends \Silverstripe\Search\Client\Runtime\Client\BaseEndpoint
      * @throws \Silverstripe\Search\Client\Exception\SchemaPostUnprocessableEntityException
      * @throws \Silverstripe\Search\Client\Exception\UnexpectedStatusCodeException
      *
-     * @return \Silverstripe\Search\Client\Model\SchemaPostResponse
+     * @return \Silverstripe\Search\Client\Model\ResponseAcknowledged
      */
     protected function transformResponseBody(\Psr\Http\Message\ResponseInterface $response, \Symfony\Component\Serializer\SerializerInterface $serializer, ?string $contentType = null)
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
         if (is_null($contentType) === false && (200 === $status && mb_strpos(strtolower($contentType), 'application/json') !== false)) {
-            return $serializer->deserialize($body, 'Silverstripe\Search\Client\Model\SchemaPostResponse', 'json');
+            return $serializer->deserialize($body, 'Silverstripe\Search\Client\Model\ResponseAcknowledged', 'json');
         }
         if (404 === $status) {
             throw new \Silverstripe\Search\Client\Exception\SchemaPostNotFoundException($response);

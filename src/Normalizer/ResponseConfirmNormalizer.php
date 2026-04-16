@@ -11,7 +11,7 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-class SchemaPostResponseNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
+class ResponseConfirmNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
 {
     use DenormalizerAwareTrait;
     use NormalizerAwareTrait;
@@ -19,51 +19,41 @@ class SchemaPostResponseNormalizer implements DenormalizerInterface, NormalizerI
     use ValidatorTrait;
     public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return $type === \Silverstripe\Search\Client\Model\SchemaPostResponse::class;
+        return $type === \Silverstripe\Search\Client\Model\ResponseConfirm::class;
     }
     public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return is_object($data) && get_class($data) === \Silverstripe\Search\Client\Model\SchemaPostResponse::class;
+        return is_object($data) && get_class($data) === \Silverstripe\Search\Client\Model\ResponseConfirm::class;
     }
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Silverstripe\Search\Client\Model\ResponseConfirm();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Silverstripe\Search\Client\Model\SchemaPostResponse();
-        if (\array_key_exists('acknowledged', $data) && \is_int($data['acknowledged'])) {
-            $data['acknowledged'] = (bool) $data['acknowledged'];
+        if (\array_key_exists('message', $data)) {
+            $object->setMessage($data['message']);
         }
-        if (null === $data || false === \is_array($data)) {
-            return $object;
-        }
-        if (\array_key_exists('acknowledged', $data)) {
-            $object->setAcknowledged($data['acknowledged']);
-            unset($data['acknowledged']);
-        }
-        foreach ($data as $key => $value) {
-            if (preg_match('/.*/', (string) $key)) {
-                $object[$key] = $value;
-            }
+        if (\array_key_exists('token', $data)) {
+            $object->setToken($data['token']);
         }
         return $object;
     }
     public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         $dataArray = [];
-        $dataArray['acknowledged'] = $data->getAcknowledged();
-        foreach ($data as $key => $value) {
-            if (preg_match('/.*/', (string) $key)) {
-                $dataArray[$key] = $value;
-            }
-        }
+        $dataArray['message'] = $data->getMessage();
+        $dataArray['token'] = $data->getToken();
         return $dataArray;
     }
     public function getSupportedTypes(?string $format = null): array
     {
-        return [\Silverstripe\Search\Client\Model\SchemaPostResponse::class => false];
+        return [\Silverstripe\Search\Client\Model\ResponseConfirm::class => false];
     }
 }

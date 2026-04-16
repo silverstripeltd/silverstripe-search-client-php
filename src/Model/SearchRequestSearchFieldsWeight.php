@@ -2,7 +2,7 @@
 
 namespace Silverstripe\Search\Client\Model;
 
-class SearchRequestSearchFieldsWeight extends \ArrayObject
+class SearchRequestSearchFieldsWeight
 {
     /**
      * @var array
@@ -13,7 +13,7 @@ class SearchRequestSearchFieldsWeight extends \ArrayObject
         return array_key_exists($property, $this->initialized);
     }
     /**
-     * @var mixed
+     * @var mixed|null
      */
     protected $weight;
     /**

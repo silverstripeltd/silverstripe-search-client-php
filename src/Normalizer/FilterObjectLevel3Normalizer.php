@@ -27,51 +27,47 @@ class FilterObjectLevel3Normalizer implements DenormalizerInterface, NormalizerI
     }
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Silverstripe\Search\Client\Model\FilterObjectLevel3();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Silverstripe\Search\Client\Model\FilterObjectLevel3();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
-        }
-        if (\array_key_exists('all', $data)) {
+        if (\array_key_exists('all', $data) && $data['all'] !== null) {
             $object->setAll($data['all']);
-            unset($data['all']);
         }
-        if (\array_key_exists('any', $data)) {
+        elseif (\array_key_exists('all', $data) && $data['all'] === null) {
+            $object->setAll(null);
+        }
+        if (\array_key_exists('any', $data) && $data['any'] !== null) {
             $object->setAny($data['any']);
-            unset($data['any']);
         }
-        if (\array_key_exists('none', $data)) {
+        elseif (\array_key_exists('any', $data) && $data['any'] === null) {
+            $object->setAny(null);
+        }
+        if (\array_key_exists('none', $data) && $data['none'] !== null) {
             $object->setNone($data['none']);
-            unset($data['none']);
         }
-        foreach ($data as $key => $value) {
-            if (preg_match('/.*/', (string) $key)) {
-                $object[$key] = $value;
-            }
+        elseif (\array_key_exists('none', $data) && $data['none'] === null) {
+            $object->setNone(null);
         }
         return $object;
     }
     public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         $dataArray = [];
-        if ($data->isInitialized('all') && null !== $data->getAll()) {
+        if ($data->isInitialized('all')) {
             $dataArray['all'] = $data->getAll();
         }
-        if ($data->isInitialized('any') && null !== $data->getAny()) {
+        if ($data->isInitialized('any')) {
             $dataArray['any'] = $data->getAny();
         }
-        if ($data->isInitialized('none') && null !== $data->getNone()) {
+        if ($data->isInitialized('none')) {
             $dataArray['none'] = $data->getNone();
-        }
-        foreach ($data as $key => $value) {
-            if (preg_match('/.*/', (string) $key)) {
-                $dataArray[$key] = $value;
-            }
         }
         return $dataArray;
     }

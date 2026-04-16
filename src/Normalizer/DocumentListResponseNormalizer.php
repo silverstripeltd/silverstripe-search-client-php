@@ -27,19 +27,18 @@ class DocumentListResponseNormalizer implements DenormalizerInterface, Normalize
     }
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Silverstripe\Search\Client\Model\DocumentListResponse();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Silverstripe\Search\Client\Model\DocumentListResponse();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
-        }
         if (\array_key_exists('meta', $data)) {
             $object->setMeta($this->denormalizer->denormalize($data['meta'], \Silverstripe\Search\Client\Model\DocumentListResponseMeta::class, 'json', $context));
-            unset($data['meta']);
         }
         if (\array_key_exists('results', $data)) {
             $values = [];
@@ -51,33 +50,22 @@ class DocumentListResponseNormalizer implements DenormalizerInterface, Normalize
                 $values[] = $values_1;
             }
             $object->setResults($values);
-            unset($data['results']);
-        }
-        foreach ($data as $key_1 => $value_2) {
-            if (preg_match('/.*/', (string) $key_1)) {
-                $object[$key_1] = $value_2;
-            }
         }
         return $object;
     }
     public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         $dataArray = [];
-        $dataArray['meta'] = $data->getMeta() == null ? null : new \ArrayObject($this->normalizer->normalize($data->getMeta(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
+        $dataArray['meta'] = $this->normalizer->normalize($data->getMeta(), 'json', $context);
         $values = [];
         foreach ($data->getResults() as $value) {
-            $values_1 = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
+            $values_1 = [];
             foreach ($value as $key => $value_1) {
                 $values_1[$key] = $value_1;
             }
             $values[] = $values_1;
         }
         $dataArray['results'] = $values;
-        foreach ($data as $key_1 => $value_2) {
-            if (preg_match('/.*/', (string) $key_1)) {
-                $dataArray[$key_1] = $value_2;
-            }
-        }
         return $dataArray;
     }
     public function getSupportedTypes(?string $format = null): array

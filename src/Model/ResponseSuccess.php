@@ -2,7 +2,7 @@
 
 namespace Silverstripe\Search\Client\Model;
 
-class ResponseSuccess extends \ArrayObject
+class ResponseSuccess
 {
     /**
      * @var array

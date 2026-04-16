@@ -2,7 +2,7 @@
 
 namespace Silverstripe\Search\Client\Model;
 
-class DocumentListRequest extends \ArrayObject
+class DocumentListRequest
 {
     /**
      * @var array
@@ -13,22 +13,22 @@ class DocumentListRequest extends \ArrayObject
         return array_key_exists($property, $this->initialized);
     }
     /**
-     * @var PaginationNoTotals|null
+     * @var DocumentListPagination|null
      */
     protected $page;
     /**
-     * @return PaginationNoTotals|null
+     * @return DocumentListPagination|null
      */
-    public function getPage(): PaginationNoTotals
+    public function getPage(): ?DocumentListPagination
     {
         return $this->page;
     }
     /**
-     * @param PaginationNoTotals|null $page
+     * @param DocumentListPagination|null $page
      *
      * @return self
      */
-    public function setPage(PaginationNoTotals $page): self
+    public function setPage(?DocumentListPagination $page): self
     {
         $this->initialized['page'] = true;
         $this->page = $page;

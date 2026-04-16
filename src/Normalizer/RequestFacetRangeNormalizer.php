@@ -27,23 +27,24 @@ class RequestFacetRangeNormalizer implements DenormalizerInterface, NormalizerIn
     }
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Silverstripe\Search\Client\Model\RequestFacetRange();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Silverstripe\Search\Client\Model\RequestFacetRange();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
-        }
         if (\array_key_exists('type', $data)) {
             $object->setType($data['type']);
-            unset($data['type']);
         }
-        if (\array_key_exists('name', $data)) {
+        if (\array_key_exists('name', $data) && $data['name'] !== null) {
             $object->setName($data['name']);
-            unset($data['name']);
+        }
+        elseif (\array_key_exists('name', $data) && $data['name'] === null) {
+            $object->setName(null);
         }
         if (\array_key_exists('ranges', $data)) {
             $values = [];
@@ -51,12 +52,6 @@ class RequestFacetRangeNormalizer implements DenormalizerInterface, NormalizerIn
                 $values[] = $this->denormalizer->denormalize($value, \Silverstripe\Search\Client\Model\RequestFacetRangeObject::class, 'json', $context);
             }
             $object->setRanges($values);
-            unset($data['ranges']);
-        }
-        foreach ($data as $key => $value_1) {
-            if (preg_match('/.*/', (string) $key)) {
-                $object[$key] = $value_1;
-            }
         }
         return $object;
     }
@@ -64,19 +59,14 @@ class RequestFacetRangeNormalizer implements DenormalizerInterface, NormalizerIn
     {
         $dataArray = [];
         $dataArray['type'] = $data->getType();
-        if ($data->isInitialized('name') && null !== $data->getName()) {
+        if ($data->isInitialized('name')) {
             $dataArray['name'] = $data->getName();
         }
         $values = [];
         foreach ($data->getRanges() as $value) {
-            $values[] = $value == null ? null : new \ArrayObject($this->normalizer->normalize($value, 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
+            $values[] = $this->normalizer->normalize($value, 'json', $context);
         }
         $dataArray['ranges'] = $values;
-        foreach ($data as $key => $value_1) {
-            if (preg_match('/.*/', (string) $key)) {
-                $dataArray[$key] = $value_1;
-            }
-        }
         return $dataArray;
     }
     public function getSupportedTypes(?string $format = null): array

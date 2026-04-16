@@ -27,44 +27,38 @@ class DocumentFieldNormalizer implements DenormalizerInterface, NormalizerInterf
     }
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Silverstripe\Search\Client\Model\DocumentField();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Silverstripe\Search\Client\Model\DocumentField();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
-        }
-        if (\array_key_exists('raw', $data)) {
+        if (\array_key_exists('raw', $data) && $data['raw'] !== null) {
             $object->setRaw($data['raw']);
-            unset($data['raw']);
         }
-        if (\array_key_exists('snippet', $data)) {
+        elseif (\array_key_exists('raw', $data) && $data['raw'] === null) {
+            $object->setRaw(null);
+        }
+        if (\array_key_exists('snippet', $data) && $data['snippet'] !== null) {
             $object->setSnippet($data['snippet']);
-            unset($data['snippet']);
         }
-        foreach ($data as $key => $value) {
-            if (preg_match('/.*/', (string) $key)) {
-                $object[$key] = $value;
-            }
+        elseif (\array_key_exists('snippet', $data) && $data['snippet'] === null) {
+            $object->setSnippet(null);
         }
         return $object;
     }
     public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         $dataArray = [];
-        if ($data->isInitialized('raw') && null !== $data->getRaw()) {
+        if ($data->isInitialized('raw')) {
             $dataArray['raw'] = $data->getRaw();
         }
-        if ($data->isInitialized('snippet') && null !== $data->getSnippet()) {
+        if ($data->isInitialized('snippet')) {
             $dataArray['snippet'] = $data->getSnippet();
-        }
-        foreach ($data as $key => $value) {
-            if (preg_match('/.*/', (string) $key)) {
-                $dataArray[$key] = $value;
-            }
         }
         return $dataArray;
     }

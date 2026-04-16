@@ -2,7 +2,7 @@
 
 namespace Silverstripe\Search\Client\Model;
 
-class FilterObjectLevel4 extends \ArrayObject
+class FilterObjectLevel4
 {
     /**
      * @var array
@@ -13,15 +13,15 @@ class FilterObjectLevel4 extends \ArrayObject
         return array_key_exists($property, $this->initialized);
     }
     /**
-     * @var mixed
+     * @var mixed|null
      */
     protected $all;
     /**
-     * @var mixed
+     * @var mixed|null
      */
     protected $any;
     /**
-     * @var mixed
+     * @var mixed|null
      */
     protected $none;
     /**

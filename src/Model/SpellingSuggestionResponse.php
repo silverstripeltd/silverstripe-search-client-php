@@ -2,7 +2,7 @@
 
 namespace Silverstripe\Search\Client\Model;
 
-class SpellingSuggestionResponse extends \ArrayObject
+class SpellingSuggestionResponse
 {
     /**
      * @var array

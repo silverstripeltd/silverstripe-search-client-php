@@ -2,7 +2,7 @@
 
 namespace Silverstripe\Search\Client\Model;
 
-class SearchRequestResultFieldRaw extends \ArrayObject
+class SearchRequestResultFieldRaw
 {
     /**
      * @var array
@@ -16,7 +16,7 @@ class SearchRequestResultFieldRaw extends \ArrayObject
      * Length of the return value (to the nearest word). Can only be used on text fields. If given for
      *         a field type other than text, it will be silently ignored. Defaults to the entire text field.
      *
-     * @var mixed
+     * @var mixed|null
      */
     protected $size;
     /**

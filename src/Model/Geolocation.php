@@ -2,7 +2,7 @@
 
 namespace Silverstripe\Search\Client\Model;
 
-class Geolocation extends \ArrayObject
+class Geolocation
 {
     /**
      * @var array

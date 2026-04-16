@@ -2,7 +2,7 @@
 
 namespace Silverstripe\Search\Client\Model;
 
-class EnginesResponse extends \ArrayObject
+class EnginesResponse
 {
     /**
      * @var array
@@ -13,18 +13,18 @@ class EnginesResponse extends \ArrayObject
         return array_key_exists($property, $this->initialized);
     }
     /**
-     * @var list<Engine>
+     * @var list<EngineName>
      */
     protected $results;
     /**
-     * @return list<Engine>
+     * @return list<EngineName>
      */
     public function getResults(): array
     {
         return $this->results;
     }
     /**
-     * @param list<Engine> $results
+     * @param list<EngineName> $results
      *
      * @return self
      */

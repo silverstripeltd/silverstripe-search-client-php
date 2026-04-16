@@ -2,7 +2,7 @@
 
 namespace Silverstripe\Search\Client\Model;
 
-class RequestFacetRangeObject extends \ArrayObject
+class RequestFacetRangeObject
 {
     /**
      * @var array
@@ -13,15 +13,15 @@ class RequestFacetRangeObject extends \ArrayObject
         return array_key_exists($property, $this->initialized);
     }
     /**
-     * @var mixed
+     * @var mixed|null
      */
     protected $from;
     /**
-     * @var mixed
+     * @var mixed|null
      */
     protected $to;
     /**
-     * @var mixed
+     * @var mixed|null
      */
     protected $name;
     /**

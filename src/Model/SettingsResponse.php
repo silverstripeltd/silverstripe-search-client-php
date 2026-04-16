@@ -2,7 +2,7 @@
 
 namespace Silverstripe\Search\Client\Model;
 
-class SettingsResponse extends \ArrayObject
+class SettingsResponse
 {
     /**
      * @var array

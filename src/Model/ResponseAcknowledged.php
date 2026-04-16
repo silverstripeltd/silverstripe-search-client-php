@@ -2,7 +2,7 @@
 
 namespace Silverstripe\Search\Client\Model;
 
-class SchemaPostResponse extends \ArrayObject
+class ResponseAcknowledged
 {
     /**
      * @var array

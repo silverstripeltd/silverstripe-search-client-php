@@ -27,63 +27,65 @@ class SearchResponseNormalizer implements DenormalizerInterface, NormalizerInter
     }
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Silverstripe\Search\Client\Model\SearchResponse();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Silverstripe\Search\Client\Model\SearchResponse();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
-        }
         if (\array_key_exists('meta', $data)) {
             $object->setMeta($this->denormalizer->denormalize($data['meta'], \Silverstripe\Search\Client\Model\SearchResponseMeta::class, 'json', $context));
-            unset($data['meta']);
         }
         if (\array_key_exists('results', $data)) {
             $values = [];
             foreach ($data['results'] as $value) {
                 $values_1 = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
                 foreach ($value as $key => $value_1) {
-                    $values_1[$key] = $value_1;
+                    $value_2 = $value_1;
+                    if (is_array($value_1)) {
+                        $value_2 = $this->denormalizer->denormalize($value_1, \Silverstripe\Search\Client\Model\DocumentResponseMeta::class, 'json', $context);
+                    } elseif (is_array($value_1)) {
+                        $value_2 = $this->denormalizer->denormalize($value_1, \Silverstripe\Search\Client\Model\DocumentField::class, 'json', $context);
+                    }
+                    $values_1[$key] = $value_2;
                 }
                 $values[] = $values_1;
             }
             $object->setResults($values);
-            unset($data['results']);
         }
-        if (\array_key_exists('facets', $data)) {
+        if (\array_key_exists('facets', $data) && $data['facets'] !== null) {
             $object->setFacets($data['facets']);
-            unset($data['facets']);
         }
-        foreach ($data as $key_1 => $value_2) {
-            if (preg_match('/.*/', (string) $key_1)) {
-                $object[$key_1] = $value_2;
-            }
+        elseif (\array_key_exists('facets', $data) && $data['facets'] === null) {
+            $object->setFacets(null);
         }
         return $object;
     }
     public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         $dataArray = [];
-        $dataArray['meta'] = $data->getMeta() == null ? null : new \ArrayObject($this->normalizer->normalize($data->getMeta(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
+        $dataArray['meta'] = $this->normalizer->normalize($data->getMeta(), 'json', $context);
         $values = [];
         foreach ($data->getResults() as $value) {
-            $values_1 = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
+            $values_1 = [];
             foreach ($value as $key => $value_1) {
-                $values_1[$key] = $value_1;
+                $value_2 = $value_1;
+                if (is_object($value_1)) {
+                    $value_2 = $this->normalizer->normalize($value_1, 'json', $context);
+                } elseif (is_object($value_1)) {
+                    $value_2 = $this->normalizer->normalize($value_1, 'json', $context);
+                }
+                $values_1[$key] = $value_2;
             }
             $values[] = $values_1;
         }
         $dataArray['results'] = $values;
-        if ($data->isInitialized('facets') && null !== $data->getFacets()) {
+        if ($data->isInitialized('facets')) {
             $dataArray['facets'] = $data->getFacets();
-        }
-        foreach ($data as $key_1 => $value_2) {
-            if (preg_match('/.*/', (string) $key_1)) {
-                $dataArray[$key_1] = $value_2;
-            }
         }
         return $dataArray;
     }

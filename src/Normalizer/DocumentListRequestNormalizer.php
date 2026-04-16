@@ -27,49 +27,41 @@ class DocumentListRequestNormalizer implements DenormalizerInterface, Normalizer
     }
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Silverstripe\Search\Client\Model\DocumentListRequest();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Silverstripe\Search\Client\Model\DocumentListRequest();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
-        }
-        if (\array_key_exists('page', $data)) {
+        if (\array_key_exists('page', $data) && $data['page'] !== null) {
             $value = $data['page'];
             if (is_array($data['page'])) {
-                $value = $this->denormalizer->denormalize($data['page'], \Silverstripe\Search\Client\Model\PaginationNoTotals::class, 'json', $context);
+                $value = $this->denormalizer->denormalize($data['page'], \Silverstripe\Search\Client\Model\DocumentListPagination::class, 'json', $context);
             } elseif (is_null($data['page'])) {
                 $value = $data['page'];
             }
             $object->setPage($value);
-            unset($data['page']);
         }
-        foreach ($data as $key => $value_1) {
-            if (preg_match('/.*/', (string) $key)) {
-                $object[$key] = $value_1;
-            }
+        elseif (\array_key_exists('page', $data) && $data['page'] === null) {
+            $object->setPage(null);
         }
         return $object;
     }
     public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         $dataArray = [];
-        if ($data->isInitialized('page') && null !== $data->getPage()) {
+        if ($data->isInitialized('page')) {
             $value = $data->getPage();
             if (is_object($data->getPage())) {
-                $value = $data->getPage() == null ? null : new \ArrayObject($this->normalizer->normalize($data->getPage(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
+                $value = $this->normalizer->normalize($data->getPage(), 'json', $context);
             } elseif (is_null($data->getPage())) {
                 $value = $data->getPage();
             }
             $dataArray['page'] = $value;
-        }
-        foreach ($data as $key => $value_1) {
-            if (preg_match('/.*/', (string) $key)) {
-                $dataArray[$key] = $value_1;
-            }
         }
         return $dataArray;
     }

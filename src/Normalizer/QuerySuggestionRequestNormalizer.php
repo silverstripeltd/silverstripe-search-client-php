@@ -27,32 +27,27 @@ class QuerySuggestionRequestNormalizer implements DenormalizerInterface, Normali
     }
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Silverstripe\Search\Client\Model\QuerySuggestionRequest();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Silverstripe\Search\Client\Model\QuerySuggestionRequest();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
-        }
         if (\array_key_exists('query', $data)) {
             $object->setQuery($data['query']);
-            unset($data['query']);
         }
         if (\array_key_exists('size', $data)) {
             $object->setSize($data['size']);
-            unset($data['size']);
         }
-        if (\array_key_exists('fields', $data)) {
+        if (\array_key_exists('fields', $data) && $data['fields'] !== null) {
             $object->setFields($data['fields']);
-            unset($data['fields']);
         }
-        foreach ($data as $key => $value) {
-            if (preg_match('/.*/', (string) $key)) {
-                $object[$key] = $value;
-            }
+        elseif (\array_key_exists('fields', $data) && $data['fields'] === null) {
+            $object->setFields(null);
         }
         return $object;
     }
@@ -63,13 +58,8 @@ class QuerySuggestionRequestNormalizer implements DenormalizerInterface, Normali
         if ($data->isInitialized('size') && null !== $data->getSize()) {
             $dataArray['size'] = $data->getSize();
         }
-        if ($data->isInitialized('fields') && null !== $data->getFields()) {
+        if ($data->isInitialized('fields')) {
             $dataArray['fields'] = $data->getFields();
-        }
-        foreach ($data as $key => $value) {
-            if (preg_match('/.*/', (string) $key)) {
-                $dataArray[$key] = $value;
-            }
         }
         return $dataArray;
     }

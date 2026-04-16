@@ -13,11 +13,11 @@ class Schema extends \ArrayObject
         return array_key_exists($property, $this->initialized);
     }
     /**
-     * @var mixed
+     * @var mixed|null
      */
     protected $attachment;
     /**
-     * @var mixed
+     * @var mixed|null
      */
     protected $body;
     /**

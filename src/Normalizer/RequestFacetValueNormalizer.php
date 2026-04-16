@@ -27,29 +27,29 @@ class RequestFacetValueNormalizer implements DenormalizerInterface, NormalizerIn
     }
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Silverstripe\Search\Client\Model\RequestFacetValue();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Silverstripe\Search\Client\Model\RequestFacetValue();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
-        }
         if (\array_key_exists('type', $data)) {
             $object->setType($data['type']);
-            unset($data['type']);
         }
-        if (\array_key_exists('name', $data)) {
+        if (\array_key_exists('name', $data) && $data['name'] !== null) {
             $object->setName($data['name']);
-            unset($data['name']);
+        }
+        elseif (\array_key_exists('name', $data) && $data['name'] === null) {
+            $object->setName(null);
         }
         if (\array_key_exists('size', $data)) {
             $object->setSize($data['size']);
-            unset($data['size']);
         }
-        if (\array_key_exists('sort', $data)) {
+        if (\array_key_exists('sort', $data) && $data['sort'] !== null) {
             $value = $data['sort'];
             if (is_array($data['sort']) && $this->isOnlyNumericKeys($data['sort'])) {
                 $values = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
@@ -61,12 +61,9 @@ class RequestFacetValueNormalizer implements DenormalizerInterface, NormalizerIn
                 $value = $data['sort'];
             }
             $object->setSort($value);
-            unset($data['sort']);
         }
-        foreach ($data as $key_1 => $value_2) {
-            if (preg_match('/.*/', (string) $key_1)) {
-                $object[$key_1] = $value_2;
-            }
+        elseif (\array_key_exists('sort', $data) && $data['sort'] === null) {
+            $object->setSort(null);
         }
         return $object;
     }
@@ -74,16 +71,16 @@ class RequestFacetValueNormalizer implements DenormalizerInterface, NormalizerIn
     {
         $dataArray = [];
         $dataArray['type'] = $data->getType();
-        if ($data->isInitialized('name') && null !== $data->getName()) {
+        if ($data->isInitialized('name')) {
             $dataArray['name'] = $data->getName();
         }
         if ($data->isInitialized('size') && null !== $data->getSize()) {
             $dataArray['size'] = $data->getSize();
         }
-        if ($data->isInitialized('sort') && null !== $data->getSort()) {
+        if ($data->isInitialized('sort')) {
             $value = $data->getSort();
             if (is_object($data->getSort())) {
-                $values = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
+                $values = [];
                 foreach ($data->getSort() as $key => $value_1) {
                     $values[$key] = $value_1;
                 }
@@ -92,11 +89,6 @@ class RequestFacetValueNormalizer implements DenormalizerInterface, NormalizerIn
                 $value = $data->getSort();
             }
             $dataArray['sort'] = $value;
-        }
-        foreach ($data as $key_1 => $value_2) {
-            if (preg_match('/.*/', (string) $key_1)) {
-                $dataArray[$key_1] = $value_2;
-            }
         }
         return $dataArray;
     }

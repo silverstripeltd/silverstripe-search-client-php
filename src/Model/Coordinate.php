@@ -2,7 +2,7 @@
 
 namespace Silverstripe\Search\Client\Model;
 
-class Coordinate extends \ArrayObject
+class Coordinate
 {
     /**
      * @var array

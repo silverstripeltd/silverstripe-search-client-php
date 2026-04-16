@@ -2,7 +2,7 @@
 
 namespace Silverstripe\Search\Client\Model;
 
-class QuerySuggestionResponse extends \ArrayObject
+class QuerySuggestionResponse
 {
     /**
      * @var array

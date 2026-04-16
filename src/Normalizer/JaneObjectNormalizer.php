@@ -18,9 +18,21 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
     use ValidatorTrait;
     protected $normalizers = [
         
+        \Silverstripe\Search\Client\Model\BoostGetResponse::class => \Silverstripe\Search\Client\Normalizer\BoostGetResponseNormalizer::class,
+        
+        \Silverstripe\Search\Client\Model\BoostPatchRequest::class => \Silverstripe\Search\Client\Normalizer\BoostPatchRequestNormalizer::class,
+        
+        \Silverstripe\Search\Client\Model\BoostPostRequest::class => \Silverstripe\Search\Client\Normalizer\BoostPostRequestNormalizer::class,
+        
+        \Silverstripe\Search\Client\Model\BoostPostResponse::class => \Silverstripe\Search\Client\Normalizer\BoostPostResponseNormalizer::class,
+        
+        \Silverstripe\Search\Client\Model\ClickRequest::class => \Silverstripe\Search\Client\Normalizer\ClickRequestNormalizer::class,
+        
         \Silverstripe\Search\Client\Model\Coordinate::class => \Silverstripe\Search\Client\Normalizer\CoordinateNormalizer::class,
         
         \Silverstripe\Search\Client\Model\DocumentField::class => \Silverstripe\Search\Client\Normalizer\DocumentFieldNormalizer::class,
+        
+        \Silverstripe\Search\Client\Model\DocumentListPagination::class => \Silverstripe\Search\Client\Normalizer\DocumentListPaginationNormalizer::class,
         
         \Silverstripe\Search\Client\Model\DocumentListRequest::class => \Silverstripe\Search\Client\Normalizer\DocumentListRequestNormalizer::class,
         
@@ -34,7 +46,7 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
         
         \Silverstripe\Search\Client\Model\DocumentsDeleteResponse::class => \Silverstripe\Search\Client\Normalizer\DocumentsDeleteResponseNormalizer::class,
         
-        \Silverstripe\Search\Client\Model\Engine::class => \Silverstripe\Search\Client\Normalizer\EngineNormalizer::class,
+        \Silverstripe\Search\Client\Model\EngineName::class => \Silverstripe\Search\Client\Normalizer\EngineNameNormalizer::class,
         
         \Silverstripe\Search\Client\Model\EnginesResponse::class => \Silverstripe\Search\Client\Normalizer\EnginesResponseNormalizer::class,
         
@@ -56,9 +68,9 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
         
         \Silverstripe\Search\Client\Model\HTTPValidationError::class => \Silverstripe\Search\Client\Normalizer\HTTPValidationErrorNormalizer::class,
         
-        \Silverstripe\Search\Client\Model\PaginationNoTotals::class => \Silverstripe\Search\Client\Normalizer\PaginationNoTotalsNormalizer::class,
+        \Silverstripe\Search\Client\Model\PaginationResponse::class => \Silverstripe\Search\Client\Normalizer\PaginationResponseNormalizer::class,
         
-        \Silverstripe\Search\Client\Model\PaginationWithTotals::class => \Silverstripe\Search\Client\Normalizer\PaginationWithTotalsNormalizer::class,
+        \Silverstripe\Search\Client\Model\PostResponse::class => \Silverstripe\Search\Client\Normalizer\PostResponseNormalizer::class,
         
         \Silverstripe\Search\Client\Model\QuerySuggestionRequest::class => \Silverstripe\Search\Client\Normalizer\QuerySuggestionRequestNormalizer::class,
         
@@ -74,6 +86,10 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
         
         \Silverstripe\Search\Client\Model\RequestFacetValue::class => \Silverstripe\Search\Client\Normalizer\RequestFacetValueNormalizer::class,
         
+        \Silverstripe\Search\Client\Model\ResponseAcknowledged::class => \Silverstripe\Search\Client\Normalizer\ResponseAcknowledgedNormalizer::class,
+        
+        \Silverstripe\Search\Client\Model\ResponseConfirm::class => \Silverstripe\Search\Client\Normalizer\ResponseConfirmNormalizer::class,
+        
         \Silverstripe\Search\Client\Model\ResponseFacetRange::class => \Silverstripe\Search\Client\Normalizer\ResponseFacetRangeNormalizer::class,
         
         \Silverstripe\Search\Client\Model\ResponseFacetValue::class => \Silverstripe\Search\Client\Normalizer\ResponseFacetValueNormalizer::class,
@@ -82,9 +98,13 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
         
         \Silverstripe\Search\Client\Model\Schema::class => \Silverstripe\Search\Client\Normalizer\SchemaNormalizer::class,
         
-        \Silverstripe\Search\Client\Model\SchemaPostResponse::class => \Silverstripe\Search\Client\Normalizer\SchemaPostResponseNormalizer::class,
+        \Silverstripe\Search\Client\Model\SchemaGetResponse::class => \Silverstripe\Search\Client\Normalizer\SchemaGetResponseNormalizer::class,
         
         \Silverstripe\Search\Client\Model\SearchRequest::class => \Silverstripe\Search\Client\Normalizer\SearchRequestNormalizer::class,
+        
+        \Silverstripe\Search\Client\Model\SearchRequestBoost::class => \Silverstripe\Search\Client\Normalizer\SearchRequestBoostNormalizer::class,
+        
+        \Silverstripe\Search\Client\Model\SearchRequestPagination::class => \Silverstripe\Search\Client\Normalizer\SearchRequestPaginationNormalizer::class,
         
         \Silverstripe\Search\Client\Model\SearchRequestResultField::class => \Silverstripe\Search\Client\Normalizer\SearchRequestResultFieldNormalizer::class,
         
@@ -115,6 +135,22 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
         \Silverstripe\Search\Client\Model\Tags::class => \Silverstripe\Search\Client\Normalizer\TagsNormalizer::class,
         
         \Silverstripe\Search\Client\Model\ValidationError::class => \Silverstripe\Search\Client\Normalizer\ValidationErrorNormalizer::class,
+        
+        \Silverstripe\Search\Client\Model\CommonModelsCurationGetResponseGetResponse::class => \Silverstripe\Search\Client\Normalizer\CommonModelsCurationGetResponseGetResponseNormalizer::class,
+        
+        \Silverstripe\Search\Client\Model\CommonModelsCurationPatchRequestPatchRequest::class => \Silverstripe\Search\Client\Normalizer\CommonModelsCurationPatchRequestPatchRequestNormalizer::class,
+        
+        \Silverstripe\Search\Client\Model\CommonModelsCurationPostRequestPostRequest::class => \Silverstripe\Search\Client\Normalizer\CommonModelsCurationPostRequestPostRequestNormalizer::class,
+        
+        \Silverstripe\Search\Client\Model\CommonModelsCurationDocumentGetResponseGetResponse::class => \Silverstripe\Search\Client\Normalizer\CommonModelsCurationDocumentGetResponseGetResponseNormalizer::class,
+        
+        \Silverstripe\Search\Client\Model\CommonModelsCurationDocumentPatchRequestPatchRequest::class => \Silverstripe\Search\Client\Normalizer\CommonModelsCurationDocumentPatchRequestPatchRequestNormalizer::class,
+        
+        \Silverstripe\Search\Client\Model\CommonModelsCurationDocumentPostRequestPostRequest::class => \Silverstripe\Search\Client\Normalizer\CommonModelsCurationDocumentPostRequestPostRequestNormalizer::class,
+        
+        \Silverstripe\Search\Client\Model\CommonModelsCurationQueryGetResponseGetResponse::class => \Silverstripe\Search\Client\Normalizer\CommonModelsCurationQueryGetResponseGetResponseNormalizer::class,
+        
+        \Silverstripe\Search\Client\Model\CommonModelsCurationQueryPostRequestPostRequest::class => \Silverstripe\Search\Client\Normalizer\CommonModelsCurationQueryPostRequestPostRequestNormalizer::class,
         
         \Jane\Component\JsonSchemaRuntime\Reference::class => \Silverstripe\Search\Client\Runtime\Normalizer\ReferenceNormalizer::class,
     ], $normalizersCache = [];
@@ -154,15 +190,21 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
     {
         return [
             
+            \Silverstripe\Search\Client\Model\BoostGetResponse::class => false,
+            \Silverstripe\Search\Client\Model\BoostPatchRequest::class => false,
+            \Silverstripe\Search\Client\Model\BoostPostRequest::class => false,
+            \Silverstripe\Search\Client\Model\BoostPostResponse::class => false,
+            \Silverstripe\Search\Client\Model\ClickRequest::class => false,
             \Silverstripe\Search\Client\Model\Coordinate::class => false,
             \Silverstripe\Search\Client\Model\DocumentField::class => false,
+            \Silverstripe\Search\Client\Model\DocumentListPagination::class => false,
             \Silverstripe\Search\Client\Model\DocumentListRequest::class => false,
             \Silverstripe\Search\Client\Model\DocumentListResponse::class => false,
             \Silverstripe\Search\Client\Model\DocumentListResponseMeta::class => false,
             \Silverstripe\Search\Client\Model\DocumentPostPatchResponse::class => false,
             \Silverstripe\Search\Client\Model\DocumentResponseMeta::class => false,
             \Silverstripe\Search\Client\Model\DocumentsDeleteResponse::class => false,
-            \Silverstripe\Search\Client\Model\Engine::class => false,
+            \Silverstripe\Search\Client\Model\EngineName::class => false,
             \Silverstripe\Search\Client\Model\EnginesResponse::class => false,
             \Silverstripe\Search\Client\Model\FacetResponse::class => false,
             \Silverstripe\Search\Client\Model\FilterObjectLevel1::class => false,
@@ -173,8 +215,8 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
             \Silverstripe\Search\Client\Model\Geo::class => false,
             \Silverstripe\Search\Client\Model\Geolocation::class => false,
             \Silverstripe\Search\Client\Model\HTTPValidationError::class => false,
-            \Silverstripe\Search\Client\Model\PaginationNoTotals::class => false,
-            \Silverstripe\Search\Client\Model\PaginationWithTotals::class => false,
+            \Silverstripe\Search\Client\Model\PaginationResponse::class => false,
+            \Silverstripe\Search\Client\Model\PostResponse::class => false,
             \Silverstripe\Search\Client\Model\QuerySuggestionRequest::class => false,
             \Silverstripe\Search\Client\Model\QuerySuggestionResponse::class => false,
             \Silverstripe\Search\Client\Model\QuerySuggestionResponseValue::class => false,
@@ -182,12 +224,16 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
             \Silverstripe\Search\Client\Model\RequestFacetRange::class => false,
             \Silverstripe\Search\Client\Model\RequestFacetRangeObject::class => false,
             \Silverstripe\Search\Client\Model\RequestFacetValue::class => false,
+            \Silverstripe\Search\Client\Model\ResponseAcknowledged::class => false,
+            \Silverstripe\Search\Client\Model\ResponseConfirm::class => false,
             \Silverstripe\Search\Client\Model\ResponseFacetRange::class => false,
             \Silverstripe\Search\Client\Model\ResponseFacetValue::class => false,
             \Silverstripe\Search\Client\Model\ResponseSuccess::class => false,
             \Silverstripe\Search\Client\Model\Schema::class => false,
-            \Silverstripe\Search\Client\Model\SchemaPostResponse::class => false,
+            \Silverstripe\Search\Client\Model\SchemaGetResponse::class => false,
             \Silverstripe\Search\Client\Model\SearchRequest::class => false,
+            \Silverstripe\Search\Client\Model\SearchRequestBoost::class => false,
+            \Silverstripe\Search\Client\Model\SearchRequestPagination::class => false,
             \Silverstripe\Search\Client\Model\SearchRequestResultField::class => false,
             \Silverstripe\Search\Client\Model\SearchRequestResultFieldRaw::class => false,
             \Silverstripe\Search\Client\Model\SearchRequestResultFieldSnippet::class => false,
@@ -203,6 +249,14 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
             \Silverstripe\Search\Client\Model\SynonymRuleRequest::class => false,
             \Silverstripe\Search\Client\Model\Tags::class => false,
             \Silverstripe\Search\Client\Model\ValidationError::class => false,
+            \Silverstripe\Search\Client\Model\CommonModelsCurationGetResponseGetResponse::class => false,
+            \Silverstripe\Search\Client\Model\CommonModelsCurationPatchRequestPatchRequest::class => false,
+            \Silverstripe\Search\Client\Model\CommonModelsCurationPostRequestPostRequest::class => false,
+            \Silverstripe\Search\Client\Model\CommonModelsCurationDocumentGetResponseGetResponse::class => false,
+            \Silverstripe\Search\Client\Model\CommonModelsCurationDocumentPatchRequestPatchRequest::class => false,
+            \Silverstripe\Search\Client\Model\CommonModelsCurationDocumentPostRequestPostRequest::class => false,
+            \Silverstripe\Search\Client\Model\CommonModelsCurationQueryGetResponseGetResponse::class => false,
+            \Silverstripe\Search\Client\Model\CommonModelsCurationQueryPostRequestPostRequest::class => false,
             \Jane\Component\JsonSchemaRuntime\Reference::class => false,
         ];
     }

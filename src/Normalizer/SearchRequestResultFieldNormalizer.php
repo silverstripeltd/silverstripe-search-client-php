@@ -27,17 +27,17 @@ class SearchRequestResultFieldNormalizer implements DenormalizerInterface, Norma
     }
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Silverstripe\Search\Client\Model\SearchRequestResultField();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Silverstripe\Search\Client\Model\SearchRequestResultField();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
-        }
-        if (\array_key_exists('raw', $data)) {
+        if (\array_key_exists('raw', $data) && $data['raw'] !== null) {
             $value = $data['raw'];
             if (is_array($data['raw'])) {
                 $value = $this->denormalizer->denormalize($data['raw'], \Silverstripe\Search\Client\Model\SearchRequestResultFieldRaw::class, 'json', $context);
@@ -45,9 +45,11 @@ class SearchRequestResultFieldNormalizer implements DenormalizerInterface, Norma
                 $value = $data['raw'];
             }
             $object->setRaw($value);
-            unset($data['raw']);
         }
-        if (\array_key_exists('snippet', $data)) {
+        elseif (\array_key_exists('raw', $data) && $data['raw'] === null) {
+            $object->setRaw(null);
+        }
+        if (\array_key_exists('snippet', $data) && $data['snippet'] !== null) {
             $value_1 = $data['snippet'];
             if (is_array($data['snippet'])) {
                 $value_1 = $this->denormalizer->denormalize($data['snippet'], \Silverstripe\Search\Client\Model\SearchRequestResultFieldSnippet::class, 'json', $context);
@@ -55,40 +57,32 @@ class SearchRequestResultFieldNormalizer implements DenormalizerInterface, Norma
                 $value_1 = $data['snippet'];
             }
             $object->setSnippet($value_1);
-            unset($data['snippet']);
         }
-        foreach ($data as $key => $value_2) {
-            if (preg_match('/.*/', (string) $key)) {
-                $object[$key] = $value_2;
-            }
+        elseif (\array_key_exists('snippet', $data) && $data['snippet'] === null) {
+            $object->setSnippet(null);
         }
         return $object;
     }
     public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         $dataArray = [];
-        if ($data->isInitialized('raw') && null !== $data->getRaw()) {
+        if ($data->isInitialized('raw')) {
             $value = $data->getRaw();
             if (is_object($data->getRaw())) {
-                $value = $data->getRaw() == null ? null : new \ArrayObject($this->normalizer->normalize($data->getRaw(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
+                $value = $this->normalizer->normalize($data->getRaw(), 'json', $context);
             } elseif (is_null($data->getRaw())) {
                 $value = $data->getRaw();
             }
             $dataArray['raw'] = $value;
         }
-        if ($data->isInitialized('snippet') && null !== $data->getSnippet()) {
+        if ($data->isInitialized('snippet')) {
             $value_1 = $data->getSnippet();
             if (is_object($data->getSnippet())) {
-                $value_1 = $data->getSnippet() == null ? null : new \ArrayObject($this->normalizer->normalize($data->getSnippet(), 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
+                $value_1 = $this->normalizer->normalize($data->getSnippet(), 'json', $context);
             } elseif (is_null($data->getSnippet())) {
                 $value_1 = $data->getSnippet();
             }
             $dataArray['snippet'] = $value_1;
-        }
-        foreach ($data as $key => $value_2) {
-            if (preg_match('/.*/', (string) $key)) {
-                $dataArray[$key] = $value_2;
-            }
         }
         return $dataArray;
     }

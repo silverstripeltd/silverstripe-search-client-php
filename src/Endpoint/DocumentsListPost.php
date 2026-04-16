@@ -9,17 +9,17 @@ class DocumentsListPost extends \Silverstripe\Search\Client\Runtime\Client\BaseE
      * **Body:**
      *
      * `page` (optional)
-     * * Object to delimit the pagination parameters.
+     * * Object to delimit the pagination parameters
      *
      * `page.size` (optional)
-     * * Number of results per page.
-     * * Must be greater than or equal to 1 and less than or equal to 100.
-     * * Defaults to 10.
+     * * Number of results per page
+     * * Must be greater than or equal to 1 and less than or equal to 100
+     * * Defaults to 10
      *
      * `page.current` (optional)
-     * * Page number of results to return.
-     * * Must be greater than or equal to 1 and less than or equal to 100.
-     * * Defaults to 1.
+     * * Page number of results to return
+     * * Must be greater than or equal to 1
+     * * Defaults to 1
      * @param string $engineName
      * @param null|mixed $requestBody
      */

@@ -2,7 +2,7 @@
 
 namespace Silverstripe\Search\Client\Model;
 
-class RequestFacetRange extends \ArrayObject
+class RequestFacetRange
 {
     /**
      * @var array
@@ -17,7 +17,7 @@ class RequestFacetRange extends \ArrayObject
      */
     protected $type;
     /**
-     * @var mixed
+     * @var mixed|null
      */
     protected $name;
     /**

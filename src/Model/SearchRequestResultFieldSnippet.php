@@ -2,7 +2,7 @@
 
 namespace Silverstripe\Search\Client\Model;
 
-class SearchRequestResultFieldSnippet extends \ArrayObject
+class SearchRequestResultFieldSnippet
 {
     /**
      * @var array
@@ -16,13 +16,13 @@ class SearchRequestResultFieldSnippet extends \ArrayObject
      * Character length of the snippet returned (to the nearest word). Must be at least 20; defaults to
      *         100.
      *
-     * @var mixed
+     * @var mixed|null
      */
     protected $size = 100;
     /**
      * If true, return the raw text field as the snippet (if no snippet is found). Defaults to true.
      *
-     * @var mixed
+     * @var mixed|null
      */
     protected $fallback = true;
     /**

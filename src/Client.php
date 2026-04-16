@@ -5,6 +5,342 @@ namespace Silverstripe\Search\Client;
 class Client extends \Silverstripe\Search\Client\Runtime\Client\Client
 {
     /**
+     * Get all boosts for a field.
+     * @param string $fieldName Name of the field to get boosts for
+     * @param string $engineName
+     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @throws \Silverstripe\Search\Client\Exception\BoostsGetNotFoundException
+     * @throws \Silverstripe\Search\Client\Exception\BoostsGetUnprocessableEntityException
+     * @throws \Silverstripe\Search\Client\Exception\UnexpectedStatusCodeException
+     *
+     * @return ($fetch is 'object' ? \Silverstripe\Search\Client\Model\BoostGetResponse[] : \Psr\Http\Message\ResponseInterface)
+     */
+    public function boostsGet(string $fieldName, string $engineName, string $fetch = self::FETCH_OBJECT)
+    {
+        return $this->executeEndpoint(new \Silverstripe\Search\Client\Endpoint\BoostsGet($fieldName, $engineName), $fetch);
+    }
+    /**
+     * Create a new boost for a field.
+     * @param string $fieldName Name of the field to add boost to
+     * @param string $engineName
+     * @param \Silverstripe\Search\Client\Model\BoostPostRequest $requestBody
+     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @throws \Silverstripe\Search\Client\Exception\BoostsPostNotFoundException
+     * @throws \Silverstripe\Search\Client\Exception\BoostsPostUnprocessableEntityException
+     * @throws \Silverstripe\Search\Client\Exception\UnexpectedStatusCodeException
+     *
+     * @return ($fetch is 'object' ? \Silverstripe\Search\Client\Model\BoostPostResponse : \Psr\Http\Message\ResponseInterface)
+     */
+    public function boostsPost(string $fieldName, string $engineName, \Silverstripe\Search\Client\Model\BoostPostRequest $requestBody, string $fetch = self::FETCH_OBJECT)
+    {
+        return $this->executeEndpoint(new \Silverstripe\Search\Client\Endpoint\BoostsPost($fieldName, $engineName, $requestBody), $fetch);
+    }
+    /**
+     * Delete a specific boost by its ID.
+     * @param string $fieldName Name of the field
+     * @param string $boostId ID of the boost to delete
+     * @param string $engineName
+     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @throws \Silverstripe\Search\Client\Exception\BoostDeleteNotFoundException
+     * @throws \Silverstripe\Search\Client\Exception\BoostDeleteUnprocessableEntityException
+     * @throws \Silverstripe\Search\Client\Exception\UnexpectedStatusCodeException
+     *
+     * @return ($fetch is 'object' ? \Silverstripe\Search\Client\Model\ResponseSuccess : \Psr\Http\Message\ResponseInterface)
+     */
+    public function boostDelete(string $fieldName, string $boostId, string $engineName, string $fetch = self::FETCH_OBJECT)
+    {
+        return $this->executeEndpoint(new \Silverstripe\Search\Client\Endpoint\BoostDelete($fieldName, $boostId, $engineName), $fetch);
+    }
+    /**
+     * Get a specific boost by its ID.
+     * @param string $fieldName Name of the field
+     * @param string $boostId ID of the boost to retrieve
+     * @param string $engineName
+     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @throws \Silverstripe\Search\Client\Exception\BoostGetNotFoundException
+     * @throws \Silverstripe\Search\Client\Exception\BoostGetUnprocessableEntityException
+     * @throws \Silverstripe\Search\Client\Exception\UnexpectedStatusCodeException
+     *
+     * @return ($fetch is 'object' ? \Silverstripe\Search\Client\Model\BoostGetResponse : \Psr\Http\Message\ResponseInterface)
+     */
+    public function boostGet(string $fieldName, string $boostId, string $engineName, string $fetch = self::FETCH_OBJECT)
+    {
+        return $this->executeEndpoint(new \Silverstripe\Search\Client\Endpoint\BoostGet($fieldName, $boostId, $engineName), $fetch);
+    }
+    /**
+     * Update a specific boost by its ID.
+     * @param string $fieldName Name of the field
+     * @param string $boostId ID of the boost to update
+     * @param string $engineName
+     * @param \Silverstripe\Search\Client\Model\BoostPatchRequest $requestBody
+     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @throws \Silverstripe\Search\Client\Exception\BoostPatchNotFoundException
+     * @throws \Silverstripe\Search\Client\Exception\BoostPatchUnprocessableEntityException
+     * @throws \Silverstripe\Search\Client\Exception\UnexpectedStatusCodeException
+     *
+     * @return ($fetch is 'object' ? \Silverstripe\Search\Client\Model\BoostGetResponse : \Psr\Http\Message\ResponseInterface)
+     */
+    public function boostPatch(string $fieldName, string $boostId, string $engineName, \Silverstripe\Search\Client\Model\BoostPatchRequest $requestBody, string $fetch = self::FETCH_OBJECT)
+    {
+        return $this->executeEndpoint(new \Silverstripe\Search\Client\Endpoint\BoostPatch($fieldName, $boostId, $engineName, $requestBody), $fetch);
+    }
+    /**
+     * Record a click event against a search result.
+     *
+     * **Body:**
+     *
+     * `request_id` **(required)**
+     * * The `request_id` returned in the `meta` of a search response.
+     *
+     * `document_id` **(required)**
+     * * The ID of the document that was clicked.
+     * @param string $engineName
+     * @param \Silverstripe\Search\Client\Model\ClickRequest $requestBody
+     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @throws \Silverstripe\Search\Client\Exception\ClickPostNotFoundException
+     * @throws \Silverstripe\Search\Client\Exception\ClickPostUnprocessableEntityException
+     * @throws \Silverstripe\Search\Client\Exception\UnexpectedStatusCodeException
+     *
+     * @return ($fetch is 'object' ? \Silverstripe\Search\Client\Model\ResponseSuccess : \Psr\Http\Message\ResponseInterface)
+     */
+    public function clickPost(string $engineName, \Silverstripe\Search\Client\Model\ClickRequest $requestBody, string $fetch = self::FETCH_OBJECT)
+    {
+        return $this->executeEndpoint(new \Silverstripe\Search\Client\Endpoint\ClickPost($engineName, $requestBody), $fetch);
+    }
+    /**
+     * Retrieve all curations for an engine.
+     * @param string $engineName
+     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @throws \Silverstripe\Search\Client\Exception\CurationsGetNotFoundException
+     * @throws \Silverstripe\Search\Client\Exception\CurationsGetUnprocessableEntityException
+     * @throws \Silverstripe\Search\Client\Exception\UnexpectedStatusCodeException
+     *
+     * @return ($fetch is 'object' ? \Silverstripe\Search\Client\Model\CommonModelsCurationGetResponseGetResponse[] : \Psr\Http\Message\ResponseInterface)
+     */
+    public function curationsGet(string $engineName, string $fetch = self::FETCH_OBJECT)
+    {
+        return $this->executeEndpoint(new \Silverstripe\Search\Client\Endpoint\CurationsGet($engineName), $fetch);
+    }
+    /**
+     * Create a new curation for an engine.
+     *
+     * * `name`: An optional name for the curation. Can be useful in helping you easily identify the curation
+     * * `queries`: An optional list of query strings to be added to the curation at the time of creation
+     * @param string $engineName
+     * @param \Silverstripe\Search\Client\Model\CommonModelsCurationPostRequestPostRequest $requestBody
+     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @throws \Silverstripe\Search\Client\Exception\CurationsPostNotFoundException
+     * @throws \Silverstripe\Search\Client\Exception\CurationsPostUnprocessableEntityException
+     * @throws \Silverstripe\Search\Client\Exception\UnexpectedStatusCodeException
+     *
+     * @return ($fetch is 'object' ? \Silverstripe\Search\Client\Model\PostResponse : \Psr\Http\Message\ResponseInterface)
+     */
+    public function curationsPost(string $engineName, \Silverstripe\Search\Client\Model\CommonModelsCurationPostRequestPostRequest $requestBody, string $fetch = self::FETCH_OBJECT)
+    {
+        return $this->executeEndpoint(new \Silverstripe\Search\Client\Endpoint\CurationsPost($engineName, $requestBody), $fetch);
+    }
+    /**
+     * Delete a curation and all its related queries and documents.
+     * @param string $curationId
+     * @param string $engineName
+     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @throws \Silverstripe\Search\Client\Exception\CurationDeleteNotFoundException
+     * @throws \Silverstripe\Search\Client\Exception\CurationDeleteUnprocessableEntityException
+     * @throws \Silverstripe\Search\Client\Exception\UnexpectedStatusCodeException
+     *
+     * @return ($fetch is 'object' ? \Silverstripe\Search\Client\Model\ResponseSuccess : \Psr\Http\Message\ResponseInterface)
+     */
+    public function curationDelete(string $curationId, string $engineName, string $fetch = self::FETCH_OBJECT)
+    {
+        return $this->executeEndpoint(new \Silverstripe\Search\Client\Endpoint\CurationDelete($curationId, $engineName), $fetch);
+    }
+    /**
+     * Retrieve a specific curations for an engine.
+     * @param string $curationId
+     * @param string $engineName
+     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @throws \Silverstripe\Search\Client\Exception\CurationGetNotFoundException
+     * @throws \Silverstripe\Search\Client\Exception\CurationGetUnprocessableEntityException
+     * @throws \Silverstripe\Search\Client\Exception\UnexpectedStatusCodeException
+     *
+     * @return ($fetch is 'object' ? \Silverstripe\Search\Client\Model\CommonModelsCurationGetResponseGetResponse : \Psr\Http\Message\ResponseInterface)
+     */
+    public function curationGet(string $curationId, string $engineName, string $fetch = self::FETCH_OBJECT)
+    {
+        return $this->executeEndpoint(new \Silverstripe\Search\Client\Endpoint\CurationGet($curationId, $engineName), $fetch);
+    }
+    /**
+     * Update a curation's details. Only provided fields are updated.
+     *
+     * * `name`: An optional name for the curation
+     * @param string $curationId
+     * @param string $engineName
+     * @param \Silverstripe\Search\Client\Model\CommonModelsCurationPatchRequestPatchRequest $requestBody
+     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @throws \Silverstripe\Search\Client\Exception\CurationPatchNotFoundException
+     * @throws \Silverstripe\Search\Client\Exception\CurationPatchUnprocessableEntityException
+     * @throws \Silverstripe\Search\Client\Exception\UnexpectedStatusCodeException
+     *
+     * @return ($fetch is 'object' ? \Silverstripe\Search\Client\Model\CommonModelsCurationGetResponseGetResponse : \Psr\Http\Message\ResponseInterface)
+     */
+    public function curationPatch(string $curationId, string $engineName, \Silverstripe\Search\Client\Model\CommonModelsCurationPatchRequestPatchRequest $requestBody, string $fetch = self::FETCH_OBJECT)
+    {
+        return $this->executeEndpoint(new \Silverstripe\Search\Client\Endpoint\CurationPatch($curationId, $engineName, $requestBody), $fetch);
+    }
+    /**
+     * Retrieve all documents for a curation.
+     * @param string $curationId
+     * @param string $engineName
+     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @throws \Silverstripe\Search\Client\Exception\CurationDocumentsGetAllNotFoundException
+     * @throws \Silverstripe\Search\Client\Exception\CurationDocumentsGetAllUnprocessableEntityException
+     * @throws \Silverstripe\Search\Client\Exception\UnexpectedStatusCodeException
+     *
+     * @return ($fetch is 'object' ? \Silverstripe\Search\Client\Model\CommonModelsCurationDocumentGetResponseGetResponse[] : \Psr\Http\Message\ResponseInterface)
+     */
+    public function curationDocumentsGetAll(string $curationId, string $engineName, string $fetch = self::FETCH_OBJECT)
+    {
+        return $this->executeEndpoint(new \Silverstripe\Search\Client\Endpoint\CurationDocumentsGetAll($curationId, $engineName), $fetch);
+    }
+    /**
+     * Add a document to a curation.
+     *
+     * The 'type' field determines how the document is curated:
+     * - 0 (HIDDEN): Document is hidden from search results for this curation
+     * - 1 (PROMOTED): Document is promoted in search results for this curation
+     *
+     * A maximum of 20 Documents can be added for each Curation Type (HIDDEN, PROMOTED).
+     * @param string $curationId
+     * @param string $engineName
+     * @param \Silverstripe\Search\Client\Model\CommonModelsCurationDocumentPostRequestPostRequest $requestBody
+     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @throws \Silverstripe\Search\Client\Exception\CurationDocumentsPostNotFoundException
+     * @throws \Silverstripe\Search\Client\Exception\CurationDocumentsPostUnprocessableEntityException
+     * @throws \Silverstripe\Search\Client\Exception\UnexpectedStatusCodeException
+     *
+     * @return ($fetch is 'object' ? \Silverstripe\Search\Client\Model\CommonModelsCurationDocumentGetResponseGetResponse : \Psr\Http\Message\ResponseInterface)
+     */
+    public function curationDocumentsPost(string $curationId, string $engineName, \Silverstripe\Search\Client\Model\CommonModelsCurationDocumentPostRequestPostRequest $requestBody, string $fetch = self::FETCH_OBJECT)
+    {
+        return $this->executeEndpoint(new \Silverstripe\Search\Client\Endpoint\CurationDocumentsPost($curationId, $engineName, $requestBody), $fetch);
+    }
+    /**
+     * Remove a document from a curation.
+     * @param string $curationId
+     * @param string $documentId
+     * @param string $engineName
+     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @throws \Silverstripe\Search\Client\Exception\CurationDocumentsDeleteNotFoundException
+     * @throws \Silverstripe\Search\Client\Exception\CurationDocumentsDeleteUnprocessableEntityException
+     * @throws \Silverstripe\Search\Client\Exception\UnexpectedStatusCodeException
+     *
+     * @return ($fetch is 'object' ? \Silverstripe\Search\Client\Model\ResponseSuccess : \Psr\Http\Message\ResponseInterface)
+     */
+    public function curationDocumentsDelete(string $curationId, string $documentId, string $engineName, string $fetch = self::FETCH_OBJECT)
+    {
+        return $this->executeEndpoint(new \Silverstripe\Search\Client\Endpoint\CurationDocumentsDelete($curationId, $documentId, $engineName), $fetch);
+    }
+    /**
+     * Retrieve a specific document for a curation.
+     * @param string $curationId
+     * @param string $documentId
+     * @param string $engineName
+     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @throws \Silverstripe\Search\Client\Exception\CurationDocumentsGetOneNotFoundException
+     * @throws \Silverstripe\Search\Client\Exception\CurationDocumentsGetOneUnprocessableEntityException
+     * @throws \Silverstripe\Search\Client\Exception\UnexpectedStatusCodeException
+     *
+     * @return ($fetch is 'object' ? \Silverstripe\Search\Client\Model\CommonModelsCurationDocumentGetResponseGetResponse : \Psr\Http\Message\ResponseInterface)
+     */
+    public function curationDocumentsGetOne(string $curationId, string $documentId, string $engineName, string $fetch = self::FETCH_OBJECT)
+    {
+        return $this->executeEndpoint(new \Silverstripe\Search\Client\Endpoint\CurationDocumentsGetOne($curationId, $documentId, $engineName), $fetch);
+    }
+    /**
+     * Update a document in a curation.
+     *
+     * Only the fields provided in the request will be updated:
+     * - type: 0 (HIDDEN) or 1 (PROMOTED)
+     * - sort: The sort order for the document
+     * @param string $curationId
+     * @param string $documentId
+     * @param string $engineName
+     * @param \Silverstripe\Search\Client\Model\CommonModelsCurationDocumentPatchRequestPatchRequest $requestBody
+     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @throws \Silverstripe\Search\Client\Exception\CurationDocumentsPatchNotFoundException
+     * @throws \Silverstripe\Search\Client\Exception\CurationDocumentsPatchUnprocessableEntityException
+     * @throws \Silverstripe\Search\Client\Exception\UnexpectedStatusCodeException
+     *
+     * @return ($fetch is 'object' ? \Silverstripe\Search\Client\Model\CommonModelsCurationDocumentGetResponseGetResponse : \Psr\Http\Message\ResponseInterface)
+     */
+    public function curationDocumentsPatch(string $curationId, string $documentId, string $engineName, \Silverstripe\Search\Client\Model\CommonModelsCurationDocumentPatchRequestPatchRequest $requestBody, string $fetch = self::FETCH_OBJECT)
+    {
+        return $this->executeEndpoint(new \Silverstripe\Search\Client\Endpoint\CurationDocumentsPatch($curationId, $documentId, $engineName, $requestBody), $fetch);
+    }
+    /**
+     * Retrieve all queries for a curation.
+     * @param string $curationId
+     * @param string $engineName
+     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @throws \Silverstripe\Search\Client\Exception\CurationQueriesGetAllNotFoundException
+     * @throws \Silverstripe\Search\Client\Exception\CurationQueriesGetAllUnprocessableEntityException
+     * @throws \Silverstripe\Search\Client\Exception\UnexpectedStatusCodeException
+     *
+     * @return ($fetch is 'object' ? \Silverstripe\Search\Client\Model\CommonModelsCurationQueryGetResponseGetResponse[] : \Psr\Http\Message\ResponseInterface)
+     */
+    public function curationQueriesGetAll(string $curationId, string $engineName, string $fetch = self::FETCH_OBJECT)
+    {
+        return $this->executeEndpoint(new \Silverstripe\Search\Client\Endpoint\CurationQueriesGetAll($curationId, $engineName), $fetch);
+    }
+    /**
+     * Create a new query for an existing curation.
+     * @param string $curationId
+     * @param string $engineName
+     * @param \Silverstripe\Search\Client\Model\CommonModelsCurationQueryPostRequestPostRequest $requestBody
+     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @throws \Silverstripe\Search\Client\Exception\CurationQueriesPostNotFoundException
+     * @throws \Silverstripe\Search\Client\Exception\CurationQueriesPostUnprocessableEntityException
+     * @throws \Silverstripe\Search\Client\Exception\UnexpectedStatusCodeException
+     *
+     * @return ($fetch is 'object' ? \Silverstripe\Search\Client\Model\PostResponse : \Psr\Http\Message\ResponseInterface)
+     */
+    public function curationQueriesPost(string $curationId, string $engineName, \Silverstripe\Search\Client\Model\CommonModelsCurationQueryPostRequestPostRequest $requestBody, string $fetch = self::FETCH_OBJECT)
+    {
+        return $this->executeEndpoint(new \Silverstripe\Search\Client\Endpoint\CurationQueriesPost($curationId, $engineName, $requestBody), $fetch);
+    }
+    /**
+     * Delete a query from a curation.
+     * @param string $curationId
+     * @param string $queryId
+     * @param string $engineName
+     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @throws \Silverstripe\Search\Client\Exception\CurationQueriesDeleteNotFoundException
+     * @throws \Silverstripe\Search\Client\Exception\CurationQueriesDeleteUnprocessableEntityException
+     * @throws \Silverstripe\Search\Client\Exception\UnexpectedStatusCodeException
+     *
+     * @return ($fetch is 'object' ? \Silverstripe\Search\Client\Model\ResponseSuccess : \Psr\Http\Message\ResponseInterface)
+     */
+    public function curationQueriesDelete(string $curationId, string $queryId, string $engineName, string $fetch = self::FETCH_OBJECT)
+    {
+        return $this->executeEndpoint(new \Silverstripe\Search\Client\Endpoint\CurationQueriesDelete($curationId, $queryId, $engineName), $fetch);
+    }
+    /**
+     * Retrieve a specific query for a curation.
+     * @param string $curationId
+     * @param string $queryId
+     * @param string $engineName
+     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @throws \Silverstripe\Search\Client\Exception\CurationQueriesGetOneNotFoundException
+     * @throws \Silverstripe\Search\Client\Exception\CurationQueriesGetOneUnprocessableEntityException
+     * @throws \Silverstripe\Search\Client\Exception\UnexpectedStatusCodeException
+     *
+     * @return ($fetch is 'object' ? \Silverstripe\Search\Client\Model\CommonModelsCurationQueryGetResponseGetResponse : \Psr\Http\Message\ResponseInterface)
+     */
+    public function curationQueriesGetOne(string $curationId, string $queryId, string $engineName, string $fetch = self::FETCH_OBJECT)
+    {
+        return $this->executeEndpoint(new \Silverstripe\Search\Client\Endpoint\CurationQueriesGetOne($curationId, $queryId, $engineName), $fetch);
+    }
+    /**
      * Delete documents by `id`.
      * @param string $engineName
      * @param array[] $requestBody
@@ -13,7 +349,7 @@ class Client extends \Silverstripe\Search\Client\Runtime\Client\Client
      * @throws \Silverstripe\Search\Client\Exception\DocumentsDeleteUnprocessableEntityException
      * @throws \Silverstripe\Search\Client\Exception\UnexpectedStatusCodeException
      *
-     * @return \Silverstripe\Search\Client\Model\DocumentsDeleteResponse[]|\Psr\Http\Message\ResponseInterface
+     * @return ($fetch is 'object' ? \Silverstripe\Search\Client\Model\DocumentsDeleteResponse[] : \Psr\Http\Message\ResponseInterface)
      */
     public function documentsDelete(string $engineName, array $requestBody, string $fetch = self::FETCH_OBJECT)
     {
@@ -33,7 +369,7 @@ class Client extends \Silverstripe\Search\Client\Runtime\Client\Client
      * @throws \Silverstripe\Search\Client\Exception\DocumentsGetUnprocessableEntityException
      * @throws \Silverstripe\Search\Client\Exception\UnexpectedStatusCodeException
      *
-     * @return null|\Psr\Http\Message\ResponseInterface
+     * @return ($fetch is 'object' ? null : \Psr\Http\Message\ResponseInterface)
      */
     public function documentsGet(string $engineName, array $requestBody, string $fetch = self::FETCH_OBJECT)
     {
@@ -52,7 +388,7 @@ class Client extends \Silverstripe\Search\Client\Runtime\Client\Client
      * @throws \Silverstripe\Search\Client\Exception\DocumentsPatchUnprocessableEntityException
      * @throws \Silverstripe\Search\Client\Exception\UnexpectedStatusCodeException
      *
-     * @return \Silverstripe\Search\Client\Model\DocumentPostPatchResponse[]|\Psr\Http\Message\ResponseInterface
+     * @return ($fetch is 'object' ? \Silverstripe\Search\Client\Model\DocumentPostPatchResponse[] : \Psr\Http\Message\ResponseInterface)
      */
     public function documentsPatch(string $engineName, array $requestBody, string $fetch = self::FETCH_OBJECT)
     {
@@ -81,7 +417,7 @@ class Client extends \Silverstripe\Search\Client\Runtime\Client\Client
      * @throws \Silverstripe\Search\Client\Exception\DocumentsPostUnprocessableEntityException
      * @throws \Silverstripe\Search\Client\Exception\UnexpectedStatusCodeException
      *
-     * @return \Silverstripe\Search\Client\Model\DocumentPostPatchResponse[]|\Psr\Http\Message\ResponseInterface
+     * @return ($fetch is 'object' ? \Silverstripe\Search\Client\Model\DocumentPostPatchResponse[] : \Psr\Http\Message\ResponseInterface)
      */
     public function documentsPost(string $engineName, array $requestBody, string $fetch = self::FETCH_OBJECT)
     {
@@ -91,17 +427,17 @@ class Client extends \Silverstripe\Search\Client\Runtime\Client\Client
      * **Body:**
      *
      * `page` (optional)
-     * * Object to delimit the pagination parameters.
+     * * Object to delimit the pagination parameters
      *
      * `page.size` (optional)
-     * * Number of results per page.
-     * * Must be greater than or equal to 1 and less than or equal to 100.
-     * * Defaults to 10.
+     * * Number of results per page
+     * * Must be greater than or equal to 1 and less than or equal to 100
+     * * Defaults to 10
      *
      * `page.current` (optional)
-     * * Page number of results to return.
-     * * Must be greater than or equal to 1 and less than or equal to 100.
-     * * Defaults to 1.
+     * * Page number of results to return
+     * * Must be greater than or equal to 1
+     * * Defaults to 1
      * @param string $engineName
      * @param null|mixed $requestBody
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
@@ -109,7 +445,7 @@ class Client extends \Silverstripe\Search\Client\Runtime\Client\Client
      * @throws \Silverstripe\Search\Client\Exception\DocumentsListPostUnprocessableEntityException
      * @throws \Silverstripe\Search\Client\Exception\UnexpectedStatusCodeException
      *
-     * @return \Silverstripe\Search\Client\Model\DocumentListResponse|\Psr\Http\Message\ResponseInterface
+     * @return ($fetch is 'object' ? \Silverstripe\Search\Client\Model\DocumentListResponse : \Psr\Http\Message\ResponseInterface)
      */
     public function documentsListPost(string $engineName, $requestBody = null, string $fetch = self::FETCH_OBJECT)
     {
@@ -120,7 +456,7 @@ class Client extends \Silverstripe\Search\Client\Runtime\Client\Client
      * @throws \Silverstripe\Search\Client\Exception\EnginesPostNotFoundException
      * @throws \Silverstripe\Search\Client\Exception\UnexpectedStatusCodeException
      *
-     * @return \Silverstripe\Search\Client\Model\EnginesResponse|\Psr\Http\Message\ResponseInterface
+     * @return ($fetch is 'object' ? \Silverstripe\Search\Client\Model\EnginesResponse : \Psr\Http\Message\ResponseInterface)
      */
     public function enginesPost(string $fetch = self::FETCH_OBJECT)
     {
@@ -148,11 +484,30 @@ class Client extends \Silverstripe\Search\Client\Runtime\Client\Client
      * @throws \Silverstripe\Search\Client\Exception\QuerySuggestionPostUnprocessableEntityException
      * @throws \Silverstripe\Search\Client\Exception\UnexpectedStatusCodeException
      *
-     * @return \Silverstripe\Search\Client\Model\QuerySuggestionResponse|\Psr\Http\Message\ResponseInterface
+     * @return ($fetch is 'object' ? \Silverstripe\Search\Client\Model\QuerySuggestionResponse : \Psr\Http\Message\ResponseInterface)
      */
     public function querySuggestionPost(string $engineName, \Silverstripe\Search\Client\Model\QuerySuggestionRequest $requestBody, string $fetch = self::FETCH_OBJECT)
     {
         return $this->executeEndpoint(new \Silverstripe\Search\Client\Endpoint\QuerySuggestionPost($engineName, $requestBody), $fetch);
+    }
+    /**
+     * Deletes all schema fields for the engine, resetting it to an empty schema and engine.
+     *
+     * **Important:** Deleting the schema will also result in all Documents within the engine being deleted.
+     * @param string $engineName
+     * @param array{
+     *    "token"?: mixed,
+     * } $queryParameters
+     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @throws \Silverstripe\Search\Client\Exception\SchemaDeleteNotFoundException
+     * @throws \Silverstripe\Search\Client\Exception\SchemaDeleteUnprocessableEntityException
+     * @throws \Silverstripe\Search\Client\Exception\UnexpectedStatusCodeException
+     *
+     * @return ($fetch is 'object' ? null : \Psr\Http\Message\ResponseInterface)
+     */
+    public function schemaDelete(string $engineName, array $queryParameters = [], string $fetch = self::FETCH_OBJECT)
+    {
+        return $this->executeEndpoint(new \Silverstripe\Search\Client\Endpoint\SchemaDelete($engineName, $queryParameters), $fetch);
     }
     /**
      * @param string $engineName
@@ -161,7 +516,7 @@ class Client extends \Silverstripe\Search\Client\Runtime\Client\Client
      * @throws \Silverstripe\Search\Client\Exception\SchemaGetUnprocessableEntityException
      * @throws \Silverstripe\Search\Client\Exception\UnexpectedStatusCodeException
      *
-     * @return \Silverstripe\Search\Client\Model\Schema|\Psr\Http\Message\ResponseInterface
+     * @return ($fetch is 'object' ? \Silverstripe\Search\Client\Model\SchemaGetResponse : \Psr\Http\Message\ResponseInterface)
      */
     public function schemaGet(string $engineName, string $fetch = self::FETCH_OBJECT)
     {
@@ -204,7 +559,7 @@ class Client extends \Silverstripe\Search\Client\Runtime\Client\Client
      * @throws \Silverstripe\Search\Client\Exception\SchemaPostUnprocessableEntityException
      * @throws \Silverstripe\Search\Client\Exception\UnexpectedStatusCodeException
      *
-     * @return \Silverstripe\Search\Client\Model\SchemaPostResponse|\Psr\Http\Message\ResponseInterface
+     * @return ($fetch is 'object' ? \Silverstripe\Search\Client\Model\ResponseAcknowledged : \Psr\Http\Message\ResponseInterface)
      */
     public function schemaPost(string $engineName, \Silverstripe\Search\Client\Model\Schema $requestBody, string $fetch = self::FETCH_OBJECT)
     {
@@ -218,6 +573,7 @@ class Client extends \Silverstripe\Search\Client\Runtime\Client\Client
      * `query` **(required)**
      * * String or number to match
      * * The value '' (empty string) matches all documents
+     * * maximum length of 128 characters
      * * The following Lucene query syntax is supported:
      *     * double-quoted strings
      *     * `+` and `-`
@@ -228,7 +584,7 @@ class Client extends \Silverstripe\Search\Client\Runtime\Client\Client
      *
      * `page.size` (optional)
      * * Number of results per page
-     * * Must be greater than or equal to 1 and less than or equal to 100
+     * * Must be greater than or equal to 1 and less than or equal to 1000
      * * Defaults to 10.
      *
      * `page.current` (optional)
@@ -298,6 +654,44 @@ class Client extends \Silverstripe\Search\Client\Runtime\Client\Client
      *     * `date`: Value filter, Range filter
      *     * `geolocation`: Geo filter
      *
+     * `boosts` (optional)
+     * * Apply boosts to influence the relevance scoring of results at query time
+     * * JSON object where the key is a field name and the value is an array of boost objects
+     * * Query-time boosts completely replace any stored boosts configured for the engine
+     * * The following boost types are available based on field type:
+     *     * `text`: Value boost
+     *     * `number`: Value boost, Proximity boost
+     *     * `date`: Value boost, Proximity boost (recency)
+     *     * `geolocation`: Proximity boost
+     *
+     * `boosts.{field_key}` **(required)**
+     * * The field from your schema upon which to apply your boost
+     * * Must contain an array of {boost_object}.
+     *
+     * `{boost_object}.type` **(required)**
+     * * Type of boost: "value" or "proximity"
+     *
+     * `{boost_object}.value` **(required for value boosts)**
+     * * An array of string values to match against
+     * * Documents with matching values in the boosted field will have their relevance score increased.
+     *
+     * `{boost_object}.center` **(required for proximity boosts)**
+     * * The center point from which to calculate distance
+     * * For date fields: a date string (e.g. "2024-01-01") or a relative date expression.
+     *   Supported formats: "now", "now-1d", "now-7d", "now-1M", "now-1y", "now/d" (rounded to start of day)
+     * * For number fields: a numeric string (e.g. "100")
+     * * For geolocation fields: a lat,lon string (e.g. "-36.8485,174.7633")
+     *
+     * `{boost_object}.function` **(required for proximity boosts)**
+     * * The decay function to use: "gaussian", "exponential", or "linear"
+     * * Gaussian provides a smooth bell-curve decay
+     * * Exponential provides a sharp initial decay that flattens over distance
+     * * Linear provides a constant rate of decay
+     *
+     * `{boost_object}.factor` (optional)
+     * * The strength of the boost, between 0 and 10
+     * * Defaults to 1.
+     *
      * `search_fields` (optional)
      * * The search_fields parameter restricts a query to search only specific fields
      * * Restricting fields will result in faster queries, especially for schemas with many text fields
@@ -344,14 +738,17 @@ class Client extends \Silverstripe\Search\Client\Runtime\Client\Client
      *
      * `analytics` (optional)
      * * Object to delimit the analytics parameters.
+     * * Only available to Analyst and Architect plans.
      *
      * `analytics.tags` **(required)**
      * * Array of strings representing the tags you’d like to apply to the query
      * * You may submit up to 16 tags, and each may be up to 64 characters in length.
+     * * Only available to Analyst and Architect plans.
      *
      * `record_analytics` (optional)
      * * If `true`, generates an analytics query event for the search request
      * * Defaults to `true`.
+     * * Only available to Analyst and Architect plans.
      * @param string $engineName
      * @param \Silverstripe\Search\Client\Model\SearchRequest $requestBody
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
@@ -359,7 +756,7 @@ class Client extends \Silverstripe\Search\Client\Runtime\Client\Client
      * @throws \Silverstripe\Search\Client\Exception\SearchPostUnprocessableEntityException
      * @throws \Silverstripe\Search\Client\Exception\UnexpectedStatusCodeException
      *
-     * @return null|\Psr\Http\Message\ResponseInterface
+     * @return ($fetch is 'object' ? \Silverstripe\Search\Client\Model\SearchResponse : \Psr\Http\Message\ResponseInterface)
      */
     public function searchPost(string $engineName, \Silverstripe\Search\Client\Model\SearchRequest $requestBody, string $fetch = self::FETCH_OBJECT)
     {
@@ -372,7 +769,7 @@ class Client extends \Silverstripe\Search\Client\Runtime\Client\Client
      * @throws \Silverstripe\Search\Client\Exception\SettingsGetUnprocessableEntityException
      * @throws \Silverstripe\Search\Client\Exception\UnexpectedStatusCodeException
      *
-     * @return \Silverstripe\Search\Client\Model\SettingsResponse|\Psr\Http\Message\ResponseInterface
+     * @return ($fetch is 'object' ? \Silverstripe\Search\Client\Model\SettingsResponse : \Psr\Http\Message\ResponseInterface)
      */
     public function settingsGet(string $engineName, string $fetch = self::FETCH_OBJECT)
     {
@@ -402,7 +799,7 @@ class Client extends \Silverstripe\Search\Client\Runtime\Client\Client
      * @throws \Silverstripe\Search\Client\Exception\SettingsPostUnprocessableEntityException
      * @throws \Silverstripe\Search\Client\Exception\UnexpectedStatusCodeException
      *
-     * @return \Silverstripe\Search\Client\Model\SettingsResponse|\Psr\Http\Message\ResponseInterface
+     * @return ($fetch is 'object' ? \Silverstripe\Search\Client\Model\SettingsResponse : \Psr\Http\Message\ResponseInterface)
      */
     public function settingsPost(string $engineName, \Silverstripe\Search\Client\Model\SettingsRequest $requestBody, string $fetch = self::FETCH_OBJECT)
     {
@@ -431,7 +828,7 @@ class Client extends \Silverstripe\Search\Client\Runtime\Client\Client
      * @throws \Silverstripe\Search\Client\Exception\SpellingSuggestionPostUnprocessableEntityException
      * @throws \Silverstripe\Search\Client\Exception\UnexpectedStatusCodeException
      *
-     * @return \Silverstripe\Search\Client\Model\SpellingSuggestionResponse|\Psr\Http\Message\ResponseInterface
+     * @return ($fetch is 'object' ? \Silverstripe\Search\Client\Model\SpellingSuggestionResponse : \Psr\Http\Message\ResponseInterface)
      */
     public function spellingSuggestionPost(string $engineName, \Silverstripe\Search\Client\Model\SpellingSuggestionRequest $requestBody, string $fetch = self::FETCH_OBJECT)
     {
@@ -445,7 +842,7 @@ class Client extends \Silverstripe\Search\Client\Runtime\Client\Client
      * @throws \Silverstripe\Search\Client\Exception\SynonymRulesGetUnprocessableEntityException
      * @throws \Silverstripe\Search\Client\Exception\UnexpectedStatusCodeException
      *
-     * @return \Silverstripe\Search\Client\Model\SynonymRule[]|\Psr\Http\Message\ResponseInterface
+     * @return ($fetch is 'object' ? \Silverstripe\Search\Client\Model\SynonymRule[] : \Psr\Http\Message\ResponseInterface)
      */
     public function synonymRulesGet(string $engineName, string $fetch = self::FETCH_OBJECT)
     {
@@ -472,7 +869,7 @@ class Client extends \Silverstripe\Search\Client\Runtime\Client\Client
      * @throws \Silverstripe\Search\Client\Exception\SynonymRulePostUnprocessableEntityException
      * @throws \Silverstripe\Search\Client\Exception\UnexpectedStatusCodeException
      *
-     * @return \Silverstripe\Search\Client\Model\SynonymRule|\Psr\Http\Message\ResponseInterface
+     * @return ($fetch is 'object' ? \Silverstripe\Search\Client\Model\SynonymRule : \Psr\Http\Message\ResponseInterface)
      */
     public function synonymRulePost(string $engineName, \Silverstripe\Search\Client\Model\SynonymRuleRequest $requestBody, string $fetch = self::FETCH_OBJECT)
     {
@@ -487,7 +884,7 @@ class Client extends \Silverstripe\Search\Client\Runtime\Client\Client
      * @throws \Silverstripe\Search\Client\Exception\SynonymRuleDeleteUnprocessableEntityException
      * @throws \Silverstripe\Search\Client\Exception\UnexpectedStatusCodeException
      *
-     * @return \Silverstripe\Search\Client\Model\ResponseSuccess|\Psr\Http\Message\ResponseInterface
+     * @return ($fetch is 'object' ? \Silverstripe\Search\Client\Model\ResponseSuccess : \Psr\Http\Message\ResponseInterface)
      */
     public function synonymRuleDelete(string $ruleId, string $engineName, string $fetch = self::FETCH_OBJECT)
     {
@@ -502,7 +899,7 @@ class Client extends \Silverstripe\Search\Client\Runtime\Client\Client
      * @throws \Silverstripe\Search\Client\Exception\SynonymRuleGetUnprocessableEntityException
      * @throws \Silverstripe\Search\Client\Exception\UnexpectedStatusCodeException
      *
-     * @return \Silverstripe\Search\Client\Model\SynonymRule|\Psr\Http\Message\ResponseInterface
+     * @return ($fetch is 'object' ? \Silverstripe\Search\Client\Model\SynonymRule : \Psr\Http\Message\ResponseInterface)
      */
     public function synonymRuleGet(string $ruleId, string $engineName, string $fetch = self::FETCH_OBJECT)
     {
@@ -530,7 +927,7 @@ class Client extends \Silverstripe\Search\Client\Runtime\Client\Client
      * @throws \Silverstripe\Search\Client\Exception\SynonymRulePutUnprocessableEntityException
      * @throws \Silverstripe\Search\Client\Exception\UnexpectedStatusCodeException
      *
-     * @return \Silverstripe\Search\Client\Model\SynonymRule|\Psr\Http\Message\ResponseInterface
+     * @return ($fetch is 'object' ? \Silverstripe\Search\Client\Model\SynonymRule : \Psr\Http\Message\ResponseInterface)
      */
     public function synonymRulePut(string $ruleId, string $engineName, \Silverstripe\Search\Client\Model\SynonymRuleRequest $requestBody, string $fetch = self::FETCH_OBJECT)
     {

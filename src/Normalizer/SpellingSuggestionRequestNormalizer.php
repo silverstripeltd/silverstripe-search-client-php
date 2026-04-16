@@ -27,23 +27,21 @@ class SpellingSuggestionRequestNormalizer implements DenormalizerInterface, Norm
     }
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Silverstripe\Search\Client\Model\SpellingSuggestionRequest();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Silverstripe\Search\Client\Model\SpellingSuggestionRequest();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
-        }
         if (\array_key_exists('query', $data)) {
             $object->setQuery($data['query']);
-            unset($data['query']);
         }
         if (\array_key_exists('size', $data)) {
             $object->setSize($data['size']);
-            unset($data['size']);
         }
         if (\array_key_exists('fields', $data)) {
             $values = [];
@@ -51,16 +49,12 @@ class SpellingSuggestionRequestNormalizer implements DenormalizerInterface, Norm
                 $values[] = $value;
             }
             $object->setFields($values);
-            unset($data['fields']);
         }
-        if (\array_key_exists('formatted', $data)) {
+        if (\array_key_exists('formatted', $data) && $data['formatted'] !== null) {
             $object->setFormatted($data['formatted']);
-            unset($data['formatted']);
         }
-        foreach ($data as $key => $value_1) {
-            if (preg_match('/.*/', (string) $key)) {
-                $object[$key] = $value_1;
-            }
+        elseif (\array_key_exists('formatted', $data) && $data['formatted'] === null) {
+            $object->setFormatted(null);
         }
         return $object;
     }
@@ -76,13 +70,8 @@ class SpellingSuggestionRequestNormalizer implements DenormalizerInterface, Norm
             $values[] = $value;
         }
         $dataArray['fields'] = $values;
-        if ($data->isInitialized('formatted') && null !== $data->getFormatted()) {
+        if ($data->isInitialized('formatted')) {
             $dataArray['formatted'] = $data->getFormatted();
-        }
-        foreach ($data as $key => $value_1) {
-            if (preg_match('/.*/', (string) $key)) {
-                $dataArray[$key] = $value_1;
-            }
         }
         return $dataArray;
     }

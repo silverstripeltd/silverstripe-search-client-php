@@ -27,15 +27,15 @@ class SpellingSuggestionResponseNormalizer implements DenormalizerInterface, Nor
     }
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Silverstripe\Search\Client\Model\SpellingSuggestionResponse();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Silverstripe\Search\Client\Model\SpellingSuggestionResponse();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('results', $data)) {
             $values = [];
@@ -43,12 +43,6 @@ class SpellingSuggestionResponseNormalizer implements DenormalizerInterface, Nor
                 $values[] = $this->denormalizer->denormalize($value, \Silverstripe\Search\Client\Model\DocumentField::class, 'json', $context);
             }
             $object->setResults($values);
-            unset($data['results']);
-        }
-        foreach ($data as $key => $value_1) {
-            if (preg_match('/.*/', (string) $key)) {
-                $object[$key] = $value_1;
-            }
         }
         return $object;
     }
@@ -57,14 +51,9 @@ class SpellingSuggestionResponseNormalizer implements DenormalizerInterface, Nor
         $dataArray = [];
         $values = [];
         foreach ($data->getResults() as $value) {
-            $values[] = $value == null ? null : new \ArrayObject($this->normalizer->normalize($value, 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
+            $values[] = $this->normalizer->normalize($value, 'json', $context);
         }
         $dataArray['results'] = $values;
-        foreach ($data as $key => $value_1) {
-            if (preg_match('/.*/', (string) $key)) {
-                $dataArray[$key] = $value_1;
-            }
-        }
         return $dataArray;
     }
     public function getSupportedTypes(?string $format = null): array

@@ -27,15 +27,15 @@ class ValidationErrorNormalizer implements DenormalizerInterface, NormalizerInte
     }
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Silverstripe\Search\Client\Model\ValidationError();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Silverstripe\Search\Client\Model\ValidationError();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('loc', $data)) {
             $values = [];
@@ -43,20 +43,12 @@ class ValidationErrorNormalizer implements DenormalizerInterface, NormalizerInte
                 $values[] = $value;
             }
             $object->setLoc($values);
-            unset($data['loc']);
         }
         if (\array_key_exists('msg', $data)) {
             $object->setMsg($data['msg']);
-            unset($data['msg']);
         }
         if (\array_key_exists('type', $data)) {
             $object->setType($data['type']);
-            unset($data['type']);
-        }
-        foreach ($data as $key => $value_1) {
-            if (preg_match('/.*/', (string) $key)) {
-                $object[$key] = $value_1;
-            }
         }
         return $object;
     }
@@ -70,11 +62,6 @@ class ValidationErrorNormalizer implements DenormalizerInterface, NormalizerInte
         $dataArray['loc'] = $values;
         $dataArray['msg'] = $data->getMsg();
         $dataArray['type'] = $data->getType();
-        foreach ($data as $key => $value_1) {
-            if (preg_match('/.*/', (string) $key)) {
-                $dataArray[$key] = $value_1;
-            }
-        }
         return $dataArray;
     }
     public function getSupportedTypes(?string $format = null): array

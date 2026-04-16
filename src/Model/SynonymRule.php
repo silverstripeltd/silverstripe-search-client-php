@@ -2,7 +2,7 @@
 
 namespace Silverstripe\Search\Client\Model;
 
-class SynonymRule extends \ArrayObject
+class SynonymRule
 {
     /**
      * @var array

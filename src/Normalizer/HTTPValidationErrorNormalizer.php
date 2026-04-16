@@ -27,15 +27,15 @@ class HTTPValidationErrorNormalizer implements DenormalizerInterface, Normalizer
     }
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Silverstripe\Search\Client\Model\HTTPValidationError();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Silverstripe\Search\Client\Model\HTTPValidationError();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('detail', $data)) {
             $values = [];
@@ -43,12 +43,6 @@ class HTTPValidationErrorNormalizer implements DenormalizerInterface, Normalizer
                 $values[] = $this->denormalizer->denormalize($value, \Silverstripe\Search\Client\Model\ValidationError::class, 'json', $context);
             }
             $object->setDetail($values);
-            unset($data['detail']);
-        }
-        foreach ($data as $key => $value_1) {
-            if (preg_match('/.*/', (string) $key)) {
-                $object[$key] = $value_1;
-            }
         }
         return $object;
     }
@@ -58,14 +52,9 @@ class HTTPValidationErrorNormalizer implements DenormalizerInterface, Normalizer
         if ($data->isInitialized('detail') && null !== $data->getDetail()) {
             $values = [];
             foreach ($data->getDetail() as $value) {
-                $values[] = $value == null ? null : new \ArrayObject($this->normalizer->normalize($value, 'json', $context), \ArrayObject::ARRAY_AS_PROPS);
+                $values[] = $this->normalizer->normalize($value, 'json', $context);
             }
             $dataArray['detail'] = $values;
-        }
-        foreach ($data as $key => $value_1) {
-            if (preg_match('/.*/', (string) $key)) {
-                $dataArray[$key] = $value_1;
-            }
         }
         return $dataArray;
     }

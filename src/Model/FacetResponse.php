@@ -2,7 +2,7 @@
 
 namespace Silverstripe\Search\Client\Model;
 
-class FacetResponse extends \ArrayObject
+class FacetResponse
 {
     /**
      * @var array
@@ -17,11 +17,11 @@ class FacetResponse extends \ArrayObject
      */
     protected $type;
     /**
-     * @var mixed
+     * @var mixed|null
      */
     protected $name;
     /**
-     * @var list<mixed>
+     * @var list<ResponseFacetValue>|list<ResponseFacetRange>
      */
     protected $data;
     /**
@@ -61,14 +61,14 @@ class FacetResponse extends \ArrayObject
         return $this;
     }
     /**
-     * @return list<mixed>
+     * @return list<ResponseFacetValue>|list<ResponseFacetRange>
      */
     public function getData(): array
     {
         return $this->data;
     }
     /**
-     * @param list<mixed> $data
+     * @param list<ResponseFacetValue>|list<ResponseFacetRange> $data
      *
      * @return self
      */

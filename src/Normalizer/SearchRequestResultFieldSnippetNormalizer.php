@@ -27,44 +27,38 @@ class SearchRequestResultFieldSnippetNormalizer implements DenormalizerInterface
     }
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Silverstripe\Search\Client\Model\SearchRequestResultFieldSnippet();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Silverstripe\Search\Client\Model\SearchRequestResultFieldSnippet();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
-        }
-        if (\array_key_exists('size', $data)) {
+        if (\array_key_exists('size', $data) && $data['size'] !== null) {
             $object->setSize($data['size']);
-            unset($data['size']);
         }
-        if (\array_key_exists('fallback', $data)) {
+        elseif (\array_key_exists('size', $data) && $data['size'] === null) {
+            $object->setSize(null);
+        }
+        if (\array_key_exists('fallback', $data) && $data['fallback'] !== null) {
             $object->setFallback($data['fallback']);
-            unset($data['fallback']);
         }
-        foreach ($data as $key => $value) {
-            if (preg_match('/.*/', (string) $key)) {
-                $object[$key] = $value;
-            }
+        elseif (\array_key_exists('fallback', $data) && $data['fallback'] === null) {
+            $object->setFallback(null);
         }
         return $object;
     }
     public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         $dataArray = [];
-        if ($data->isInitialized('size') && null !== $data->getSize()) {
+        if ($data->isInitialized('size')) {
             $dataArray['size'] = $data->getSize();
         }
-        if ($data->isInitialized('fallback') && null !== $data->getFallback()) {
+        if ($data->isInitialized('fallback')) {
             $dataArray['fallback'] = $data->getFallback();
-        }
-        foreach ($data as $key => $value) {
-            if (preg_match('/.*/', (string) $key)) {
-                $dataArray[$key] = $value;
-            }
         }
         return $dataArray;
     }

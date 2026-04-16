@@ -2,7 +2,7 @@
 
 namespace Silverstripe\Search\Client\Model;
 
-class DocumentResponseMeta extends \ArrayObject
+class DocumentResponseMeta
 {
     /**
      * @var array
@@ -13,15 +13,15 @@ class DocumentResponseMeta extends \ArrayObject
         return array_key_exists($property, $this->initialized);
     }
     /**
-     * @var mixed
+     * @var mixed|null
      */
     protected $score;
     /**
-     * @var mixed
+     * @var mixed|null
      */
     protected $engine;
     /**
-     * @var mixed
+     * @var mixed|null
      */
     protected $id;
     /**

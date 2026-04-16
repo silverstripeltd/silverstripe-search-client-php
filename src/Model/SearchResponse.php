@@ -2,7 +2,7 @@
 
 namespace Silverstripe\Search\Client\Model;
 
-class SearchResponse extends \ArrayObject
+class SearchResponse
 {
     /**
      * @var array
@@ -17,11 +17,11 @@ class SearchResponse extends \ArrayObject
      */
     protected $meta;
     /**
-     * @var list<array<string, mixed>>
+     * @var list<array<string, DocumentResponseMeta|DocumentField>>
      */
     protected $results;
     /**
-     * @var mixed
+     * @var mixed|null
      */
     protected $facets;
     /**
@@ -43,14 +43,14 @@ class SearchResponse extends \ArrayObject
         return $this;
     }
     /**
-     * @return list<array<string, mixed>>
+     * @return list<array<string, DocumentResponseMeta|DocumentField>>
      */
     public function getResults(): array
     {
         return $this->results;
     }
     /**
-     * @param list<array<string, mixed>> $results
+     * @param list<array<string, DocumentResponseMeta|DocumentField>> $results
      *
      * @return self
      */

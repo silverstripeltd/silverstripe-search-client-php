@@ -27,36 +27,37 @@ class FacetResponseNormalizer implements DenormalizerInterface, NormalizerInterf
     }
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Silverstripe\Search\Client\Model\FacetResponse();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Silverstripe\Search\Client\Model\FacetResponse();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
-        }
         if (\array_key_exists('type', $data)) {
             $object->setType($data['type']);
-            unset($data['type']);
         }
-        if (\array_key_exists('name', $data)) {
+        if (\array_key_exists('name', $data) && $data['name'] !== null) {
             $object->setName($data['name']);
-            unset($data['name']);
+        }
+        elseif (\array_key_exists('name', $data) && $data['name'] === null) {
+            $object->setName(null);
         }
         if (\array_key_exists('data', $data)) {
             $values = [];
             foreach ($data['data'] as $value) {
-                $values[] = $value;
+                $value_1 = $value;
+                if (is_array($value) and isset($value['value']) and isset($value['count'])) {
+                    $value_1 = $this->denormalizer->denormalize($value, \Silverstripe\Search\Client\Model\ResponseFacetValue::class, 'json', $context);
+                } elseif (is_array($value) and isset($value['count'])) {
+                    $value_1 = $this->denormalizer->denormalize($value, \Silverstripe\Search\Client\Model\ResponseFacetRange::class, 'json', $context);
+                }
+                $values[] = $value_1;
             }
             $object->setData($values);
-            unset($data['data']);
-        }
-        foreach ($data as $key => $value_1) {
-            if (preg_match('/.*/', (string) $key)) {
-                $object[$key] = $value_1;
-            }
         }
         return $object;
     }
@@ -64,19 +65,20 @@ class FacetResponseNormalizer implements DenormalizerInterface, NormalizerInterf
     {
         $dataArray = [];
         $dataArray['type'] = $data->getType();
-        if ($data->isInitialized('name') && null !== $data->getName()) {
+        if ($data->isInitialized('name')) {
             $dataArray['name'] = $data->getName();
         }
         $values = [];
         foreach ($data->getData() as $value) {
-            $values[] = $value;
+            $value_1 = $value;
+            if (is_object($value)) {
+                $value_1 = $this->normalizer->normalize($value, 'json', $context);
+            } elseif (is_object($value)) {
+                $value_1 = $this->normalizer->normalize($value, 'json', $context);
+            }
+            $values[] = $value_1;
         }
         $dataArray['data'] = $values;
-        foreach ($data as $key => $value_1) {
-            if (preg_match('/.*/', (string) $key)) {
-                $dataArray[$key] = $value_1;
-            }
-        }
         return $dataArray;
     }
     public function getSupportedTypes(?string $format = null): array

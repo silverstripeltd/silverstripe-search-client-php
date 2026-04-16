@@ -2,7 +2,7 @@
 
 namespace Silverstripe\Search\Client\Model;
 
-class RequestFacetValue extends \ArrayObject
+class RequestFacetValue
 {
     /**
      * @var array
@@ -17,7 +17,7 @@ class RequestFacetValue extends \ArrayObject
      */
     protected $type;
     /**
-     * @var mixed
+     * @var mixed|null
      */
     protected $name;
     /**
@@ -85,7 +85,7 @@ class RequestFacetValue extends \ArrayObject
     /**
      * @return array<string, string>|null
      */
-    public function getSort(): iterable
+    public function getSort(): ?iterable
     {
         return $this->sort;
     }
@@ -94,7 +94,7 @@ class RequestFacetValue extends \ArrayObject
      *
      * @return self
      */
-    public function setSort(iterable $sort): self
+    public function setSort(?iterable $sort): self
     {
         $this->initialized['sort'] = true;
         $this->sort = $sort;

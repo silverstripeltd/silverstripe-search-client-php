@@ -27,28 +27,21 @@ class ResponseFacetValueNormalizer implements DenormalizerInterface, NormalizerI
     }
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Silverstripe\Search\Client\Model\ResponseFacetValue();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Silverstripe\Search\Client\Model\ResponseFacetValue();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
-        }
         if (\array_key_exists('value', $data)) {
             $object->setValue($data['value']);
-            unset($data['value']);
         }
         if (\array_key_exists('count', $data)) {
             $object->setCount($data['count']);
-            unset($data['count']);
-        }
-        foreach ($data as $key => $value) {
-            if (preg_match('/.*/', (string) $key)) {
-                $object[$key] = $value;
-            }
         }
         return $object;
     }
@@ -57,11 +50,6 @@ class ResponseFacetValueNormalizer implements DenormalizerInterface, NormalizerI
         $dataArray = [];
         $dataArray['value'] = $data->getValue();
         $dataArray['count'] = $data->getCount();
-        foreach ($data as $key => $value) {
-            if (preg_match('/.*/', (string) $key)) {
-                $dataArray[$key] = $value;
-            }
-        }
         return $dataArray;
     }
     public function getSupportedTypes(?string $format = null): array

@@ -2,7 +2,7 @@
 
 namespace Silverstripe\Search\Client\Model;
 
-class DocumentListResponseMeta extends \ArrayObject
+class DocumentListResponseMeta
 {
     /**
      * @var array
@@ -13,19 +13,19 @@ class DocumentListResponseMeta extends \ArrayObject
         return array_key_exists($property, $this->initialized);
     }
     /**
-     * @var mixed
+     * @var mixed|null
      */
     protected $alerts;
     /**
-     * @var PaginationWithTotals
+     * @var PaginationResponse
      */
     protected $page;
     /**
-     * @var mixed
+     * @var mixed|null
      */
     protected $requestId;
     /**
-     * @var mixed
+     * @var mixed|null
      */
     protected $warnings;
     /**
@@ -47,18 +47,18 @@ class DocumentListResponseMeta extends \ArrayObject
         return $this;
     }
     /**
-     * @return PaginationWithTotals
+     * @return PaginationResponse
      */
-    public function getPage(): PaginationWithTotals
+    public function getPage(): PaginationResponse
     {
         return $this->page;
     }
     /**
-     * @param PaginationWithTotals $page
+     * @param PaginationResponse $page
      *
      * @return self
      */
-    public function setPage(PaginationWithTotals $page): self
+    public function setPage(PaginationResponse $page): self
     {
         $this->initialized['page'] = true;
         $this->page = $page;

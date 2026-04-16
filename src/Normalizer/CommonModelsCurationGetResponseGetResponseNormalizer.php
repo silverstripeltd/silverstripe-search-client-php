@@ -11,7 +11,7 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-class EngineNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
+class CommonModelsCurationGetResponseGetResponseNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
 {
     use DenormalizerAwareTrait;
     use NormalizerAwareTrait;
@@ -19,48 +19,55 @@ class EngineNormalizer implements DenormalizerInterface, NormalizerInterface, De
     use ValidatorTrait;
     public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return $type === \Silverstripe\Search\Client\Model\Engine::class;
+        return $type === \Silverstripe\Search\Client\Model\CommonModelsCurationGetResponseGetResponse::class;
     }
     public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return is_object($data) && get_class($data) === \Silverstripe\Search\Client\Model\Engine::class;
+        return is_object($data) && get_class($data) === \Silverstripe\Search\Client\Model\CommonModelsCurationGetResponseGetResponse::class;
     }
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Silverstripe\Search\Client\Model\CommonModelsCurationGetResponseGetResponse();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Silverstripe\Search\Client\Model\Engine();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
+        if (\array_key_exists('uuid', $data)) {
+            $object->setUuid($data['uuid']);
         }
-        if (\array_key_exists('name', $data)) {
+        if (\array_key_exists('name', $data) && $data['name'] !== null) {
             $object->setName($data['name']);
-            unset($data['name']);
         }
-        foreach ($data as $key => $value) {
-            if (preg_match('/.*/', (string) $key)) {
-                $object[$key] = $value;
-            }
+        elseif (\array_key_exists('name', $data) && $data['name'] === null) {
+            $object->setName(null);
+        }
+        if (\array_key_exists('queries', $data) && $data['queries'] !== null) {
+            $object->setQueries($data['queries']);
+        }
+        elseif (\array_key_exists('queries', $data) && $data['queries'] === null) {
+            $object->setQueries(null);
         }
         return $object;
     }
     public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         $dataArray = [];
-        $dataArray['name'] = $data->getName();
-        foreach ($data as $key => $value) {
-            if (preg_match('/.*/', (string) $key)) {
-                $dataArray[$key] = $value;
-            }
+        $dataArray['uuid'] = $data->getUuid();
+        if ($data->isInitialized('name')) {
+            $dataArray['name'] = $data->getName();
+        }
+        if ($data->isInitialized('queries')) {
+            $dataArray['queries'] = $data->getQueries();
         }
         return $dataArray;
     }
     public function getSupportedTypes(?string $format = null): array
     {
-        return [\Silverstripe\Search\Client\Model\Engine::class => false];
+        return [\Silverstripe\Search\Client\Model\CommonModelsCurationGetResponseGetResponse::class => false];
     }
 }

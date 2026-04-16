@@ -2,7 +2,7 @@
 
 namespace Silverstripe\Search\Client\Model;
 
-class PaginationWithTotals extends \ArrayObject
+class PaginationResponse
 {
     /**
      * @var array

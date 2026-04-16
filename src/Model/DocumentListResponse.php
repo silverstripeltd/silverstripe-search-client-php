@@ -2,7 +2,7 @@
 
 namespace Silverstripe\Search\Client\Model;
 
-class DocumentListResponse extends \ArrayObject
+class DocumentListResponse
 {
     /**
      * @var array

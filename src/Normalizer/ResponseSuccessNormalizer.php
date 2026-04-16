@@ -27,27 +27,21 @@ class ResponseSuccessNormalizer implements DenormalizerInterface, NormalizerInte
     }
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Silverstripe\Search\Client\Model\ResponseSuccess();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Silverstripe\Search\Client\Model\ResponseSuccess();
         if (\array_key_exists('success', $data) && \is_int($data['success'])) {
             $data['success'] = (bool) $data['success'];
         }
-        if (null === $data || false === \is_array($data)) {
-            return $object;
-        }
         if (\array_key_exists('success', $data)) {
             $object->setSuccess($data['success']);
-            unset($data['success']);
-        }
-        foreach ($data as $key => $value) {
-            if (preg_match('/.*/', (string) $key)) {
-                $object[$key] = $value;
-            }
         }
         return $object;
     }
@@ -55,11 +49,6 @@ class ResponseSuccessNormalizer implements DenormalizerInterface, NormalizerInte
     {
         $dataArray = [];
         $dataArray['success'] = $data->getSuccess();
-        foreach ($data as $key => $value) {
-            if (preg_match('/.*/', (string) $key)) {
-                $dataArray[$key] = $value;
-            }
-        }
         return $dataArray;
     }
     public function getSupportedTypes(?string $format = null): array

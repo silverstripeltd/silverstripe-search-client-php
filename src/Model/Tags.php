@@ -2,7 +2,7 @@
 
 namespace Silverstripe\Search\Client\Model;
 
-class Tags extends \ArrayObject
+class Tags
 {
     /**
      * @var array

@@ -2,7 +2,7 @@
 
 namespace Silverstripe\Search\Client\Model;
 
-class QuerySuggestionRequest extends \ArrayObject
+class QuerySuggestionRequest
 {
     /**
      * @var array
@@ -13,7 +13,7 @@ class QuerySuggestionRequest extends \ArrayObject
         return array_key_exists($property, $this->initialized);
     }
     /**
-     * A partial query for which to receive suggestions.
+     * A partial query for which to receive suggestions. Maximum length of 128 characters.
      *
      * @var string
      */
@@ -27,11 +27,11 @@ class QuerySuggestionRequest extends \ArrayObject
     /**
      * Specify the document fields to look for suggestions within. Defaults to all text fields.
      *
-     * @var mixed
+     * @var mixed|null
      */
     protected $fields;
     /**
-     * A partial query for which to receive suggestions.
+     * A partial query for which to receive suggestions. Maximum length of 128 characters.
      *
      * @return string
      */
@@ -40,7 +40,7 @@ class QuerySuggestionRequest extends \ArrayObject
         return $this->query;
     }
     /**
-     * A partial query for which to receive suggestions.
+     * A partial query for which to receive suggestions. Maximum length of 128 characters.
      *
      * @param string $query
      *

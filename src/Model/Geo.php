@@ -2,7 +2,7 @@
 
 namespace Silverstripe\Search\Client\Model;
 
-class Geo extends \ArrayObject
+class Geo
 {
     /**
      * @var array
@@ -13,11 +13,11 @@ class Geo extends \ArrayObject
         return array_key_exists($property, $this->initialized);
     }
     /**
-     * @var mixed
+     * @var mixed|null
      */
     protected $from;
     /**
-     * @var mixed
+     * @var mixed|null
      */
     protected $to;
     /**
@@ -29,7 +29,7 @@ class Geo extends \ArrayObject
      */
     protected $unit;
     /**
-     * @var mixed
+     * @var mixed|null
      */
     protected $distance;
     /**

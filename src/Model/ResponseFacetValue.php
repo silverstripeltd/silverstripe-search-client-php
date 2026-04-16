@@ -2,7 +2,7 @@
 
 namespace Silverstripe\Search\Client\Model;
 
-class ResponseFacetValue extends \ArrayObject
+class ResponseFacetValue
 {
     /**
      * @var array

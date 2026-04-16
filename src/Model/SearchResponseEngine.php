@@ -2,7 +2,7 @@
 
 namespace Silverstripe\Search\Client\Model;
 
-class SearchResponseEngine extends \ArrayObject
+class SearchResponseEngine
 {
     /**
      * @var array
@@ -13,11 +13,11 @@ class SearchResponseEngine extends \ArrayObject
         return array_key_exists($property, $this->initialized);
     }
     /**
-     * @var mixed
+     * @var mixed|null
      */
     protected $name;
     /**
-     * @var mixed
+     * @var mixed|null
      */
     protected $type;
     /**

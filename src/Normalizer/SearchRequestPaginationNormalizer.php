@@ -11,7 +11,7 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-class PaginationWithTotalsNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
+class SearchRequestPaginationNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
 {
     use DenormalizerAwareTrait;
     use NormalizerAwareTrait;
@@ -19,63 +19,45 @@ class PaginationWithTotalsNormalizer implements DenormalizerInterface, Normalize
     use ValidatorTrait;
     public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return $type === \Silverstripe\Search\Client\Model\PaginationWithTotals::class;
+        return $type === \Silverstripe\Search\Client\Model\SearchRequestPagination::class;
     }
     public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return is_object($data) && get_class($data) === \Silverstripe\Search\Client\Model\PaginationWithTotals::class;
+        return is_object($data) && get_class($data) === \Silverstripe\Search\Client\Model\SearchRequestPagination::class;
     }
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Silverstripe\Search\Client\Model\SearchRequestPagination();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Silverstripe\Search\Client\Model\PaginationWithTotals();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
-        }
         if (\array_key_exists('current', $data)) {
             $object->setCurrent($data['current']);
-            unset($data['current']);
         }
         if (\array_key_exists('size', $data)) {
             $object->setSize($data['size']);
-            unset($data['size']);
-        }
-        if (\array_key_exists('total_pages', $data)) {
-            $object->setTotalPages($data['total_pages']);
-            unset($data['total_pages']);
-        }
-        if (\array_key_exists('total_results', $data)) {
-            $object->setTotalResults($data['total_results']);
-            unset($data['total_results']);
-        }
-        foreach ($data as $key => $value) {
-            if (preg_match('/.*/', (string) $key)) {
-                $object[$key] = $value;
-            }
         }
         return $object;
     }
     public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         $dataArray = [];
-        $dataArray['current'] = $data->getCurrent();
-        $dataArray['size'] = $data->getSize();
-        $dataArray['total_pages'] = $data->getTotalPages();
-        $dataArray['total_results'] = $data->getTotalResults();
-        foreach ($data as $key => $value) {
-            if (preg_match('/.*/', (string) $key)) {
-                $dataArray[$key] = $value;
-            }
+        if ($data->isInitialized('current') && null !== $data->getCurrent()) {
+            $dataArray['current'] = $data->getCurrent();
+        }
+        if ($data->isInitialized('size') && null !== $data->getSize()) {
+            $dataArray['size'] = $data->getSize();
         }
         return $dataArray;
     }
     public function getSupportedTypes(?string $format = null): array
     {
-        return [\Silverstripe\Search\Client\Model\PaginationWithTotals::class => false];
+        return [\Silverstripe\Search\Client\Model\SearchRequestPagination::class => false];
     }
 }
