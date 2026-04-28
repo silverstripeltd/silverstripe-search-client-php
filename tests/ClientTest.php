@@ -59,12 +59,19 @@ class ClientTest extends TestCase
             ->with($method, $uri)
             ->willReturn($request);
 
-        $request->expects($this->once())
-            ->method('withHeader')
-            ->with('Content-Type', 'application/json')
-            ->willReturn($request);
-
         if ($hasBody) {
+            $request->expects($this->exactly(2))
+                ->method('withHeader')
+                ->willReturnCallback(function (string $name, string $value) use ($request): RequestInterface {
+                    match (true) {
+                        $name === 'Accept' && $value === 'application/json' => null,
+                        $name === 'Content-Type' && $value === 'application/json' => null,
+                        default => $this->fail(sprintf('Unexpected header: %s: %s', $name, $value)),
+                    };
+
+                    return $request;
+                });
+
             $stream = $this->createMock(StreamInterface::class);
 
             $this->streamFactory
@@ -75,6 +82,11 @@ class ClientTest extends TestCase
             $request->expects($this->once())
                 ->method('withBody')
                 ->with($stream)
+                ->willReturn($request);
+        } else {
+            $request->expects($this->once())
+                ->method('withHeader')
+                ->with('Accept', 'application/json')
                 ->willReturn($request);
         }
 

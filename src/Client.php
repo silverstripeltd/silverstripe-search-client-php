@@ -42,7 +42,7 @@ readonly class Client
      */
     public function search(string $engineName, SearchRequest $request): ResponseInterface
     {
-        return $this->sendRequest('POST', sprintf('/%s/search', $engineName), $request);
+        return $this->sendRequest('POST', sprintf('/%s/search', urlencode($engineName)), $request);
     }
 
     /**
@@ -51,7 +51,7 @@ readonly class Client
      */
     public function querySuggestion(string $engineName, QuerySuggestionRequest $request): ResponseInterface
     {
-        return $this->sendRequest('POST', sprintf('/%s/query_suggestion', $engineName), $request);
+        return $this->sendRequest('POST', sprintf('/%s/query_suggestion', urlencode($engineName)), $request);
     }
 
     /**
@@ -60,7 +60,7 @@ readonly class Client
      */
     public function spellingSuggestion(string $engineName, SpellingSuggestionRequest $request): ResponseInterface
     {
-        return $this->sendRequest('POST', sprintf('/%s/spelling_suggestion', $engineName), $request);
+        return $this->sendRequest('POST', sprintf('/%s/spelling_suggestion', urlencode($engineName)), $request);
     }
 
     /**
@@ -70,7 +70,7 @@ readonly class Client
      */
     public function documentsPost(string $engineName, array $documents): ResponseInterface
     {
-        return $this->sendRequest('POST', sprintf('/%s/documents', $engineName), $documents);
+        return $this->sendRequest('POST', sprintf('/%s/documents', urlencode($engineName)), $documents);
     }
 
     /**
@@ -80,7 +80,7 @@ readonly class Client
      */
     public function documentsPatch(string $engineName, array $documents): ResponseInterface
     {
-        return $this->sendRequest('PATCH', sprintf('/%s/documents', $engineName), $documents);
+        return $this->sendRequest('PATCH', sprintf('/%s/documents', urlencode($engineName)), $documents);
     }
 
     /**
@@ -90,7 +90,7 @@ readonly class Client
      */
     public function documentsDelete(string $engineName, array $documentIds): ResponseInterface
     {
-        return $this->sendRequest('DELETE', sprintf('/%s/documents', $engineName), $documentIds);
+        return $this->sendRequest('DELETE', sprintf('/%s/documents', urlencode($engineName)), $documentIds);
     }
 
     /**
@@ -100,7 +100,7 @@ readonly class Client
      */
     public function documentsGet(string $engineName, array $documentIds): ResponseInterface
     {
-        return $this->sendRequest('GET', sprintf('/%s/documents', $engineName), $documentIds);
+        return $this->sendRequest('GET', sprintf('/%s/documents', urlencode($engineName)), $documentIds);
     }
 
     /**
@@ -109,7 +109,7 @@ readonly class Client
      */
     public function documentsList(string $engineName, ?DocumentListRequest $request = null): ResponseInterface
     {
-        return $this->sendRequest('POST', sprintf('/%s/documents/list', $engineName), $request);
+        return $this->sendRequest('POST', sprintf('/%s/documents/list', urlencode($engineName)), $request);
     }
 
     /**
@@ -118,7 +118,7 @@ readonly class Client
      */
     public function schemaGet(string $engineName): ResponseInterface
     {
-        return $this->sendRequest('GET', sprintf('/%s/schema', $engineName));
+        return $this->sendRequest('GET', sprintf('/%s/schema', urlencode($engineName)));
     }
 
     /**
@@ -128,7 +128,7 @@ readonly class Client
      */
     public function schemaPost(string $engineName, array $schema): ResponseInterface
     {
-        return $this->sendRequest('POST', sprintf('/%s/schema', $engineName), $schema);
+        return $this->sendRequest('POST', sprintf('/%s/schema', urlencode($engineName)), $schema);
     }
 
     /**
@@ -137,10 +137,10 @@ readonly class Client
      */
     public function schemaDelete(string $engineName, ?int $token = null): ResponseInterface
     {
-        $uri = sprintf('/%s/schema', $engineName);
+        $uri = sprintf('/%s/schema', urlencode($engineName));
 
         if ($token !== null) {
-            $uri .= sprintf('?token=%d', $token);
+            $uri .= '?' . http_build_query(['token' => $token]);
         }
 
         return $this->sendRequest('DELETE', $uri);
@@ -152,7 +152,7 @@ readonly class Client
      */
     public function settingsGet(string $engineName): ResponseInterface
     {
-        return $this->sendRequest('GET', sprintf('/%s/settings', $engineName));
+        return $this->sendRequest('GET', sprintf('/%s/settings', urlencode($engineName)));
     }
 
     /**
@@ -161,7 +161,7 @@ readonly class Client
      */
     public function settingsPost(string $engineName, SettingsRequest $request): ResponseInterface
     {
-        return $this->sendRequest('POST', sprintf('/%s/settings', $engineName), $request);
+        return $this->sendRequest('POST', sprintf('/%s/settings', urlencode($engineName)), $request);
     }
 
     /**
@@ -170,7 +170,7 @@ readonly class Client
      */
     public function synonymRulesGet(string $engineName): ResponseInterface
     {
-        return $this->sendRequest('GET', sprintf('/%s/synonyms', $engineName));
+        return $this->sendRequest('GET', sprintf('/%s/synonyms', urlencode($engineName)));
     }
 
     /**
@@ -179,7 +179,7 @@ readonly class Client
      */
     public function synonymRuleGet(string $engineName, string $ruleId): ResponseInterface
     {
-        return $this->sendRequest('GET', sprintf('/%s/synonyms/%s', $engineName, $ruleId));
+        return $this->sendRequest('GET', sprintf('/%s/synonyms/%s', $engineName, urlencode($ruleId)));
     }
 
     /**
@@ -188,7 +188,7 @@ readonly class Client
      */
     public function synonymRulePost(string $engineName, SynonymRuleRequest $request): ResponseInterface
     {
-        return $this->sendRequest('POST', sprintf('/%s/synonyms', $engineName), $request);
+        return $this->sendRequest('POST', sprintf('/%s/synonyms', urlencode($engineName)), $request);
     }
 
     /**
@@ -197,7 +197,7 @@ readonly class Client
      */
     public function synonymRulePut(string $engineName, string $ruleId, SynonymRuleRequest $request): ResponseInterface
     {
-        return $this->sendRequest('PUT', sprintf('/%s/synonyms/%s', $engineName, $ruleId), $request);
+        return $this->sendRequest('PUT', sprintf('/%s/synonyms/%s', $engineName, urlencode($ruleId)), $request);
     }
 
     /**
@@ -206,7 +206,7 @@ readonly class Client
      */
     public function synonymRuleDelete(string $engineName, string $ruleId): ResponseInterface
     {
-        return $this->sendRequest('DELETE', sprintf('/%s/synonyms/%s', $engineName, $ruleId));
+        return $this->sendRequest('DELETE', sprintf('/%s/synonyms/%s', $engineName, urlencode($ruleId)));
     }
 
     /**
@@ -224,7 +224,7 @@ readonly class Client
      */
     public function clickPost(string $engineName, ClickRequest $request): ResponseInterface
     {
-        return $this->sendRequest('POST', sprintf('/%s/click', $engineName), $request);
+        return $this->sendRequest('POST', sprintf('/%s/click', urlencode($engineName)), $request);
     }
 
     /**
@@ -233,7 +233,7 @@ readonly class Client
      */
     public function boostsGet(string $engineName, string $fieldName): ResponseInterface
     {
-        return $this->sendRequest('GET', sprintf('/%s/field/%s/boosts', $engineName, $fieldName));
+        return $this->sendRequest('GET', sprintf('/%s/field/%s/boosts', $engineName, urlencode($fieldName)));
     }
 
     /**
@@ -242,7 +242,7 @@ readonly class Client
      */
     public function boostGet(string $engineName, string $fieldName, string $boostId): ResponseInterface
     {
-        return $this->sendRequest('GET', sprintf('/%s/field/%s/boosts/%s', $engineName, $fieldName, $boostId));
+        return $this->sendRequest('GET', sprintf('/%s/field/%s/boosts/%s', $engineName, $fieldName, urlencode($boostId)));
     }
 
     /**
@@ -251,7 +251,7 @@ readonly class Client
      */
     public function boostPost(string $engineName, string $fieldName, BoostPostRequest $request): ResponseInterface
     {
-        return $this->sendRequest('POST', sprintf('/%s/field/%s/boosts', $engineName, $fieldName), $request);
+        return $this->sendRequest('POST', sprintf('/%s/field/%s/boosts', $engineName, urlencode($fieldName)), $request);
     }
 
     /**
@@ -266,7 +266,7 @@ readonly class Client
     ): ResponseInterface {
         return $this->sendRequest(
             'PATCH',
-            sprintf('/%s/field/%s/boosts/%s', $engineName, $fieldName, $boostId),
+            sprintf('/%s/field/%s/boosts/%s', $engineName, $fieldName, urlencode($boostId)),
             $request,
         );
     }
@@ -277,7 +277,7 @@ readonly class Client
      */
     public function boostDelete(string $engineName, string $fieldName, string $boostId): ResponseInterface
     {
-        return $this->sendRequest('DELETE', sprintf('/%s/field/%s/boosts/%s', $engineName, $fieldName, $boostId));
+        return $this->sendRequest('DELETE', sprintf('/%s/field/%s/boosts/%s', $engineName, $fieldName, urlencode($boostId)));
     }
 
     /**
@@ -286,7 +286,7 @@ readonly class Client
      */
     public function curationsGet(string $engineName): ResponseInterface
     {
-        return $this->sendRequest('GET', sprintf('/%s/curations', $engineName));
+        return $this->sendRequest('GET', sprintf('/%s/curations', urlencode($engineName)));
     }
 
     /**
@@ -295,7 +295,7 @@ readonly class Client
      */
     public function curationGet(string $engineName, string $curationId): ResponseInterface
     {
-        return $this->sendRequest('GET', sprintf('/%s/curations/%s', $engineName, $curationId));
+        return $this->sendRequest('GET', sprintf('/%s/curations/%s', $engineName, urlencode($curationId)));
     }
 
     /**
@@ -304,7 +304,7 @@ readonly class Client
      */
     public function curationPost(string $engineName, CurationPostRequest $request): ResponseInterface
     {
-        return $this->sendRequest('POST', sprintf('/%s/curations', $engineName), $request);
+        return $this->sendRequest('POST', sprintf('/%s/curations', urlencode($engineName)), $request);
     }
 
     /**
@@ -316,7 +316,7 @@ readonly class Client
         string $curationId,
         CurationPatchRequest $request,
     ): ResponseInterface {
-        return $this->sendRequest('PATCH', sprintf('/%s/curations/%s', $engineName, $curationId), $request);
+        return $this->sendRequest('PATCH', sprintf('/%s/curations/%s', $engineName, urlencode($curationId)), $request);
     }
 
     /**
@@ -325,7 +325,7 @@ readonly class Client
      */
     public function curationDelete(string $engineName, string $curationId): ResponseInterface
     {
-        return $this->sendRequest('DELETE', sprintf('/%s/curations/%s', $engineName, $curationId));
+        return $this->sendRequest('DELETE', sprintf('/%s/curations/%s', $engineName, urlencode($curationId)));
     }
 
     /**
@@ -334,7 +334,7 @@ readonly class Client
      */
     public function curationDocumentsGet(string $engineName, string $curationId): ResponseInterface
     {
-        return $this->sendRequest('GET', sprintf('/%s/curations/%s/documents', $engineName, $curationId));
+        return $this->sendRequest('GET', sprintf('/%s/curations/%s/documents', $engineName, urlencode($curationId)));
     }
 
     /**
@@ -348,7 +348,7 @@ readonly class Client
     ): ResponseInterface {
         return $this->sendRequest(
             'GET',
-            sprintf('/%s/curations/%s/documents/%s', $engineName, $curationId, $documentId),
+            sprintf('/%s/curations/%s/documents/%s', $engineName, $curationId, urlencode($documentId)),
         );
     }
 
@@ -361,7 +361,7 @@ readonly class Client
         string $curationId,
         CurationDocumentPostRequest $request,
     ): ResponseInterface {
-        return $this->sendRequest('POST', sprintf('/%s/curations/%s/documents', $engineName, $curationId), $request);
+        return $this->sendRequest('POST', sprintf('/%s/curations/%s/documents', $engineName, urlencode($curationId)), $request);
     }
 
     /**
@@ -376,7 +376,7 @@ readonly class Client
     ): ResponseInterface {
         return $this->sendRequest(
             'PATCH',
-            sprintf('/%s/curations/%s/documents/%s', $engineName, $curationId, $documentId),
+            sprintf('/%s/curations/%s/documents/%s', $engineName, $curationId, urlencode($documentId)),
             $request,
         );
     }
@@ -392,7 +392,7 @@ readonly class Client
     ): ResponseInterface {
         return $this->sendRequest(
             'DELETE',
-            sprintf('/%s/curations/%s/documents/%s', $engineName, $curationId, $documentId),
+            sprintf('/%s/curations/%s/documents/%s', $engineName, $curationId, urlencode($documentId)),
         );
     }
 
@@ -402,7 +402,7 @@ readonly class Client
      */
     public function curationQueriesGet(string $engineName, string $curationId): ResponseInterface
     {
-        return $this->sendRequest('GET', sprintf('/%s/curations/%s/queries', $engineName, $curationId));
+        return $this->sendRequest('GET', sprintf('/%s/curations/%s/queries', $engineName, urlencode($curationId)));
     }
 
     /**
@@ -413,7 +413,7 @@ readonly class Client
     {
         return $this->sendRequest(
             'GET',
-            sprintf('/%s/curations/%s/queries/%s', $engineName, $curationId, $queryId),
+            sprintf('/%s/curations/%s/queries/%s', $engineName, $curationId, urlencode($queryId)),
         );
     }
 
@@ -426,7 +426,7 @@ readonly class Client
         string $curationId,
         CurationQueryPostRequest $request,
     ): ResponseInterface {
-        return $this->sendRequest('POST', sprintf('/%s/curations/%s/queries', $engineName, $curationId), $request);
+        return $this->sendRequest('POST', sprintf('/%s/curations/%s/queries', $engineName, urlencode($curationId)), $request);
     }
 
     /**
@@ -437,7 +437,7 @@ readonly class Client
     {
         return $this->sendRequest(
             'DELETE',
-            sprintf('/%s/curations/%s/queries/%s', $engineName, $curationId, $queryId),
+            sprintf('/%s/curations/%s/queries/%s', $engineName, $curationId, urlencode($queryId)),
         );
     }
 
@@ -451,11 +451,12 @@ readonly class Client
         JsonSerializable|array|null $body = null,
     ): ResponseInterface {
         $request = $this->requestFactory->createRequest($method, $uri);
-        $request = $request->withHeader('Content-Type', 'application/json');
+        $request = $request->withHeader('Accept', 'application/json');
 
         if ($body !== null) {
             $json = json_encode($body, JSON_THROW_ON_ERROR);
             $stream = $this->streamFactory->createStream($json);
+            $request = $request->withHeader('Content-Type', 'application/json');
             $request = $request->withBody($stream);
         }
 
