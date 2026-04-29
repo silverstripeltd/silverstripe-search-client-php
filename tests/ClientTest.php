@@ -144,9 +144,9 @@ class ClientTest extends TestCase
 
     public function testDocumentsGet(): void
     {
-        $this->expectRequest('GET', '/my-engine/documents');
+        $this->expectRequest('GET', '/my-engine/documents?ids=doc-1&ids=doc-2', false);
 
-        $this->client->documentsGet('my-engine', ['doc-1']);
+        $this->client->documentsGet('my-engine', ['doc-1', 'doc-2']);
     }
 
     public function testDocumentsList(): void

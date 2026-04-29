@@ -100,7 +100,11 @@ readonly class Client
      */
     public function documentsGet(string $engineName, array $documentIds): ResponseInterface
     {
-        return $this->sendRequest('GET', sprintf('/%s/documents', urlencode($engineName)), $documentIds);
+        $uri = sprintf('/%s/documents', urlencode($engineName));
+        $query = implode('&', array_map(static fn(string $id): string => 'ids=' . urlencode($id), $documentIds));
+        $uri .= '?' . $query;
+
+        return $this->sendRequest('GET', $uri);
     }
 
     /**
