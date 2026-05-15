@@ -1,59 +1,36 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Silverstripe\Search\Client\Model;
 
-class Coordinate extends \ArrayObject
+use JsonSerializable;
+
+class Coordinate implements JsonSerializable
 {
-    /**
-     * @var array
-     */
-    protected $initialized = [];
-    public function isInitialized($property): bool
-    {
-        return array_key_exists($property, $this->initialized);
+
+    public function __construct(
+        private readonly float|string $latitude,
+        private readonly float|string $longitude,
+    ) {
     }
-    /**
-     * @var mixed
-     */
-    protected $latitude;
-    /**
-     * @var mixed
-     */
-    protected $longitude;
-    /**
-     * @return mixed
-     */
-    public function getLatitude()
+
+    public function getLatitude(): float|string
     {
         return $this->latitude;
     }
-    /**
-     * @param mixed $latitude
-     *
-     * @return self
-     */
-    public function setLatitude($latitude): self
-    {
-        $this->initialized['latitude'] = true;
-        $this->latitude = $latitude;
-        return $this;
-    }
-    /**
-     * @return mixed
-     */
-    public function getLongitude()
+
+    public function getLongitude(): float|string
     {
         return $this->longitude;
     }
-    /**
-     * @param mixed $longitude
-     *
-     * @return self
-     */
-    public function setLongitude($longitude): self
+
+    public function jsonSerialize(): array
     {
-        $this->initialized['longitude'] = true;
-        $this->longitude = $longitude;
-        return $this;
+        return [
+            'latitude' => $this->latitude,
+            'longitude' => $this->longitude,
+        ];
     }
+
 }
