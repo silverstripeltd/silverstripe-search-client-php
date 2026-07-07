@@ -54,6 +54,12 @@ class SearchRequest implements JsonSerializable
 
     private bool $recordAnalytics = true;
 
+    /**
+     * Override the engine precision for this request only. Valid values are 1 - 11 (inclusive). When null, the engine's
+     * configured precision (set in the dashboard) is used.
+     */
+    private ?int $precision = null;
+
     public function __construct(private readonly string $query)
     {
     }
@@ -299,6 +305,18 @@ class SearchRequest implements JsonSerializable
         return $this;
     }
 
+    public function getPrecision(): ?int
+    {
+        return $this->precision;
+    }
+
+    public function setPrecision(?int $precision): static
+    {
+        $this->precision = $precision;
+
+        return $this;
+    }
+
     public function jsonSerialize(): array
     {
         $payload = [
@@ -343,6 +361,10 @@ class SearchRequest implements JsonSerializable
 
         if ($this->analytics !== null) {
             $payload['analytics'] = $this->analytics;
+        }
+
+        if ($this->precision !== null) {
+            $payload['precision'] = $this->precision;
         }
 
         $payload['record_analytics'] = $this->recordAnalytics;

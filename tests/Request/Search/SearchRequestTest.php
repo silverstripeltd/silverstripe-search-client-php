@@ -336,6 +336,44 @@ class SearchRequestTest extends TestCase
         $this->assertFalse($result['record_analytics']);
     }
 
+    // Precision tests
+
+    public function testPrecisionDefaultsToNull(): void
+    {
+        $request = new SearchRequest('test');
+
+        $this->assertNull($request->getPrecision());
+    }
+
+    public function testPrecisionOmittedFromPayloadWhenNull(): void
+    {
+        $request = new SearchRequest('test');
+
+        $this->assertArrayNotHasKey('precision', $request->jsonSerialize());
+    }
+
+    public function testSetPrecision(): void
+    {
+        $request = new SearchRequest('test');
+        $request->setPrecision(10);
+
+        $this->assertSame(10, $request->getPrecision());
+
+        $result = $request->jsonSerialize();
+
+        $this->assertSame(10, $result['precision']);
+    }
+
+    public function testSetPrecisionNull(): void
+    {
+        $request = new SearchRequest('test');
+        $request->setPrecision(10);
+        $request->setPrecision(null);
+
+        $this->assertNull($request->getPrecision());
+        $this->assertArrayNotHasKey('precision', $request->jsonSerialize());
+    }
+
     // Full payload test
 
     public function testFullPayload(): void
@@ -357,10 +395,12 @@ class SearchRequestTest extends TestCase
 
         $request->setAnalytics(new Tags(['search-page']));
         $request->setRecordAnalytics(true);
+        $request->setPrecision(7);
 
         $result = json_decode(json_encode($request), true);
 
         $this->assertSame('full test', $result['query']);
+        $this->assertSame(7, $result['precision']);
         $this->assertArrayHasKey('sort', $result);
         $this->assertArrayHasKey('page', $result);
         $this->assertArrayHasKey('search_fields', $result);
@@ -392,6 +432,8 @@ class SearchRequestTest extends TestCase
         $this->assertSame($request, $request->setBoosts(null));
         $this->assertSame($request, $request->setAnalytics(null));
         $this->assertSame($request, $request->setRecordAnalytics(true));
+        $this->assertSame($request, $request->setPrecision(5));
+        $this->assertSame($request, $request->setPrecision(null));
     }
 
 }
